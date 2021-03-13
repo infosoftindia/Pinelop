@@ -331,7 +331,7 @@ switch (ENVIRONMENT)
  *
  * And away we go...
  */
-include APPPATH.'vendor/autoload.php';
+include 'vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(FCPATH);
 $dotenv->load();
 require_once BASEPATH.'core/CodeIgniter.php';

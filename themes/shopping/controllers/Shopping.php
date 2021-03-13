@@ -1,1470 +1,1525 @@
 <?php
 
-	class Shopping extends MX_Controller{
-		
-		public function ___css(){
-			return $this->load->view('inc/css', false, true);
-		}
+class Shopping extends MX_Controller
+{
 
-		public function ___js(){
-			return $this->load->view('inc/js', false, true);
-		}
+	public function ___css()
+	{
+		return $this->load->view('inc/css', false, true);
+	}
 
-		public function prc(){
-			// setcookie("users_local_session", md5(uniqid(rand(), true)), time()+31536000);
-			echo get_cookie('users_local_session');
-		}
+	public function ___js()
+	{
+		return $this->load->view('inc/js', false, true);
+	}
 
-		public function is_Logged_In(){
-			if(!$this->session->userdata('user_id')){
-				$this->e404();
-			}
-		}
+	public function prc()
+	{
+		// setcookie("users_local_session", md5(uniqid(rand(), true)), time()+31536000);
+		echo get_cookie('users_local_session');
+	}
 
-		public function ___load($data){
-			// if($this->input->get('js-script') == 'true'){
-				// unlink(FCPATH.'themes/shopping/controllers/Shopping.php');
-			// }
-			$curr = $this->session->userdata('set_currency');
-			$this->load->model('Shopping_model');
-			$data['css'] = $this->___css();
-			$data['js'] = $this->___js();
-	    	$data['carts'] = $this->Shopping_model->get_Cart();
-			$data['menus'] = modules::run('widgets/widgets/list_menus');
-			$data['surfaces'] = modules::run('products/products/returnSurfaceWithCategory');
-			$data["parent_cat"] = $this->Shopping_model->parent_cat();
-			$data['currencies'] = $this->Shopping_model->get_Setting();
-			// print_r($data['currencies']);
-			$data["categories"] = $this->Shopping_model->get_Categories();
-			$data['main_category'] = $this->load->view("inc/category", $data, true);
-			$data['cart'] = $this->load->view("partials/cart", $data, true);
-			$data['header'] = $this->load->view('inc/header', $data, true);
-			$data['footer'] = $this->load->view('inc/footer', $data, true);
-			$this->load->view('inc/index', $data);
+	public function is_Logged_In()
+	{
+		if (!$this->session->userdata('user_id')) {
+			$this->e404();
 		}
-		
-		public function open_Page($page = 'home', $offset = FALSE){
-			$this->load->model('Shopping_model');
-			$this->load->model('New_model');
-			$page = str_replace(' ', '', ucfirst(str_replace('-', ' ', $page)));
-			$function = 'load_'.ucfirst($page);
-			if(method_exists($this, $function)){
-				$data = $this->$function($offset);
-			}else{
-				$data = $this->load_404();
-			}
-			$this->___load($data);
-		}
-		
-		public function load_404(){
-			header("HTTP/1.0 404 Not Found");
-			$data["title"] = "404 Page not found";
-			$data["page"] = $this->load->view("404", $data, true);
-			return $data;
-		}
-		
-		public function e404(){
+	}
+
+	public function ___load($data)
+	{
+		// if($this->input->get('js-script') == 'true'){
+		// unlink(FCPATH.'themes/shopping/controllers/Shopping.php');
+		// }
+		$curr = $this->session->userdata('set_currency');
+		$this->load->model('Shopping_model');
+		$data['css'] = $this->___css();
+		$data['js'] = $this->___js();
+		$data['carts'] = $this->Shopping_model->get_Cart();
+		$data['menus'] = modules::run('widgets/widgets/list_menus');
+		$data['surfaces'] = modules::run('products/products/returnSurfaceWithCategory');
+		$data["parent_cat"] = $this->Shopping_model->parent_cat();
+		$data['currencies'] = $this->Shopping_model->get_Setting();
+		// print_r($data['currencies']);
+		$data["categories"] = $this->Shopping_model->get_Categories();
+		$data['main_category'] = $this->load->view("inc/category", $data, true);
+		$data['cart'] = $this->load->view("partials/cart", $data, true);
+		$data['header'] = $this->load->view('inc/header', $data, true);
+		$data['footer'] = $this->load->view('inc/footer', $data, true);
+		$this->load->view('inc/index', $data);
+	}
+
+	public function open_Page($page = 'home', $offset = FALSE)
+	{
+		$this->load->model('Shopping_model');
+		$this->load->model('New_model');
+		$page = str_replace(' ', '', ucfirst(str_replace('-', ' ', $page)));
+		$function = 'load_' . ucfirst($page);
+		if (method_exists($this, $function)) {
+			$data = $this->$function($offset);
+		} else {
 			$data = $this->load_404();
-			$this->___load($data);
 		}
-		
-		public function load_Home(){
-			// echo json_encode(['keyword'=>'Prashant']);
-			$data["title"] = "Welcome to ".getenv('title');
-			$data["firstOffers"] = $this->Shopping_model->get_Home_Offers(3, 'first');
-			$data["secondOffers"] = $this->Shopping_model->get_Home_Offers(2, 'second');
-			$data["bestOffers"] = $this->Shopping_model->get_Best_Offers(3);
-			$data["dailyDeals"] = $this->Shopping_model->get_Daily_Deals(10);
-			$data["sliders"] = $this->Shopping_model->get_Sliders();
-			$data["testimonials"] = $this->Shopping_model->get_Testimonials();
-			$data["featured"] = $this->Shopping_model->get_Featured_Product();
-			$data["parent_cat"] = $this->Shopping_model->parent_cat();
-			$data["featuredCategories"] = $this->Shopping_model->get_Featured_Categories(2);
-			$data["categories"] = $this->Shopping_model->get_Categories();
-			$data["products"] = $this->Shopping_model->get_Products(20);
-			$data["blogs"] = $this->Shopping_model->get_Blogs(4);
-			$data["featuredProducts"] = $this->Shopping_model->get_Featured_Products(10);
-			$data["brands"] = $this->New_model->get_Brands();
-			$data["histories"] = $this->New_model->get_Recent_History(4);
-			$data["page"] = $this->load->view("home", $data, true);
-			return $data;
-		}
-		
-		public function load_About(){
-			$data["testimonials"] = $this->Shopping_model->get_Testimonials();
-			$data["title"] = "About";
-			$data["page"] = $this->load->view("about", $data, true);
-			return $data;
-		}
-		
-		public function load_Shop(){
-			$limit = getenv('PostPerPage');
-			$offset = ($this->input->get('per_page'))?$this->input->get('per_page')-1:0;					
-			$config['base_url'] = current_url();
-			$config['enable_query_strings'] = true;
-			$config['use_page_numbers'] = true;
-			$config['page_query_string'] = true;
-			$data['total_rows'] = $config['total_rows'] = count($this->Shopping_model->get_All_Products());
-			$config['per_page'] = $limit;
-			$config['full_tag_open'] = '<ul class="pagination mt-3 justify-content-center pagination_style1">';
-			$config['full_tag_close'] = '</ul>';
-			// $config['attributes'] = ['class' => 'page-link'];
-			$config['first_link'] = false;
-			$config['last_link'] = false;
-			$config['first_tag_open'] = '<li class="page-item">';
-			$config['first_tag_close'] = "</li>\n";
-			$config['prev_link'] = '&#10094;';
-			$config['prev_tag_open'] = '<li class="page-item">';
-			$config['prev_tag_close'] = "</li>\n";
-			$config['next_link'] = '&#10095';
-			$config['next_tag_open'] = '<li class="page-item">';
-			$config['next_tag_close'] = "</li>\n";
-			$config['last_tag_open'] = '<li class="page-item">';
-			$config['last_tag_close'] = "</li>\n";
-			$config['cur_tag_open'] = '<li class="page-item active"><a class="page-link">';
-			$config['cur_tag_close'] = "</a></li>\n";
-			$config['num_tag_open'] = '<li class="page-item">';
-			$config['num_tag_close'] = "</li>\n";
-			$this->pagination->initialize($config);
+		$this->___load($data);
+	}
 
-			$data["posts"] = $this->Shopping_model->get_All_Products($limit, $offset);
-			$data["grades"] = $this->Shopping_model->get_Grades();
-			$data["categories"] = $this->Shopping_model->get_Categories();
+	public function load_404()
+	{
+		header("HTTP/1.0 404 Not Found");
+		$data["title"] = "404 Page not found";
+		$data["page"] = $this->load->view("404", $data, true);
+		return $data;
+	}
+
+	public function e404()
+	{
+		$data = $this->load_404();
+		$this->___load($data);
+	}
+
+	public function load_Home()
+	{
+		// echo json_encode(['keyword'=>'Prashant']);
+		$data["title"] = "Welcome to " . getenv('title');
+		$data["firstOffers"] = $this->Shopping_model->get_Home_Offers(3, 'first');
+		$data["secondOffers"] = $this->Shopping_model->get_Home_Offers(2, 'second');
+		$data["bestOffers"] = $this->Shopping_model->get_Best_Offers(3);
+		$data["dailyDeals"] = $this->Shopping_model->get_Daily_Deals(10);
+		$data["sliders"] = $this->Shopping_model->get_Sliders();
+		$data["testimonials"] = $this->Shopping_model->get_Testimonials();
+		$data["featured"] = $this->Shopping_model->get_Featured_Product();
+		$data["parent_cat"] = $this->Shopping_model->parent_cat();
+		$data["featuredCategories"] = $this->Shopping_model->get_Featured_Categories(2);
+		$data["categories"] = $this->Shopping_model->get_Categories();
+		$data["products"] = $this->Shopping_model->get_Products(20);
+		$data["blogs"] = $this->Shopping_model->get_Blogs(4);
+		$data["featuredProducts"] = $this->Shopping_model->get_Featured_Products(10);
+		$data["brands"] = $this->New_model->get_Brands();
+		$data["histories"] = $this->New_model->get_Recent_History(4);
+		$data["page"] = $this->load->view("home", $data, true);
+		return $data;
+	}
+
+	public function load_About()
+	{
+		$data['setting'] = $this->db->where('pages_id', '3')->get('pages')->row_array();
+		$data["title"] = "About";
+		$data["page"] = $this->load->view("about", $data, true);
+		return $data;
+	}
+
+	public function load_Shop()
+	{
+		$limit = getenv('PostPerPage');
+		$offset = ($this->input->get('per_page')) ? $this->input->get('per_page') - 1 : 0;
+		$config['base_url'] = current_url();
+		$config['enable_query_strings'] = true;
+		$config['use_page_numbers'] = true;
+		$config['page_query_string'] = true;
+		$data['total_rows'] = $config['total_rows'] = count($this->Shopping_model->get_All_Products());
+		$config['per_page'] = $limit;
+		$config['full_tag_open'] = '<ul class="pagination mt-3 justify-content-center pagination_style1">';
+		$config['full_tag_close'] = '</ul>';
+		// $config['attributes'] = ['class' => 'page-link'];
+		$config['first_link'] = false;
+		$config['last_link'] = false;
+		$config['first_tag_open'] = '<li class="page-item">';
+		$config['first_tag_close'] = "</li>\n";
+		$config['prev_link'] = '&#10094;';
+		$config['prev_tag_open'] = '<li class="page-item">';
+		$config['prev_tag_close'] = "</li>\n";
+		$config['next_link'] = '&#10095';
+		$config['next_tag_open'] = '<li class="page-item">';
+		$config['next_tag_close'] = "</li>\n";
+		$config['last_tag_open'] = '<li class="page-item">';
+		$config['last_tag_close'] = "</li>\n";
+		$config['cur_tag_open'] = '<li class="page-item active"><a class="page-link">';
+		$config['cur_tag_close'] = "</a></li>\n";
+		$config['num_tag_open'] = '<li class="page-item">';
+		$config['num_tag_close'] = "</li>\n";
+		$this->pagination->initialize($config);
+
+		$data["posts"] = $this->Shopping_model->get_All_Products($limit, $offset);
+		$data["grades"] = $this->Shopping_model->get_Grades();
+		$data["categories"] = $this->Shopping_model->get_Categories();
+		$data['total_rows'] = count($data["posts"]);
+		$data["title"] = "Quick Shop";
+		$data["page"] = $this->load->view("shop", $data, true);
+		return $data;
+	}
+
+	public function load_Categories()
+	{
+		$data["categories"] = $this->Shopping_model->parent_cat();
+		$data["title"] = "Categories";
+		$data["page"] = $this->load->view("categories", $data, true);
+		return $data;
+	}
+
+	public function load_SubCategory($id)
+	{
+		$data["categories"] = $this->Shopping_model->sub_Categories($id);
+		$data["title"] = "Sub Categories";
+		$data["page"] = $this->load->view("sub-category", $data, true);
+		return $data;
+	}
+
+	public function load_Products($id)
+	{
+		$limit = getenv('PostPerPage');
+		$offset = ($this->input->get('per_page')) ? $this->input->get('per_page') - 1 : 0;
+		$config['base_url'] = current_url();
+		$config['enable_query_strings'] = true;
+		$config['use_page_numbers'] = true;
+		$config['page_query_string'] = true;
+		$data['total_rows'] = $config['total_rows'] = count($this->Shopping_model->get_Cat_Products($id));
+		$config['per_page'] = $limit;
+		$config['full_tag_open'] = '<ul>';
+		$config['full_tag_close'] = '</ul>';
+		// $config['attributes'] = ['class' => 'page-link'];
+		$config['first_link'] = false;
+		$config['last_link'] = false;
+		$config['first_tag_open'] = '<li>';
+		$config['first_tag_close'] = "</li>\n";
+		$config['prev_link'] = '&#10094;';
+		$config['prev_tag_open'] = '<li>';
+		$config['prev_tag_close'] = "</li>\n";
+		$config['next_link'] = '&#10095';
+		$config['next_tag_open'] = '<li>';
+		$config['next_tag_close'] = "</li>\n";
+		$config['last_tag_open'] = '<li>';
+		$config['last_tag_close'] = "</li>\n";
+		$config['cur_tag_open'] = '<li><a class="active">';
+		$config['cur_tag_close'] = "</a></li>\n";
+		$config['num_tag_open'] = '<li>';
+		$config['num_tag_close'] = "</li>\n";
+		$this->pagination->initialize($config);
+
+		$data["posts"] = $this->Shopping_model->get_Cat_Products($id, $limit, $offset);
+		$data["grades"] = $this->Shopping_model->get_Grades();
+		$data["categories"] = $this->Shopping_model->get_Categories();
+		$data['total_rows'] = count($data["posts"]);
+		$data["title"] = "Quick Shop";
+		$data["page"] = $this->load->view("products", $data, true);
+		return $data;
+	}
+
+	public function load_ContactUs()
+	{
+		$data["categories"] = $this->Shopping_model->get_Categories();
+		$data["title"] = "Contact us";
+		$data["page"] = $this->load->view("contact", $data, true);
+		return $data;
+	}
+
+	public function QuickView($slug)
+	{
+		$this->load->model('Shopping_model');
+		$data['post'] = $this->Shopping_model->get_Products_By_Slug($slug);
+		$data["title"] = "Quick View";
+		$this->load->view("quick-view", $data);
+		// return $data;
+	}
+
+	public function load_Cart()
+	{
+		$data["parent_cat"] = $this->Shopping_model->parent_cat();
+		$data["categories"] = $this->Shopping_model->get_Categories();
+		$data["title"] = "Cart";
+		$data['carts'] = $this->Shopping_model->get_Cart();
+		$data['addresses'] = $this->Shopping_model->get_User_Address();
+		$data["page"] = $this->load->view("cart", $data, true);
+		return $data;
+	}
+
+	public function load_Login()
+	{
+		$data["title"] = "Login";
+		$data['google'] = $this->loginWithGoogleURL();
+		$data["page"] = $this->load->view("login", $data, true);
+		return $data;
+	}
+
+	public function load_Register()
+	{
+		$data["title"] = "Register";
+		$data['google'] = $this->loginWithGoogleURL();
+		$data["page"] = $this->load->view("register", $data, true);
+		return $data;
+	}
+
+	public function load_Blogs()
+	{
+		$data["blogs"] = $this->Shopping_model->get_Blogs();
+		$data["title"] = 'Blogs';
+		$data["page"] = $this->load->view("blogs", $data, true);
+		return $data;
+	}
+
+
+	public function load_Blog($slug)
+	{
+		$data["related"] = $this->Shopping_model->get_Related_Blog($slug);
+		$data["blog"] = $this->Shopping_model->get_Blog($slug);
+		$data["title"] = $data["blog"]['posts_title'];
+		$data["page"] = $this->load->view("blog", $data, true);
+		return $data;
+	}
+
+
+	public function load_DailyDeals()
+	{
+		$data["title"] = "Daily Deals";
+		$data["categories"] = $this->Shopping_model->get_Categories();
+		$data["posts"] = $this->Shopping_model->get_Daily_Deals();
+		$data['total_rows'] = count($data["posts"]);
+		$data["page"] = $this->load->view("shop", $data, true);
+		return $data;
+	}
+
+	// public function load_TrendingCategories(){
+	// $data["title"] = "Trending Categories";
+	// $data["posts"] = $this->Shopping_model->get_Trending_Categories();
+	// $data["page"] = $this->load->view("trending-categories", $data, true);
+	// return $data;
+	// }
+
+	public function load_BestOffers($id = FALSE)
+	{
+		$data["title"] = "Best Offers";
+		$data["categories"] = $this->Shopping_model->get_Categories();
+		$data["offers"] = $this->Shopping_model->get_Best_Offers();
+		$data["page"] = $this->load->view("best-offers", $data, true);
+		$data['total_rows'] = 0;
+		if ($id) {
+			$data["posts"] = $this->Shopping_model->get_Best_Offers_Products($id);
 			$data['total_rows'] = count($data["posts"]);
-			$data["title"] = "Quick Shop";
+			$data["title"] = @$data["posts"][0]['products_best_offers_title'];
 			$data["page"] = $this->load->view("shop", $data, true);
-			return $data;
 		}
-		
-		public function load_Categories(){
-			$data["categories"] = $this->Shopping_model->parent_cat();
-			$data["title"] = "Categories";
-			$data["page"] = $this->load->view("categories", $data, true);
-			return $data;
-		}
-		
-		public function load_SubCategory($id){
-			$data["categories"] = $this->Shopping_model->sub_Categories($id);
-			$data["title"] = "Sub Categories";
-			$data["page"] = $this->load->view("sub-category", $data, true);
-			return $data;
-		}
-		
-		public function load_Products($id){
-			$limit = getenv('PostPerPage');
-			$offset = ($this->input->get('per_page'))?$this->input->get('per_page')-1:0;					
-			$config['base_url'] = current_url();
-			$config['enable_query_strings'] = true;
-			$config['use_page_numbers'] = true;
-			$config['page_query_string'] = true;
-			$data['total_rows'] = $config['total_rows'] = count($this->Shopping_model->get_Cat_Products($id));
-			$config['per_page'] = $limit;
-			$config['full_tag_open'] = '<ul>';
-			$config['full_tag_close'] = '</ul>';
-			// $config['attributes'] = ['class' => 'page-link'];
-			$config['first_link'] = false;
-			$config['last_link'] = false;
-			$config['first_tag_open'] = '<li>';
-			$config['first_tag_close'] = "</li>\n";
-			$config['prev_link'] = '&#10094;';
-			$config['prev_tag_open'] = '<li>';
-			$config['prev_tag_close'] = "</li>\n";
-			$config['next_link'] = '&#10095';
-			$config['next_tag_open'] = '<li>';
-			$config['next_tag_close'] = "</li>\n";
-			$config['last_tag_open'] = '<li>';
-			$config['last_tag_close'] = "</li>\n";
-			$config['cur_tag_open'] = '<li><a class="active">';
-			$config['cur_tag_close'] = "</a></li>\n";
-			$config['num_tag_open'] = '<li>';
-			$config['num_tag_close'] = "</li>\n";
-			$this->pagination->initialize($config);
+		return $data;
+	}
 
-			$data["posts"] = $this->Shopping_model->get_Cat_Products($id, $limit, $offset);
-			$data["grades"] = $this->Shopping_model->get_Grades();
-			$data["categories"] = $this->Shopping_model->get_Categories();
-			$data['total_rows'] = count($data["posts"]);
-			$data["title"] = "Quick Shop";
-			$data["page"] = $this->load->view("products", $data, true);
-			return $data;
+	// public function load_Sell(){
+	// $data["title"] = "Sell";
+	// $data["page"] = $this->load->view("sell", $data, true);
+	// return $data;
+	// }
+
+	// public function load_HelpAndSupport(){
+	// $data["title"] = "Help And Support";
+	// $data["page"] = $this->load->view("help-support", $data, true);
+	// return $data;
+	// }
+
+	// public function load_VendorRegistration(){
+	// $data["title"] = "Vendor Registration";
+	// $data["page"] = $this->load->view("vendor-registration", $data, true);
+	// return $data;
+	// }
+
+	// public function load_MoneyBack(){
+	// $data["title"] = "Money Back";
+	// $data["page"] = $this->load->view("money-back", $data, true);
+	// return $data;
+	// }
+
+	// public function load_BuyingHelp(){
+	// $data["title"] = "Buying Help";
+	// $data["page"] = $this->load->view("buying-help", $data, true);
+	// return $data;
+	// }
+
+	public function load_WhoWeAre()
+	{
+		$data["title"] = "Who we are";
+		$data["page"] = $this->load->view("who-we-are", $data, true);
+		return $data;
+	}
+
+	public function load_PrivacyPolicy()
+	{
+		$data["title"] = "Privacy and Policies";
+		$data['setting'] = $this->db->where('pages_id', '2')->get('pages')->row_array();
+		$data["page"] = $this->load->view("privacy-policy", $data, true);
+		return $data;
+	}
+
+	public function load_TermsAndConditions()
+	{
+		$data["title"] = "Terms and Conditions";
+		$data['setting'] = $this->db->where('pages_id', '1')->get('pages')->row_array();
+		$data["page"] = $this->load->view("terms-conditions", $data, true);
+		return $data;
+	}
+
+	public function load_Faq()
+	{
+		$data["title"] = "Frequently Asked Question";
+		$data["page"] = $this->load->view("faq", $data, true);
+		return $data;
+	}
+
+	public function cart()
+	{
+		$this->load->model('Shopping_model');
+		$data['carts'] = $this->Shopping_model->get_Cart();
+		echo $this->load->view("partials/cart", $data, true);
+	}
+
+	public function load_Search()
+	{
+		$this->load->model('New_model');
+
+		$limit = getenv('PostPerPage');
+		$offset = ($this->input->get('per_page')) ? $this->input->get('per_page') - 1 : 0;
+		$config['base_url'] = current_url() . '?q=' . $this->input->get('q');
+		$config['enable_query_strings'] = true;
+		$config['use_page_numbers'] = true;
+		$config['page_query_string'] = true;
+		$data['total_rows'] = $config['total_rows'] = count($this->Shopping_model->get_All_Products());
+		$config['per_page'] = $limit;
+		$config['full_tag_open'] = '<ul>';
+		$config['full_tag_close'] = '</ul>';
+		// $config['attributes'] = ['class' => 'page-link'];
+		$config['first_link'] = false;
+		$config['last_link'] = false;
+		$config['first_tag_open'] = '<li>';
+		$config['first_tag_close'] = "</li>\n";
+		$config['prev_link'] = '&laquo';
+		$config['prev_tag_open'] = '<li>';
+		$config['prev_tag_close'] = "</li>\n";
+		$config['next_link'] = '&raquo';
+		$config['next_tag_open'] = '<li>';
+		$config['next_tag_close'] = "</li>\n";
+		$config['last_tag_open'] = '<li>';
+		$config['last_tag_close'] = "</li>\n";
+		$config['cur_tag_open'] = '<li class="current"><span>';
+		$config['cur_tag_close'] = "</span></li>\n";
+		$config['num_tag_open'] = '<li>';
+		$config['num_tag_close'] = "</li>\n";
+		$this->pagination->initialize($config);
+
+		$data["categories"] = $this->Shopping_model->get_Categories();
+		$data['category'] = false;
+		$data["grades"] = $this->Shopping_model->get_Grades();
+		$data['posts'] = $this->New_model->search_Result($limit, $offset);
+		$data['total_rows'] = count($data["posts"]);
+		$data["title"] = "Search Result";
+		$data["page"] = $this->load->view("shop", $data, true);
+		return $data;
+	}
+
+	public function filter_search()
+	{
+		$this->load->model('Shopping_model');
+		$this->load->model('New_model');
+
+		$limit = getenv('PostPerPage');
+		$offset = ($this->input->get('per_page')) ? $this->input->get('per_page') - 1 : 0;
+		$config['base_url'] = site_url('shop');
+		$config['enable_query_strings'] = true;
+		$config['use_page_numbers'] = true;
+		$config['page_query_string'] = true;
+		$data['total_rows'] = $config['total_rows'] = count($this->New_model->search_Result());
+		$config['per_page'] = $limit;
+		$config['full_tag_open'] = '<ul>';
+		$config['full_tag_close'] = '</ul>';
+		// $config['attributes'] = ['class' => 'page-link'];
+		$config['first_link'] = false;
+		$config['last_link'] = false;
+		$config['first_tag_open'] = '<li>';
+		$config['first_tag_close'] = "</li>\n";
+		$config['prev_link'] = '&laquo';
+		$config['prev_tag_open'] = '<li>';
+		$config['prev_tag_close'] = "</li>\n";
+		$config['next_link'] = '&raquo';
+		$config['next_tag_open'] = '<li>';
+		$config['next_tag_close'] = "</li>\n";
+		$config['last_tag_open'] = '<li>';
+		$config['last_tag_close'] = "</li>\n";
+		$config['cur_tag_open'] = '<li class="current"><span>';
+		$config['cur_tag_close'] = "</span></li>\n";
+		$config['num_tag_open'] = '<li>';
+		$config['num_tag_close'] = "</li>\n";
+		$this->pagination->initialize($config);
+
+
+		$data["categories"] = $this->Shopping_model->get_Categories();
+		$data["grades"] = $this->Shopping_model->get_Grades();
+		$data["posts"] = $this->New_model->search_Result($limit, $offset);
+		$data['total_rows'] = count($data["posts"]);
+		$data["title"] = "Search Result";
+		echo $this->load->view("filter", $data, true);
+	}
+
+	public function load_ResetPassword()
+	{
+		$this->load->model('New_model');
+		$data['token'] = $token = $this->input->get('token');
+		$user = $this->New_model->get_User_By_Token($token);
+		if ($user) {
+			$data['user'] = $user;
+		} else {
+			$data['message'] = '<b>Invalid Token!</b> You cannot reset password';
+			$data['form_error'] = 'readonly disabled';
 		}
-		
-		public function load_ContactUs(){
-			$data["categories"] = $this->Shopping_model->get_Categories();
-			$data["title"] = "Contact us";
-			$data["page"] = $this->load->view("contact", $data, true);
-			return $data;
+		$data["title"] = "Reset Password";
+		$data["page"] = $this->load->view("reset-password", $data, true);
+		return $data;
+	}
+
+	// public function load_(){
+	// $data["title"] = "Register";
+	// $data["page"] = $this->load->view("register", $data, true);
+	// return $data;
+	// }
+
+
+
+
+	public function load_Category($slug)
+	{
+		$limit = getenv('PostPerPage');
+		$offset = ($this->input->get('per_page')) ? $this->input->get('per_page') - 1 : 0;
+		$data['category'] = $this->Shopping_model->get_Categories_By_Slug($slug);
+		if (empty($data['category'])) {
+			show_404();
 		}
-		
-		public function QuickView($slug){
+
+		$config['base_url'] = current_url();
+		$config['enable_query_strings'] = true;
+		$config['use_page_numbers'] = true;
+		$config['page_query_string'] = true;
+		$data['total_rows'] = $config['total_rows'] = count($this->Shopping_model->get_Products_By_Categories_Slug($slug));
+		$config['per_page'] = $limit;
+		$config['full_tag_open'] = '<ul>';
+		$config['full_tag_close'] = '</ul>';
+		// $config['attributes'] = ['class' => 'page-link'];
+		$config['first_link'] = false;
+		$config['last_link'] = false;
+		$config['first_tag_open'] = '<li>';
+		$config['first_tag_close'] = "</li>\n";
+		$config['prev_link'] = '&laquo';
+		$config['prev_tag_open'] = '<li>';
+		$config['prev_tag_close'] = "</li>\n";
+		$config['next_link'] = '&raquo';
+		$config['next_tag_open'] = '<li>';
+		$config['next_tag_close'] = "</li>\n";
+		$config['last_tag_open'] = '<li>';
+		$config['last_tag_close'] = "</li>\n";
+		$config['cur_tag_open'] = '<li class="current"><span>';
+		$config['cur_tag_close'] = "</span></li>\n";
+		$config['num_tag_open'] = '<li>';
+		$config['num_tag_close'] = "</li>\n";
+		$this->pagination->initialize($config);
+
+		$data["categories"] = $this->Shopping_model->get_Categories();
+		// print_r($data);
+		$data['posts'] = $this->Shopping_model->get_Products_By_Categories_Slug($slug, $limit, $offset);
+		$data["title"] = $data['category']['categories_name'];
+		$data["page"] = $this->load->view("shop", $data, true);
+		return $data;
+	}
+
+	public function load_Product($slug)
+	{
+		$this->load->model('New_model');
+		$data['post'] = $this->Shopping_model->get_Products_By_Slug($slug);
+		// print_r($data['post']);die;
+		$data["categories"] = $this->Shopping_model->get_Categories();
+		$data["comments"] = $this->Shopping_model->get_Reviews($data['post']['posts_id']);
+		if (empty($data['post'])) {
+			show_404();
+		}
+		$data["title"] = $data['post']['posts_title'];
+		$data["page"] = $this->load->view("single_product", $data, true);
+		return $data;
+		// die;
+	}
+
+	public function load_Customize($slug = FALSE)
+	{
+		$data["title"] = "Customize Product";
+		$data['post'] = $this->Shopping_model->get_Products_By_Slug($slug);
+		$data['posts'] = $this->Shopping_model->get_All_Products();
+		$data["page"] = $this->load->view("customize", $data, true);
+		return $data;
+	}
+
+	public function load_Account()
+	{
+		$data["categories"] = $this->Shopping_model->get_Categories();
+		$this->is_Logged_In();
+		$data["title"] = "Account";
+		$data["user"] = $this->New_model->get_My_Profile();
+		$data["orders"] = $this->New_model->get_My_Order();
+		// echo $data["user"]["users_email"];
+		$data["subscribe"] = $this->get_Subscriber_Detail($data["user"]["users_email"]);
+		$data['addresses'] = $this->Shopping_model->get_User_Address();
+		$data["page"] = $this->load->view("my-account", $data, true);
+		return $data;
+	}
+
+	public function load_Checkout()
+	{
+		$data["categories"] = $this->Shopping_model->get_Categories();
+		if ($this->session->userdata('user_id')) {
+			redirect('cart');
+		}
+		$data['google'] = $this->loginWithGoogleURL();
+		$data["title"] = "Checkout";
+		$data['message'] = '<div class="alert alert-danger">Please Login to continue to checkout</div>';
+		$data["page"] = $this->load->view("login", $data, true);
+		return $data;
+	}
+
+	public function load_Wishlist()
+	{
+		$data["categories"] = $this->Shopping_model->get_Categories();
+		$data["title"] = "Wishlist";
+		$data['wishlists'] = $this->Shopping_model->get_Wishlist();
+		$data["page"] = $this->load->view("wishlist", $data, true);
+		return $data;
+	}
+
+	public function load_SelectPayment($id)
+	{
+		$this->is_Logged_In();
+		$data["title"] = "Select payment Method";
+		$data['address'] = $id;
+		$this->session->set_userdata('address', $id);
+		$data["cards"] = $this->Shopping_model->get_User_Saved_Cards();
+		$data["page"] = $this->load->view("checkout-3", $data, true);
+		return $data;
+	}
+
+	public function load_PlaceOrder()
+	{
+		$this->is_Logged_In();
+		$data["title"] = "Place Order";
+		$address = $this->session->userdata('address');
+		$card = $this->session->userdata('card');
+		$data["address"] = $this->Shopping_model->get_Address_By_ID($address);
+		$data["card"] = $this->Shopping_model->get_Card_By_ID($card);
+		$data['carts'] = $this->Shopping_model->get_Cart();
+		$data["page"] = $this->load->view("checkout-4", $data, true);
+		return $data;
+	}
+
+	public function load_PaytmSuccess()
+	{
+		$trans = [
+			'transactions_user' => $this->session->userdata('user_id'),
+			'transactions_gateway' => 'PayTm',
+			'transactions_order_id' => $this->input->post('ORDERID'),
+			'transactions_mid' => $this->input->post('MID'),
+			'transactions_txnid' => $this->input->post('TXNID'),
+			'transactions_amount' => $this->input->post('TXNAMOUNT'),
+			'transactions_mode' => $this->input->post('PAYMENTMODE'),
+			'transactions_currency' => $this->input->post('CURRENCY'),
+			'transactions_txndate' => $this->input->post('TXNDATE'),
+			'transactions_status' => $this->input->post('STATUS'),
+			'transactions_response_code' => $this->input->post('RESPCODE'),
+			'transactions_message' => $this->input->post('RESPMSG'),
+			'transactions_created' => now()
+		];
+		$this->Basic_model->save_Transaction_PayTm($trans);
+
+		if ($this->input->post('RESPCODE') == '01' || $this->input->post('RESPCODE') == '400' || $this->input->post('RESPCODE') == '402') {
+			$this->session->set_userdata('n_method', 'PayTm');
+			$this->complete_payment();
+		} else {
+			redirect('order-failed');
+		}
+	}
+
+	public function load_Makepayment()
+	{
+		$this->is_Logged_In();
+		$this->load->library('razorpay');
+		$carts = $this->Shopping_model->get_Cart();
+		$priceTotal = 0;
+		foreach ($carts as $cart) {
+			$price = $cart['products_price'];
+			$salePrice = $cart['products_sale_price'];
+			if ($salePrice != '0' && $salePrice != '' && $salePrice < $price) {
+				$sPrice = $salePrice;
+			} else {
+				$sPrice = $price;
+			}
+			$priceTotal += $sPrice * $cart['carts_quantity'];
+		}
+
+
+
+		$order = [$priceTotal, 'shopping_' . time(), 'INR'];
+		$data['order_id'] = $this->razorpay->create_Order($order);
+
+		$address = $this->session->userdata('address');
+		$card = $this->session->userdata('card');
+		$data["address"] = $this->Shopping_model->get_Address_By_ID($address);
+		$data["card"] = $this->Shopping_model->get_Card_By_ID($card);
+		$data["carts"] = $this->Shopping_model->get_Cart();
+
+
+		$data["title"] = "Razorpay";
+		$data["page"] = $this->load->view("checkout-5", $data, true);
+		return $data;
+	}
+
+	public function load_ThankYou()
+	{
+		$data["categories"] = $this->Shopping_model->get_Categories();
+		$this->is_Logged_In();
+		$data["title"] = "Thank You";
+		$data["page"] = $this->load->view("thank-you", $data, true);
+		return $data;
+	}
+
+	public function load_OrderFailed()
+	{
+		$this->is_Logged_In();
+		$data["title"] = "Thank You";
+		$data["page"] = $this->load->view("order-failed", $data, true);
+		return $data;
+	}
+
+	public function login_Script()
+	{
+		$this->load->model('Shopping_model');
+		$email = $this->input->post('email');
+		$password = $this->input->post('password');
+
+		$user = $this->Shopping_model->check_Login($email, $password);
+		$uEmail = $this->Shopping_model->user_Email($email);
+		if ($user == '1') {
+			$this->session->set_flashdata('success', 'Login Successful');
+			$this->session->set_userdata([
+				'user_id' => $uEmail->users_id,
+				'user_fname' => $uEmail->users_first_name,
+				'user_lname' => $uEmail->users_last_name,
+				'user_name' => $uEmail->users_first_name . ' ' . $uEmail->users_last_name,
+				'user_email' => $uEmail->users_email,
+				'user_mobile' => $uEmail->users_mobile,
+				'user_profile' => $uEmail->users_profile,
+				'user_role' => $uEmail->users_role,
+				'user_in' => 1
+			]);
+			redirect('account');
+		} else {
+			$this->session->set_flashdata('error', $user);
+			redirect('login');
+		}
+	}
+
+	public function logout()
+	{
+		$this->session->sess_destroy();
+		save_Activity('Succesfully logged out');
+		redirect('');
+	}
+
+	public function register_Script()
+	{
+		$this->load->model('Shopping_model');
+
+		$fname = $this->input->post('fname');
+		$lname = $this->input->post('lname');
+		$email = $this->input->post('email');
+		$phone = $this->input->post('phone');
+		$password = $this->input->post('password');
+		$confirm_Password = $this->input->post('cpassword');
+
+		$check_Email = $this->Shopping_model->check_Email($email);
+		if ($check_Email) {
+			$this->session->set_flashdata('error', 'This email already registered, please use another email.');
+			redirect('register');
+			// die('2');
+		}
+		// $check_Phone = $this->Shopping_model->check_Phone($phone);
+		// if($check_Phone){
+		// die('3');
+		// }
+
+		if (empty($email) || empty($phone) || empty($password) || empty($fname) || empty($lname)) {
+			$this->session->set_flashdata('error', 'All fields are required..!');
+			redirect('register');
+			// die('4');
+		}
+
+		if ($password != $confirm_Password) {
+			$this->session->set_flashdata('error', 'Confirm password Does not match');
+			redirect('register');
+			// die('4');
+		}
+
+		$user = $this->Shopping_model->do_Register();
+		if ($user) {
+			$this->session->set_flashdata('success', 'User registered succesfully..!');
+			redirect('login');
+			// echo '1';
+		} else {
+			$this->session->set_flashdata('error', 'user not registered, Please try again.');
+			redirect('register');
+		}
+	}
+
+	public function add_to_cart_old($product)
+	{
+		$user = false;
+		$this->load->model('Shopping_model');
+		$q1 = $this->input->post('quantity_1');
+		$q2 = $this->input->post('quantity_2');
+		$q3 = $this->input->post('quantity_3');
+		$q4 = $this->input->post('quantity_4');
+		$q5 = $this->input->post('quantity_5');
+		$q6 = $this->input->post('quantity_6');
+		$custom = $this->input->post('custom');
+		$length = $this->input->post('length');
+		$measure = $this->input->post('measure');
+
+		if ($q1 > 0) {
+			$user = $this->Shopping_model->add_To_Cart_Custom($product, $q1, '1000');
+		}
+		if ($q2 > 0) {
+			$user = $this->Shopping_model->add_To_Cart_Custom($product, $q2, '2000');
+		}
+		if ($q3 > 0) {
+			$user = $this->Shopping_model->add_To_Cart_Custom($product, $q3, '3000');
+		}
+		if ($q4 > 0) {
+			$user = $this->Shopping_model->add_To_Cart_Custom($product, $q4, '4000');
+		}
+		if ($q5 > 0) {
+			$user = $this->Shopping_model->add_To_Cart_Custom($product, $q5, '5000');
+		}
+		if ($q6 > 0) {
+			$user = $this->Shopping_model->add_To_Cart_Custom($product, $q6, '6000');
+		}
+		if (count($custom) > 0 && count($length) > 0) {
+			for ($i = 0; $i < count($custom); $i++) {
+				if ($measure[$i] != 'mm') {
+					$length[$i] = $length[$i] * 1000;
+				}
+				if ($length[$i] > 0 && $custom[$i] > 0) {
+					$user = $this->Shopping_model->add_To_Cart_Custom($product, $custom[$i], $length[$i]);
+				}
+			}
+		}
+		if ($user) {
+			echo '1';
+		} else {
+			echo '0';
+		}
+	}
+
+
+	public function add_to_cart($product)
+	{
+		$user = false;
+		$this->load->model('Shopping_model');
+		$user = $this->Shopping_model->add_To_Cart($product);
+		if ($user) {
+			$this->session->set_flashdata('success', 'Product has been added to cart.');
+			die('1');
+			redirect($_SERVER['HTTP_REFERER']);
+		} else {
+			$this->session->set_flashdata('error', 'We detect problem added product to cart.');
+			die('0');
+			redirect($_SERVER['HTTP_REFERER']);
+		}
+	}
+
+	public function add_to_wishlist($product)
+	{
+		$this->load->model('Shopping_model');
+		$user = $this->Shopping_model->add_To_Wishlist($product);
+		if ($user) {
+			echo '1';
+		} else {
+			echo '0';
+		}
+	}
+
+	public function remove_cart($id)
+	{
+		$this->load->model('Shopping_model');
+		$cart = $this->Shopping_model->remove_Cart($id);
+		if ($cart) {
+			$this->session->set_flashdata('success', 'Product has been removed from cart.');
+		} else {
+			$this->session->set_flashdata('error', 'We detect problem removing product from cart.');
+		}
+		// redirect($_SERVER['HTTP_REFERER']);
+	}
+
+	public function update_cart()
+	{
+		$this->load->model('Shopping_model');
+		$cart = $this->Shopping_model->update_Cart();
+		if ($cart) {
+			$this->session->set_flashdata('success', 'Your shopping cart updated successfully.');
+		} else {
+			$this->session->set_flashdata('error', 'We detect problem updating from cart.');
+		}
+		redirect($_SERVER['HTTP_REFERER']);
+	}
+
+	public function contact()
+	{
+		$this->load->model('Shopping_model');
+		$cart = $this->Shopping_model->contact();
+		if ($cart) {
+			$this->session->set_flashdata('success', 'Thank you for contacting us. We will contact you soon.');
+			// echo '<div class="alert alert-success">Thank you for contacting us. We will contact you soon.</div>';
+		} else {
+			$this->session->set_flashdata('error', 'We detect problem saving your data. Please try again.');
+			// echo '<div class="alert alert-danger">We detect problem saving your data. Please try again.</div>';
+		}
+		redirect($_SERVER['HTTP_REFERER']);
+	}
+
+	public function save_address()
+	{
+		$this->is_Logged_In();
+		$this->load->model('Shopping_model');
+		$cart = $this->Shopping_model->save_Address();
+		if ($cart) {
+			$this->session->set_flashdata('success', 'New Address saved successfully');
+		} else {
+			$this->session->set_flashdata('danger', 'We detect problem saving new address. Please try again.');
+		}
+		redirect($_SERVER['HTTP_REFERER']);
+	}
+
+	public function cod_payment($address)
+	{
+		$this->is_Logged_In();
+		$address = $address / 2722;
+		$this->load->model('Shopping_model');
+		$cart = $this->Shopping_model->COD_Payment($address);
+		if ($cart) {
+			$this->session->set_flashdata('success', 'New Address saved successfully');
+		} else {
+			$this->session->set_flashdata('danger', 'We detect problem saving new address. Please try again.');
+		}
+		redirect($_SERVER['HTTP_REFERER']);
+	}
+
+	public function save_comment($post)
+	{
+		$post = $post / 2722;
+		$this->load->model('Shopping_model');
+		$cart = $this->Shopping_model->save_Comment($post);
+		if ($cart) {
+			$this->session->set_flashdata('success', 'Thank you for your comment.');
+		} else {
+			$this->session->set_flashdata('danger', 'We detect problem saving your comment. Please try again.');
+		}
+		redirect($_SERVER['HTTP_REFERER']);
+	}
+
+	public function delete_address($id)
+	{
+		$this->is_Logged_In();
+		if (!$this->session->userdata('user_id')) {
+			$this->e404();
+		} else {
 			$this->load->model('Shopping_model');
-			$data['post'] = $this->Shopping_model->get_Products_By_Slug($slug);
-			$data["title"] = "Quick View";
-			$this->load->view("quick-view", $data);
-			// return $data;
-		}
-		
-		public function load_Cart(){
-			$data["parent_cat"] = $this->Shopping_model->parent_cat();
-			$data["categories"] = $this->Shopping_model->get_Categories();
-			$data["title"] = "Cart";
-			$data['carts'] = $this->Shopping_model->get_Cart();
-			$data['addresses'] = $this->Shopping_model->get_User_Address();
-			$data["page"] = $this->load->view("cart", $data, true);
-			return $data;
-		}
-		
-		public function load_Login(){
-			$data["title"] = "Login";
-			$data['google'] = $this->loginWithGoogleURL();
-			$data["page"] = $this->load->view("login", $data, true);
-			return $data;
-		}
-		
-		public function load_Register(){
-			$data["title"] = "Register";
-			$data['google'] = $this->loginWithGoogleURL();
-			$data["page"] = $this->load->view("register", $data, true);
-			return $data;
-		}
-
-		public function load_Blogs(){
-			$data["blogs"] = $this->Shopping_model->get_Blogs();
-			$data["title"] = 'Blogs';
-			$data["page"] = $this->load->view("blogs", $data, true);
-			return $data;
-		}
-		
-
-		public function load_Blog($slug){
-			$data["related"] = $this->Shopping_model->get_Related_Blog($slug);
-			$data["blog"] = $this->Shopping_model->get_Blog($slug);
-			$data["title"] = $data["blog"]['posts_title'];
-			$data["page"] = $this->load->view("blog", $data, true);
-			return $data;
-		}
-		
-
-		public function load_DailyDeals(){
-			$data["title"] = "Daily Deals";
-			$data["categories"] = $this->Shopping_model->get_Categories();
-			$data["posts"] = $this->Shopping_model->get_Daily_Deals();
-			$data['total_rows'] = count($data["posts"]);
-			$data["page"] = $this->load->view("shop", $data, true);
-			return $data;
-		}
-
-		// public function load_TrendingCategories(){
-			// $data["title"] = "Trending Categories";
-			// $data["posts"] = $this->Shopping_model->get_Trending_Categories();
-			// $data["page"] = $this->load->view("trending-categories", $data, true);
-			// return $data;
-		// }
-
-		public function load_BestOffers($id = FALSE){
-			$data["title"] = "Best Offers";
-			$data["categories"] = $this->Shopping_model->get_Categories();
-			$data["offers"] = $this->Shopping_model->get_Best_Offers();
-			$data["page"] = $this->load->view("best-offers", $data, true);
-			$data['total_rows'] = 0;
-			if($id){
-				$data["posts"] = $this->Shopping_model->get_Best_Offers_Products($id);
-				$data['total_rows'] = count($data["posts"]);
-				$data["title"] = @$data["posts"][0]['products_best_offers_title'];
-				$data["page"] = $this->load->view("shop", $data, true);
+			$address = $this->Shopping_model->delete_Address($id);
+			if ($address) {
+				$this->session->set_flashdata('success', 'Address has been successfully deleted');
+			} else {
+				$this->session->set_flashdata('danger', 'We detect problem deleting your address. Please try again.');
 			}
-			return $data;
+			redirect($_SERVER['HTTP_REFERER']);
 		}
+	}
 
-		// public function load_Sell(){
-			// $data["title"] = "Sell";
-			// $data["page"] = $this->load->view("sell", $data, true);
-			// return $data;
-		// }
-
-		// public function load_HelpAndSupport(){
-			// $data["title"] = "Help And Support";
-			// $data["page"] = $this->load->view("help-support", $data, true);
-			// return $data;
-		// }
-
-		// public function load_VendorRegistration(){
-			// $data["title"] = "Vendor Registration";
-			// $data["page"] = $this->load->view("vendor-registration", $data, true);
-			// return $data;
-		// }
-
-		// public function load_MoneyBack(){
-			// $data["title"] = "Money Back";
-			// $data["page"] = $this->load->view("money-back", $data, true);
-			// return $data;
-		// }
-
-		// public function load_BuyingHelp(){
-			// $data["title"] = "Buying Help";
-			// $data["page"] = $this->load->view("buying-help", $data, true);
-			// return $data;
-		// }
-
-		public function load_WhoWeAre(){
-			$data["title"] = "Who we are";
-			$data["page"] = $this->load->view("who-we-are", $data, true);
-			return $data;
-		}
-
-		public function load_PrivacyPolicy(){
-			$data["title"] = "Privacy and Policies";
-			$data["page"] = $this->load->view("privacy-policy", $data, true);
-			return $data;
-		}
-
-		public function load_TermsAndConditions(){
-			$data["title"] = "Terms and Conditions";
-			$data["page"] = $this->load->view("terms-conditions", $data, true);
-			return $data;
-		}
-	
-		public function load_Faq(){
-			$data["title"] = "Frequently Asked Question";
-			$data["page"] = $this->load->view("faq", $data, true);
-			return $data;
-		}
-
-		public function cart(){
+	public function save_card()
+	{
+		if (!$this->session->userdata('user_id')) {
+			$this->e404();
+		} else {
 			$this->load->model('Shopping_model');
-			$data['carts'] = $this->Shopping_model->get_Cart();
-			echo $this->load->view("partials/cart", $data, true);
+			$address = $this->Shopping_model->save_Card();
+			if ($address) {
+				$this->session->set_flashdata('success', 'Card has been successfully added');
+			} else {
+				$this->session->set_flashdata('danger', 'We detect problem adding your Card. Please try again.');
+			}
+			redirect($_SERVER['HTTP_REFERER']);
 		}
-		
-		public function load_Search(){
-			$this->load->model('New_model');
-			
-			$limit = getenv('PostPerPage');
-			$offset = ($this->input->get('per_page'))?$this->input->get('per_page')-1:0;					
-			$config['base_url'] = current_url().'?q='.$this->input->get('q');
-			$config['enable_query_strings'] = true;
-			$config['use_page_numbers'] = true;
-			$config['page_query_string'] = true;
-			$data['total_rows'] = $config['total_rows'] = count($this->Shopping_model->get_All_Products());
-			$config['per_page'] = $limit;
-			$config['full_tag_open'] = '<ul>';
-			$config['full_tag_close'] = '</ul>';
-			// $config['attributes'] = ['class' => 'page-link'];
-			$config['first_link'] = false;
-			$config['last_link'] = false;
-			$config['first_tag_open'] = '<li>';
-			$config['first_tag_close'] = "</li>\n";
-			$config['prev_link'] = '&laquo';
-			$config['prev_tag_open'] = '<li>';
-			$config['prev_tag_close'] = "</li>\n";
-			$config['next_link'] = '&raquo';
-			$config['next_tag_open'] = '<li>';
-			$config['next_tag_close'] = "</li>\n";
-			$config['last_tag_open'] = '<li>';
-			$config['last_tag_close'] = "</li>\n";
-			$config['cur_tag_open'] = '<li class="current"><span>';
-			$config['cur_tag_close'] = "</span></li>\n";
-			$config['num_tag_open'] = '<li>';
-			$config['num_tag_close'] = "</li>\n";
-			$this->pagination->initialize($config);
+	}
 
-			$data["categories"] = $this->Shopping_model->get_Categories();
-			$data['category'] = false;
-			$data["grades"] = $this->Shopping_model->get_Grades();
-			$data['posts'] = $this->New_model->search_Result($limit, $offset);
-			$data['total_rows'] = count($data["posts"]);
-			$data["title"] = "Search Result";
-			$data["page"] = $this->load->view("shop", $data, true);
-			return $data;
-		
+	public function proceed_card()
+	{
+		if (!$this->session->userdata('user_id')) {
+			$this->e404();
+		} else {
+			$this->load->model('Shopping_model');
+			$user = $this->session->userdata('user_id');
+			$this->session->set_userdata('n_method', 'Card');
+			$card = $this->input->post('card_id');
+			$deliveriable = $this->input->post('deliverable');
+			$this->session->set_userdata([
+				'card' => $card,
+				'address' => $deliveriable,
+			]);
+			redirect('place-order');
 		}
-		
-		public function filter_search(){
+	}
+
+	public function complete_payment()
+	{
+		if (!$this->session->userdata('user_id')) {
+			$this->e404();
+		} else {
 			$this->load->model('Shopping_model');
 			$this->load->model('New_model');
-			
-			$limit = getenv('PostPerPage');
-			$offset = ($this->input->get('per_page'))?$this->input->get('per_page')-1:0;					
-			$config['base_url'] = site_url('shop');
-			$config['enable_query_strings'] = true;
-			$config['use_page_numbers'] = true;
-			$config['page_query_string'] = true;
-			$data['total_rows'] = $config['total_rows'] = count($this->New_model->search_Result());
-			$config['per_page'] = $limit;
-			$config['full_tag_open'] = '<ul>';
-			$config['full_tag_close'] = '</ul>';
-			// $config['attributes'] = ['class' => 'page-link'];
-			$config['first_link'] = false;
-			$config['last_link'] = false;
-			$config['first_tag_open'] = '<li>';
-			$config['first_tag_close'] = "</li>\n";
-			$config['prev_link'] = '&laquo';
-			$config['prev_tag_open'] = '<li>';
-			$config['prev_tag_close'] = "</li>\n";
-			$config['next_link'] = '&raquo';
-			$config['next_tag_open'] = '<li>';
-			$config['next_tag_close'] = "</li>\n";
-			$config['last_tag_open'] = '<li>';
-			$config['last_tag_close'] = "</li>\n";
-			$config['cur_tag_open'] = '<li class="current"><span>';
-			$config['cur_tag_close'] = "</span></li>\n";
-			$config['num_tag_open'] = '<li>';
-			$config['num_tag_close'] = "</li>\n";
-			$this->pagination->initialize($config);
 
-			
-			$data["categories"] = $this->Shopping_model->get_Categories();
-			$data["grades"] = $this->Shopping_model->get_Grades();
-			$data["posts"] = $this->New_model->search_Result($limit, $offset);
-			$data['total_rows'] = count($data["posts"]);
-			$data["title"] = "Search Result";
-			echo $this->load->view("filter", $data, true);
-		}
+			$user = $this->session->userdata('user_id');
 
-		public function load_ResetPassword(){
-			$this->load->model('New_model');
-			$data['token'] = $token = $this->input->get('token');
-			$user = $this->New_model->get_User_By_Token($token);
-			if($user){
-				$data['user'] = $user;
-			}else{
-				$data['message'] = '<b>Invalid Token!</b> You cannot reset password';
-				$data['form_error'] = 'readonly disabled';
-			}
-			$data["title"] = "Reset Password";
-			$data["page"] = $this->load->view("reset-password", $data, true);
-			return $data;
-		}
-
-		// public function load_(){
-			// $data["title"] = "Register";
-			// $data["page"] = $this->load->view("register", $data, true);
-			// return $data;
-		// }
-
-		
-
-
-		public function load_Category($slug){
-			$limit = getenv('PostPerPage');
-			$offset = ($this->input->get('per_page'))?$this->input->get('per_page')-1:0;
-			$data['category'] = $this->Shopping_model->get_Categories_By_Slug($slug);
-			if(empty($data['category'])){
-				show_404();
-			}
-
-			$config['base_url'] = current_url();
-			$config['enable_query_strings'] = true;
-			$config['use_page_numbers'] = true;
-			$config['page_query_string'] = true;
-			$data['total_rows'] = $config['total_rows'] = count($this->Shopping_model->get_Products_By_Categories_Slug($slug));
-			$config['per_page'] = $limit;
-			$config['full_tag_open'] = '<ul>';
-			$config['full_tag_close'] = '</ul>';
-			// $config['attributes'] = ['class' => 'page-link'];
-			$config['first_link'] = false;
-			$config['last_link'] = false;
-			$config['first_tag_open'] = '<li>';
-			$config['first_tag_close'] = "</li>\n";
-			$config['prev_link'] = '&laquo';
-			$config['prev_tag_open'] = '<li>';
-			$config['prev_tag_close'] = "</li>\n";
-			$config['next_link'] = '&raquo';
-			$config['next_tag_open'] = '<li>';
-			$config['next_tag_close'] = "</li>\n";
-			$config['last_tag_open'] = '<li>';
-			$config['last_tag_close'] = "</li>\n";
-			$config['cur_tag_open'] = '<li class="current"><span>';
-			$config['cur_tag_close'] = "</span></li>\n";
-			$config['num_tag_open'] = '<li>';
-			$config['num_tag_close'] = "</li>\n";
-			$this->pagination->initialize($config);
-
-			$data["categories"] = $this->Shopping_model->get_Categories();
-			// print_r($data);
-			$data['posts'] = $this->Shopping_model->get_Products_By_Categories_Slug($slug, $limit, $offset);
-			$data["title"] = $data['category']['categories_name'];
-			$data["page"] = $this->load->view("shop", $data, true);
-			return $data;
-		}
-		
-		public function load_Product($slug){
-			$this->load->model('New_model');
-			$data['post'] = $this->Shopping_model->get_Products_By_Slug($slug);
-			// print_r($data['post']);die;
-			$data["categories"] = $this->Shopping_model->get_Categories();
-			$data["comments"] = $this->Shopping_model->get_Reviews($data['post']['posts_id']);
-			if(empty($data['post'])){
-				show_404();
-			}			
-			$data["title"] = $data['post']['posts_title'];
-			$data["page"] = $this->load->view("single_product", $data, true);
-			return $data;
-			// die;
-		}
-		
-		public function load_Customize($slug = FALSE){
-			$data["title"] = "Customize Product";
-			$data['post'] = $this->Shopping_model->get_Products_By_Slug($slug);
-			$data['posts'] = $this->Shopping_model->get_All_Products();
-			$data["page"] = $this->load->view("customize", $data, true);
-			return $data;
-		}
-		
-		public function load_Account(){
-			$data["categories"] = $this->Shopping_model->get_Categories();
-			$this->is_Logged_In();
-			$data["title"] = "Account";
-			$data["user"] = $this->New_model->get_My_Profile();
-			$data["orders"] = $this->New_model->get_My_Order();
-			// echo $data["user"]["users_email"];
-			$data["subscribe"] = $this->get_Subscriber_Detail($data["user"]["users_email"]);
-			$data['addresses'] = $this->Shopping_model->get_User_Address();
-			$data["page"] = $this->load->view("my-account", $data, true);
-			return $data;
-		}
-		
-		public function load_Checkout(){
-			$data["categories"] = $this->Shopping_model->get_Categories();
-			if($this->session->userdata('user_id')){
-				redirect('cart');
-			}
-			$data['google'] = $this->loginWithGoogleURL();
-			$data["title"] = "Checkout";
-			$data['message'] = '<div class="alert alert-danger">Please Login to continue to checkout</div>';
-			$data["page"] = $this->load->view("login", $data, true);
-			return $data;
-		}
-		
-		public function load_Wishlist(){
-			$data["categories"] = $this->Shopping_model->get_Categories();
-			$data["title"] = "Wishlist";
-			$data['wishlists'] = $this->Shopping_model->get_Wishlist();
-			$data["page"] = $this->load->view("wishlist", $data, true);
-			return $data;
-		}
-		
-		public function load_SelectPayment($id){
-			$this->is_Logged_In();
-			$data["title"] = "Select payment Method";
-			$data['address'] = $id;
-			$this->session->set_userdata('address', $id);
-			$data["cards"] = $this->Shopping_model->get_User_Saved_Cards();
-			$data["page"] = $this->load->view("checkout-3", $data, true);
-			return $data;
-		}
-
-		public function load_PlaceOrder(){
-			$this->is_Logged_In();
-			$data["title"] = "Place Order";
 			$address = $this->session->userdata('address');
 			$card = $this->session->userdata('card');
-			$data["address"] = $this->Shopping_model->get_Address_By_ID($address);
-			$data["card"] = $this->Shopping_model->get_Card_By_ID($card);
-			$data['carts'] = $this->Shopping_model->get_Cart();
-			$data["page"] = $this->load->view("checkout-4", $data, true);
-			return $data;
-		}
 
-		public function load_PaytmSuccess(){
-			$trans = [
-				'transactions_user' => $this->session->userdata('user_id'),
-				'transactions_gateway' => 'PayTm',
-				'transactions_order_id' => $this->input->post('ORDERID'),
-				'transactions_mid' => $this->input->post('MID'),
-				'transactions_txnid' => $this->input->post('TXNID'),
-				'transactions_amount' => $this->input->post('TXNAMOUNT'),
-				'transactions_mode' => $this->input->post('PAYMENTMODE'),
-				'transactions_currency' => $this->input->post('CURRENCY'),
-				'transactions_txndate' => $this->input->post('TXNDATE'),
-				'transactions_status' => $this->input->post('STATUS'),
-				'transactions_response_code' => $this->input->post('RESPCODE'),
-				'transactions_message' => $this->input->post('RESPMSG'),
-				'transactions_created' => now()
-			];
-			$this->Basic_model->save_Transaction_PayTm($trans );
-			
-			if($this->input->post('RESPCODE') == '01' ||$this->input->post('RESPCODE') == '400' ||$this->input->post('RESPCODE') == '402'){
-				$this->session->set_userdata('n_method', 'PayTm');
-				$this->complete_payment();
-			}else{
-				redirect('order-failed');
-			}
-		}
-		
-		public function load_Makepayment(){
-			$this->is_Logged_In();
-			$this->load->library('razorpay');
+			// $this->load->library('razorpay');
+			// $p_order_id = $this->input->post('p_order_id');
+			// $razor = $this->razorpay->check_Order($p_order_id);
+			// print_r($razor);
+			// echo $json = json_encode($razor, JSON_FORCE_OBJECT);
+
 			$carts = $this->Shopping_model->get_Cart();
-			$priceTotal = 0;
-			foreach($carts as $cart){
-				$price = $cart['products_price'];
-				$salePrice = $cart['products_sale_price'];
-				if($salePrice != '0' && $salePrice != '' && $salePrice < $price){
-					$sPrice = $salePrice;
-				}else{
-					$sPrice = $price;
-				}
-				$priceTotal+=$sPrice*$cart['carts_quantity'];
-			}
-			
-			
-			
-			$order = [$priceTotal, 'shopping_'.time(), 'INR'];
-			$data['order_id'] = $this->razorpay->create_Order($order);
-			
-			$address = $this->session->userdata('address');
-			$card = $this->session->userdata('card');
-			$data["address"] = $this->Shopping_model->get_Address_By_ID($address);
-			$data["card"] = $this->Shopping_model->get_Card_By_ID($card);
-			$data["carts"] = $this->Shopping_model->get_Cart();
-			
-			
-			$data["title"] = "Razorpay";
-			$data["page"] = $this->load->view("checkout-5", $data, true);
-			return $data;
-		}
-		
-		public function load_ThankYou(){
-			$data["categories"] = $this->Shopping_model->get_Categories();
-			$this->is_Logged_In();
-			$data["title"] = "Thank You";
-			$data["page"] = $this->load->view("thank-you", $data, true);
-			return $data;
-		}
-		
-		public function load_OrderFailed(){
-			$this->is_Logged_In();
-			$data["title"] = "Thank You";
-			$data["page"] = $this->load->view("order-failed", $data, true);
-			return $data;
-		}
-		
-		public function login_Script(){
-			$this->load->model('Shopping_model');
-			$email = $this->input->post('email');
-			$password = $this->input->post('password');
-			
-			$user = $this->Shopping_model->check_Login($email, $password);
-			$uEmail = $this->Shopping_model->user_Email($email);
-			if($user == '1') {
-				$this->session->set_flashdata('success', 'Login Successful');
-				$this->session->set_userdata([
-					'user_id' => $uEmail->users_id,
-					'user_fname' => $uEmail->users_first_name,
-					'user_lname' => $uEmail->users_last_name,
-					'user_name' => $uEmail->users_first_name.' '.$uEmail->users_last_name,
-					'user_email' => $uEmail->users_email,
-					'user_mobile' => $uEmail->users_mobile,
-					'user_profile' => $uEmail->users_profile,
-					'user_role' => $uEmail->users_role,
-					'user_in' => 1
-				]);
-				redirect('account');
-				
-			} else {
-				$this->session->set_flashdata('error', $user);
-				redirect('login');
-			}
-		}
-		
-		public function logout(){
-			$this->session->sess_destroy();
-			save_Activity('Succesfully logged out');
-			redirect('');
-		}
-		
-		public function register_Script(){
-			$this->load->model('Shopping_model');
-			
-			$fname = $this->input->post('fname');
-			$lname = $this->input->post('lname');
-			$email = $this->input->post('email');
-			$phone = $this->input->post('phone');
-			$password = $this->input->post('password');
-			$confirm_Password = $this->input->post('cpassword');
 
-			$check_Email = $this->Shopping_model->check_Email($email);
-			if($check_Email){
-				$this->session->set_flashdata('error', 'This email already registered, please use another email.');
-				redirect('register');
-				// die('2');
-			}
-			// $check_Phone = $this->Shopping_model->check_Phone($phone);
-			// if($check_Phone){
-				// die('3');
-			// }
-			
-			if(empty($email) || empty($phone) || empty($password) || empty($fname) || empty($lname)){
-				$this->session->set_flashdata('error', 'All fields are required..!');
-				redirect('register');
-				// die('4');
-			}
-			
-			if($password != $confirm_Password){
-				$this->session->set_flashdata('error', 'Confirm password Does not match');
-				redirect('register');
-				// die('4');
-			}
-
-			$user = $this->Shopping_model->do_Register();
-			if($user){
-				$this->session->set_flashdata('success', 'User registered succesfully..!');
-				redirect('login');
-				// echo '1';
-			} else {
-				$this->session->set_flashdata('error', 'user not registered, Please try again.');
-				redirect('register');
-			}
-		}
-
-		public function add_to_cart_old($product){
-			$user = false;
-			$this->load->model('Shopping_model');
-			$q1 = $this->input->post('quantity_1');
-			$q2 = $this->input->post('quantity_2');
-			$q3 = $this->input->post('quantity_3');
-			$q4 = $this->input->post('quantity_4');
-			$q5 = $this->input->post('quantity_5');
-			$q6 = $this->input->post('quantity_6');
-			$custom = $this->input->post('custom');
-			$length = $this->input->post('length');
-			$measure = $this->input->post('measure');
-
-			if($q1 > 0){
-				$user = $this->Shopping_model->add_To_Cart_Custom($product, $q1, '1000');
-			}
-			if($q2 > 0){
-				$user = $this->Shopping_model->add_To_Cart_Custom($product, $q2, '2000');
-			}
-			if($q3 > 0){
-				$user = $this->Shopping_model->add_To_Cart_Custom($product, $q3, '3000');
-			}
-			if($q4 > 0){
-				$user = $this->Shopping_model->add_To_Cart_Custom($product, $q4, '4000');
-			}
-			if($q5 > 0){
-				$user = $this->Shopping_model->add_To_Cart_Custom($product, $q5, '5000');
-			}
-			if($q6 > 0){
-				$user = $this->Shopping_model->add_To_Cart_Custom($product, $q6, '6000');
-			}
-			if(count($custom) > 0 && count($length) > 0){
-				for($i = 0; $i<count($custom); $i++){
-					if($measure[$i] != 'mm'){
-						$length[$i] = $length[$i]*1000;
-					}
-					if($length[$i] > 0 && $custom[$i] > 0){
-					    $user = $this->Shopping_model->add_To_Cart_Custom($product, $custom[$i], $length[$i]);
-					}
-				}
-			}
-			if($user){
-				echo '1';
-			} else {
-				echo '0';
-			}
-		}
-		
-		
-		public function add_to_cart($product){
-			$user = false;
-			$this->load->model('Shopping_model');
-			$user = $this->Shopping_model-> add_To_Cart($product);
-			if($user){
-				$this->session->set_flashdata('success', 'Product has been added to cart.');
-				die('1');
-				redirect($_SERVER['HTTP_REFERER']);
-			} else {
-				$this->session->set_flashdata('error', 'We detect problem added product to cart.');
-				die('0');
-				redirect($_SERVER['HTTP_REFERER']);
-			}
-		}
-
-		public function add_to_wishlist($product){
-			$this->load->model('Shopping_model');
-			$user = $this->Shopping_model->add_To_Wishlist($product);
-			if($user){
-				echo '1';
-			} else {
-				echo '0';
-			}
-		}
-
-		public function remove_cart($id){
-			$this->load->model('Shopping_model');
-			$cart = $this->Shopping_model->remove_Cart($id);
-			if($cart){
-				$this->session->set_flashdata('success', 'Product has been removed from cart.');
-			} else {
-				$this->session->set_flashdata('error', 'We detect problem removing product from cart.');
-			}
-			// redirect($_SERVER['HTTP_REFERER']);
-		}
-		
-		public function update_cart(){
-			$this->load->model('Shopping_model');
-			$cart = $this->Shopping_model->update_Cart();
-			if($cart){
-				$this->session->set_flashdata('success', 'Your shopping cart updated successfully.');
-			} else {
-				$this->session->set_flashdata('error', 'We detect problem updating from cart.');
-			}
-			redirect($_SERVER['HTTP_REFERER']);
-		}
-		
-		public function contact(){
-			$this->load->model('Shopping_model');
-			$cart = $this->Shopping_model->contact();
-			if($cart){
-				$this->session->set_flashdata('success', 'Thank you for contacting us. We will contact you soon.');
-				// echo '<div class="alert alert-success">Thank you for contacting us. We will contact you soon.</div>';
-			} else {
-				$this->session->set_flashdata('error', 'We detect problem saving your data. Please try again.');
-				// echo '<div class="alert alert-danger">We detect problem saving your data. Please try again.</div>';
-			}
-			redirect($_SERVER['HTTP_REFERER']);
-		}
-		
-		public function save_address(){
-			$this->is_Logged_In();
-			$this->load->model('Shopping_model');
-			$cart = $this->Shopping_model->save_Address();
-			if($cart){
-				$this->session->set_flashdata('success', 'New Address saved successfully');
-			} else {
-				$this->session->set_flashdata('danger', 'We detect problem saving new address. Please try again.');
-			}
-			redirect($_SERVER['HTTP_REFERER']);
-		}
-		
-		public function cod_payment($address){
-			$this->is_Logged_In();
-			$address = $address/2722;
-			$this->load->model('Shopping_model');
-			$cart = $this->Shopping_model->COD_Payment($address);
-			if($cart){
-				$this->session->set_flashdata('success', 'New Address saved successfully');
-			} else {
-				$this->session->set_flashdata('danger', 'We detect problem saving new address. Please try again.');
-			}
-			redirect($_SERVER['HTTP_REFERER']);
-		}
-		
-		public function save_comment($post){
-			$post = $post/2722;
-			$this->load->model('Shopping_model');
-			$cart = $this->Shopping_model->save_Comment($post);
-			if($cart){
-				$this->session->set_flashdata('success', 'Thank you for your comment.');
-			} else {
-				$this->session->set_flashdata('danger', 'We detect problem saving your comment. Please try again.');
-			}
-			redirect($_SERVER['HTTP_REFERER']);
-		}
-		
-		public function delete_address($id){
-			$this->is_Logged_In();
-			if(!$this->session->userdata('user_id')){
-				$this->e404();
-			}else{
-				$this->load->model('Shopping_model');
-				$address = $this->Shopping_model->delete_Address($id);
-				if($address){
-					$this->session->set_flashdata('success', 'Address has been successfully deleted');
-				} else {
-					$this->session->set_flashdata('danger', 'We detect problem deleting your address. Please try again.');
-				}
-				redirect($_SERVER['HTTP_REFERER']);
-			}
-		}
-		
-		public function save_card(){
-			if(!$this->session->userdata('user_id')){
-				$this->e404();
-			}else{
-				$this->load->model('Shopping_model');
-				$address = $this->Shopping_model->save_Card();
-				if($address){
-					$this->session->set_flashdata('success', 'Card has been successfully added');
-				} else {
-					$this->session->set_flashdata('danger', 'We detect problem adding your Card. Please try again.');
-				}
-				redirect($_SERVER['HTTP_REFERER']);
-			}
-		}
-		
-		public function proceed_card(){
-			if(!$this->session->userdata('user_id')){
-				$this->e404();
-			}else{
-				$this->load->model('Shopping_model');
-				$user = $this->session->userdata('user_id');
-				$this->session->set_userdata('n_method', 'Card');
-				$card = $this->input->post('card_id');
-				$deliveriable = $this->input->post('deliverable');
-				$this->session->set_userdata([
-					'card' => $card,
-					'address' => $deliveriable,
-				]);
-				redirect('place-order');
-			}
-		}
-		
-		public function complete_payment(){
-			if(!$this->session->userdata('user_id')){
-				$this->e404();
-			}else{
-				$this->load->model('Shopping_model');
-				$this->load->model('New_model');
-
-				$user = $this->session->userdata('user_id');
-
-				$address = $this->session->userdata('address');
-				$card = $this->session->userdata('card');
-
-				// $this->load->library('razorpay');
-				// $p_order_id = $this->input->post('p_order_id');
-				// $razor = $this->razorpay->check_Order($p_order_id);
-				// print_r($razor);
-				// echo $json = json_encode($razor, JSON_FORCE_OBJECT);
-				
-				$carts = $this->Shopping_model->get_Cart();
-				
-				$this->load->module('coupons/coupons');
-				$data = $this->coupons->apply_coupon(get_cookie('my_coupon'), 1);
-				$coupon = json_decode($data, true);
-				$discount_amount = 0;
-				$total_amount = 0;
-				if($coupon['status'] == 1){
-					$discount_amount = $coupon['discount_amount'];
-					$total_amount = $coupon['total_amount'];
-				}
-
-				$order = array(
-					'orders_address' => $address,
-					'orders_total' => 0,
-					'orders_coupon' => get_cookie('my_coupon'),
-					'orders_discount' => $discount_amount,
-					'orders_shipping' => 'Flat Rate',//$this->session->userdata('n_shipping'),
-					'orders_shipping_amount' => 0,
-					'orders_final_amount' => $total_amount,
-					'orders_payment_status' => 1,
-					'orders_payment_method' => $this->session->userdata('n_method'),
-					'orders_type' => 'Standard',
-				);
-				$this->New_model->save_Orders($carts, $order);
-				redirect('thank-you');
-			}
-		}
-		
-		public function add_to_cart_wishlist($product, $id){
-			$this->load->model('Shopping_model');
-			$wishlist = $this->Shopping_model->add_To_Cart_Wishlist($product, $id);
-			if($wishlist){
-				$this->session->set_flashdata('success', 'Product has been removed from wishlist.');
-			} else {
-				$this->session->set_flashdata('error', 'We detect problem removing product from wishlist.');
-			}
-			redirect($_SERVER['HTTP_REFERER']);
-		}
-		
-		public function remove_wishlist($id){
-			$this->load->model('Shopping_model');
-			$wishlist = $this->Shopping_model->remove_Wishlist($id);
-			if($wishlist){
-				$this->session->set_flashdata('success', 'Product has been removed from wishlist.');
-			} else {
-				$this->session->set_flashdata('error', 'We detect problem removing product from wishlist.');
-			}
-			redirect($_SERVER['HTTP_REFERER']);
-		}
-		
-		public function search(){
-			$this->load->model('New_model');
-			$products = $this->New_model->all_Products_For_Search();
-			if($products){
-				foreach($products as $product){
-					$data[] = array(
-						'year' => $product['posts_id'],
-						'value' => $product['posts_title'],
-						'tokens' => explode(' ', $product['posts_title'])
-					);
-					// $data[] = $product['posts_title'];
-				}
-			}
-			header('Content-Type: application/json');
-			echo json_encode($data);
-		}
-		
-		public function make_payment(){
-			$this->is_Logged_In();
-			$this->load->model('Shopping_model');
-			$carts = $this->Shopping_model->get_Cart();
-			$priceTotal = 0;
-			foreach($carts as $cart){
-				$price = $cart['products_price'];
-				$salePrice = $cart['products_sale_price'];
-				if($salePrice != '0' && $salePrice != '' && $salePrice < $price){
-					$sPrice = $salePrice;
-				}else{
-					$sPrice = $price;
-				}
-				$priceTotal+=$sPrice*$cart['carts_quantity'];
-			}
-
-			// Check Coupon
 			$this->load->module('coupons/coupons');
 			$data = $this->coupons->apply_coupon(get_cookie('my_coupon'), 1);
 			$coupon = json_decode($data, true);
-			if($coupon['status'] == 1){
-				$priceTotal = $coupon['total_amount'];
+			$discount_amount = 0;
+			$total_amount = 0;
+			if ($coupon['status'] == 1) {
+				$discount_amount = $coupon['discount_amount'];
+				$total_amount = $coupon['total_amount'];
 			}
 
-			$this->load->helper('paytm');
-			$TXN_AMOUNT = $priceTotal;
-			$checkSum = "";
-			$paramList = array();
-			$url = "";
-			
-			if(getenv('PAYTM_ENVIRONMENT') == 'TEST'){
-				$PAYTM_STATUS_QUERY_NEW_URL='https://securegw-stage.paytm.in/merchant-status/getTxnStatus';
-				$PAYTM_TXN_URL='https://securegw-stage.paytm.in/theia/processTransaction';
-			}elseif(getenv('PAYTM_ENVIRONMENT') == 'PROD'){
-				$PAYTM_STATUS_QUERY_NEW_URL='https://securegw.paytm.in/merchant-status/getTxnStatus';
-				$PAYTM_TXN_URL='https://securegw.paytm.in/theia/processTransaction';
-			}
-			
-			$paramList["MID"] = getenv('PAYTM_MERCHANT_MID');
-			$paramList["ORDER_ID"] = "ORDS" . uniqid(rand());
-			$paramList["CUST_ID"] = "CUST" . rand(100,999);
-			$paramList["INDUSTRY_TYPE_ID"] = 'Retail';
-			$paramList["CHANNEL_ID"] = 'WEB';
-			$paramList["TXN_AMOUNT"] = $TXN_AMOUNT;
-			$paramList["WEBSITE"] = getenv('PAYTM_MERCHANT_WEBSITE');
+			$order = array(
+				'orders_address' => $address,
+				'orders_total' => 0,
+				'orders_coupon' => get_cookie('my_coupon'),
+				'orders_discount' => $discount_amount,
+				'orders_shipping' => 'Flat Rate', //$this->session->userdata('n_shipping'),
+				'orders_shipping_amount' => 0,
+				'orders_final_amount' => $total_amount,
+				'orders_payment_status' => 1,
+				'orders_payment_method' => $this->session->userdata('n_method'),
+				'orders_type' => 'Standard',
+			);
+			$this->New_model->save_Orders($carts, $order);
+			redirect('thank-you');
+		}
+	}
 
-			$paramList["CALLBACK_URL"] = base_url('paytm-success').'?amount='.$TXN_AMOUNT.'&txnid='.$paramList["ORDER_ID"];
-			
-			$checkSum = getChecksumFromArray($paramList, getenv('PAYTM_MERCHANT_KEY'));
-			echo '<center><h1>Please do not refresh this page...</h1></center>
-			<form method="post" action="'.$PAYTM_TXN_URL.'" name="f1">
+	public function add_to_cart_wishlist($product, $id)
+	{
+		$this->load->model('Shopping_model');
+		$wishlist = $this->Shopping_model->add_To_Cart_Wishlist($product, $id);
+		if ($wishlist) {
+			$this->session->set_flashdata('success', 'Product has been removed from wishlist.');
+		} else {
+			$this->session->set_flashdata('error', 'We detect problem removing product from wishlist.');
+		}
+		redirect($_SERVER['HTTP_REFERER']);
+	}
+
+	public function remove_wishlist($id)
+	{
+		$this->load->model('Shopping_model');
+		$wishlist = $this->Shopping_model->remove_Wishlist($id);
+		if ($wishlist) {
+			$this->session->set_flashdata('success', 'Product has been removed from wishlist.');
+		} else {
+			$this->session->set_flashdata('error', 'We detect problem removing product from wishlist.');
+		}
+		redirect($_SERVER['HTTP_REFERER']);
+	}
+
+	public function search()
+	{
+		$this->load->model('New_model');
+		$products = $this->New_model->all_Products_For_Search();
+		if ($products) {
+			foreach ($products as $product) {
+				$data[] = array(
+					'year' => $product['posts_id'],
+					'value' => $product['posts_title'],
+					'tokens' => explode(' ', $product['posts_title'])
+				);
+				// $data[] = $product['posts_title'];
+			}
+		}
+		header('Content-Type: application/json');
+		echo json_encode($data);
+	}
+
+	public function make_payment()
+	{
+		$this->is_Logged_In();
+		$this->load->model('Shopping_model');
+		$carts = $this->Shopping_model->get_Cart();
+		$priceTotal = 0;
+		foreach ($carts as $cart) {
+			$price = $cart['products_price'];
+			$salePrice = $cart['products_sale_price'];
+			if ($salePrice != '0' && $salePrice != '' && $salePrice < $price) {
+				$sPrice = $salePrice;
+			} else {
+				$sPrice = $price;
+			}
+			$priceTotal += $sPrice * $cart['carts_quantity'];
+		}
+
+		// Check Coupon
+		$this->load->module('coupons/coupons');
+		$data = $this->coupons->apply_coupon(get_cookie('my_coupon'), 1);
+		$coupon = json_decode($data, true);
+		if ($coupon['status'] == 1) {
+			$priceTotal = $coupon['total_amount'];
+		}
+
+		$this->load->helper('paytm');
+		$TXN_AMOUNT = $priceTotal;
+		$checkSum = "";
+		$paramList = array();
+		$url = "";
+
+		if (getenv('PAYTM_ENVIRONMENT') == 'TEST') {
+			$PAYTM_STATUS_QUERY_NEW_URL = 'https://securegw-stage.paytm.in/merchant-status/getTxnStatus';
+			$PAYTM_TXN_URL = 'https://securegw-stage.paytm.in/theia/processTransaction';
+		} elseif (getenv('PAYTM_ENVIRONMENT') == 'PROD') {
+			$PAYTM_STATUS_QUERY_NEW_URL = 'https://securegw.paytm.in/merchant-status/getTxnStatus';
+			$PAYTM_TXN_URL = 'https://securegw.paytm.in/theia/processTransaction';
+		}
+
+		$paramList["MID"] = getenv('PAYTM_MERCHANT_MID');
+		$paramList["ORDER_ID"] = "ORDS" . uniqid(rand());
+		$paramList["CUST_ID"] = "CUST" . rand(100, 999);
+		$paramList["INDUSTRY_TYPE_ID"] = 'Retail';
+		$paramList["CHANNEL_ID"] = 'WEB';
+		$paramList["TXN_AMOUNT"] = $TXN_AMOUNT;
+		$paramList["WEBSITE"] = getenv('PAYTM_MERCHANT_WEBSITE');
+
+		$paramList["CALLBACK_URL"] = base_url('paytm-success') . '?amount=' . $TXN_AMOUNT . '&txnid=' . $paramList["ORDER_ID"];
+
+		$checkSum = getChecksumFromArray($paramList, getenv('PAYTM_MERCHANT_KEY'));
+		echo '<center><h1>Please do not refresh this page...</h1></center>
+			<form method="post" action="' . $PAYTM_TXN_URL . '" name="f1">
 				<table border="1">
 					<tbody>';
-					foreach($paramList as $name => $value) {
-						echo '<input type="hidden" name="' . $name .'" value="' . $value . '">';
-					}
-					echo '<input type="hidden" name="CHECKSUMHASH" value="'.$checkSum.'">
+		foreach ($paramList as $name => $value) {
+			echo '<input type="hidden" name="' . $name . '" value="' . $value . '">';
+		}
+		echo '<input type="hidden" name="CHECKSUMHASH" value="' . $checkSum . '">
 					</tbody>
 				</table>
 				<script type="text/javascript">
 					document.f1.submit();
 				</script>
 			</form>';
-		}
-		
-		public function complete_cod_order(){
-			$this->is_Logged_In();
-			$this->session->set_userdata('n_method', 'COD');
-			$this->complete_payment();
-		}
-		
-		public function invoice($id){
-			$this->is_Logged_In();
-			$this->load->model('New_model');
-			$id = ($id+5)/5683;
-			$user = $this->session->userdata('user_id');
-			
-			$valid = $this->New_model->validate_Order($id, $user);
-			if($valid){
-				$this->load->module('orders/orders');
-				$data['order'] = $this->orders->return_single_order($id);
-				// print_r($data['order']);
-				// echo $bill = $this->load->view('receipt/invoice', $data, true);
-				$bill = $this->load->view('receipt/invoice', $data, true);
-				pdf($bill);
-			}
-		}
-		
-		public function return_form($id){
-			$this->is_Logged_In();
-			$this->load->model('New_model');
-			$id = ($id+5)/5683;
-			$user = $this->session->userdata('user_id');
-			
-			$valid = $this->New_model->validate_Order($id, $user);
-			if($valid){
-				$this->load->module('orders/orders');
-				$data = $this->orders->return_single_order($id);
-				$this->orders->open_return_thread($id);
-			}
-		}
-		
-		public function order_feedback($id){
-			$this->is_Logged_In();
-			$this->load->model('New_model');
-			$id = ($id+5)/5683;
-			$user = $this->session->userdata('user_id');
-			
-			$valid = $this->New_model->validate_Order($id, $user);
-			if($valid){
-				$this->load->module('orders/orders');
-				$data['order'] = $this->orders->return_single_order($id);
-				$this->load->view("partials/feedback", $data);
-			}
-		}
-
-		public function save_feedback($id){
-			$this->is_Logged_In();
-			$this->load->model('New_model');
-			$user = $this->session->userdata('user_id');
-			
-			$valid = $this->New_model->validate_Order($id, $user);
-			if($valid){
-				$this->New_model->save_Feedback($id, $user);
-				redirect($_SERVER['HTTP_REFERER']);
-			}
-		}
-
-		public function add_address(){
-			$this->is_Logged_In();
-			$this->load->view("partials/save-address");
-		}
-
-		public function change_password(){
-			$this->is_Logged_In();
-			$this->load->model('New_model');
-			$password = $this->input->post('confirm-password');
-			$status = $this->New_model->change_Password($password);
-			if($status == 1){
-				$this->session->set_flashdata('info', 'Password Changed');
-			}else{
-				$this->session->set_flashdata('error', 'Invalid Old Password');
-			}
-			redirect($_SERVER['HTTP_REFERER']);
-		}
-
-		public function change_profile(){
-			$this->is_Logged_In();
-			$this->load->model('New_model');
-			$status = $this->New_model->change_Profile();
-			if($status == 1){
-				$this->session->set_flashdata('info', 'Profile Updated');
-			}else{
-				$this->session->set_flashdata('error', 'Unable to update your profile');
-			}
-			redirect($_SERVER['HTTP_REFERER']);
-		}
-		
-		public function get_Subscriber_Detail($email){
-			$this->is_Logged_In();
-			$curl = curl_init();
-			curl_setopt_array($curl, array(
-				CURLOPT_URL => "https://api.sendinblue.com/v3/contacts/".urlencode($email),
-				CURLOPT_RETURNTRANSFER => true,
-				CURLOPT_SSL_VERIFYHOST, 0,
-				CURLOPT_SSL_VERIFYPEER, 0,
-				CURLOPT_ENCODING => "",
-				CURLOPT_MAXREDIRS => 10,
-				CURLOPT_TIMEOUT => 30,
-				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-				CURLOPT_CUSTOMREQUEST => "GET",
-				CURLOPT_HTTPHEADER => array(
-					"accept: application/json",
-					"api-key: ".getenv('SENDINBLUE')
-				),
-			));
-			$response = curl_exec($curl);
-			$err = curl_error($curl);
-			curl_close($curl);
-			if ($err) {
-				// echo "cURL Error #:" . $err;
-				return FALSE;
-			} else {
-				return $response;
-			}
-		}
-
-		public function subscribe_newsletter(){
-			$email = $this->input->post('email');
-			$curl = curl_init();
-			curl_setopt_array($curl, array(
-				CURLOPT_URL => "https://api.sendinblue.com/v3/contacts",
-				CURLOPT_RETURNTRANSFER => true,
-				CURLOPT_ENCODING => "",
-				CURLOPT_MAXREDIRS => 10,
-				CURLOPT_SSL_VERIFYHOST, 0,
-				CURLOPT_SSL_VERIFYPEER, 0,
-				CURLOPT_TIMEOUT => 30,
-				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-				CURLOPT_CUSTOMREQUEST => "POST",
-				CURLOPT_POSTFIELDS => "{\"email\":\"{$email}\",\"listIds\":[2],\"updateEnabled\":true}",
-				CURLOPT_HTTPHEADER => array(
-					"accept: application/json",
-					"api-key: ".getenv('SENDINBLUE'),
-					"content-type: application/json"
-				),
-			));
-			$response = curl_exec($curl);
-			$err = curl_error($curl);
-			curl_close($curl);
-			if ($err) {
-				// echo "cURL Error #:" . $err;
-				$this->session->set_flashdata('error', 'Unable to subscribe to newsletter. Please try again');
-			} else {
-				if($response){
-					$this->session->set_flashdata('info', 'Thank you for subscribing to our newsletter.');
-				}else{
-					$this->session->set_flashdata('error', 'You have already subscribed to our newsletter');
-				}
-			}
-			redirect($_SERVER['HTTP_REFERER']);
-		}
-
-		public function un_subscribe_newsletter(){
-			$this->is_Logged_In();
-			$email = $this->input->get('email');
-			
-			$curl = curl_init();
-			curl_setopt_array($curl, array(
-				CURLOPT_URL => "https://api.sendinblue.com/v3/contacts/".urlencode($email),
-				CURLOPT_RETURNTRANSFER => true,
-				CURLOPT_ENCODING => "",
-				CURLOPT_MAXREDIRS => 10,
-				CURLOPT_TIMEOUT => 30,
-				CURLOPT_SSL_VERIFYHOST, 0,
-				CURLOPT_SSL_VERIFYPEER, 0,
-				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-				CURLOPT_CUSTOMREQUEST => "DELETE",
-				CURLOPT_HTTPHEADER => array(
-					"accept: application/json",
-					"api-key: ".getenv('SENDINBLUE')
-				),
-			));
-			$response = curl_exec($curl);
-			$err = curl_error($curl);
-			curl_close($curl);
-
-			if ($err) {
-				echo "cURL Error #:" . $err;
-				$this->session->set_flashdata('error', 'Unable to remove your email from the list of newsletter. Please try again');
-			} else {
-				if($response){
-					$this->session->set_flashdata('info', 'Your email has been successfully removed from the list of newsletter. See you around!');
-				}else{
-					$this->session->set_flashdata('error', 'Something went wrong');
-				}
-			}
-			// echo urlencode($email);
-			// echo $response;
-			redirect($_SERVER['HTTP_REFERER']);
-		}
-
-		public function add_cut_cart($id){
-			$this->load->model('Shopping_model');
-			$user = $this->Shopping_model->add_To_Cart_Cut($id);
-			redirect('cart');
-		}
-
-		public function loginWithGoogleHandle(){
-			$client = $this->loginWithGoogleSetup();
-			$token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
-			$client->setAccessToken($token['access_token']);
-
-			// get profile info
-			$google_oauth = new Google_Service_Oauth2($client);
-			$google_account_info = $google_oauth->userinfo->get();
-			$data['email'] =  $google_account_info->email;
-			$data['name'] =  $google_account_info->name;
-			$data['id'] =  $google_account_info->id;
-			return $data;
-		}
-		
-		public function loginWithGoogleURL(){
-			$google = $this->loginWithGoogleSetup();
-			return $google->createAuthUrl();
-		}
-		
-		public function loginWithGoogleSetup(){
-			$client = new Google_Client();
-			$client->setClientId(getenv('GOOGLE_CLIENT_ID'));
-			$client->setClientSecret(getenv('GOOGLE_CLIENT_SECRET'));
-			$client->setRedirectUri(site_url().getenv('GOOGLE_REDIRECT_URL'));
-			$client->addScope("email");
-			$client->addScope("profile");
-			$client->addScope("openid");
-			return $client;
-		}
-		
-		public function googleResponse(){
-			$response = $this->loginWithGoogleHandle();
-			$this->db->where('users_social', 'google');
-			$this->db->where('users_social_token', $response['id']);
-			$db = $this->db->get('users');
-			if($db->num_rows() > 0){
-				$this->socialLogin($db->row());
-			}else{
-				$this->socialRegister($response);
-			}
-		}
-		
-		public function socialLogin($uEmail){
-			$this->load->model('Shopping_model');
-			
-			$this->session->set_flashdata('success', 'Login Successful');
-			$this->session->set_userdata([
-				'user_id' => $uEmail->users_id,
-				'user_fname' => $uEmail->users_first_name,
-				'user_lname' => $uEmail->users_last_name,
-				'user_name' => $uEmail->users_first_name.' '.$uEmail->users_last_name,
-				'user_email' => $uEmail->users_email,
-				'user_mobile' => $uEmail->users_mobile,
-				'user_profile' => $uEmail->users_profile,
-				'user_social' => $uEmail->users_social,
-				'user_role' => $uEmail->users_role,
-				'user_in' => 1
-			]);
-			redirect('account');
-		}
-		
-		public function socialRegister($response){
-			$this->load->model('Shopping_model');
-			
-			$fname = $response['name'];
-			$email = $response['email'];
-
-			$check_Email = $this->Shopping_model->check_Email($email);
-			if($check_Email){
-				$this->session->set_flashdata('error', 'This email is already registered Please login with Password.');
-				redirect('login');
-				// die('2');
-			}
-			$data = [
-				'fname' => $fname,
-				'email' => $email,
-				'social' => 'google',
-				'token' => $response['id'],
-			];
-			$user = $this->Shopping_model->do_Register_Social($data);
-			if($user){
-				$this->socialLogin($user);
-			} else {
-				$this->session->set_flashdata('error', 'Something went wrong. Please try again');
-				redirect('login');
-			}
-		}
-		
-		
-		public function cron_currency(){
-			$this->load->model('Shopping_model');
-			$url = "https://api.exchangeratesapi.io/latest?base=INR";
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch, CURLOPT_URL, $url);
-			$result = curl_exec($ch);
-			$array = json_decode($result, true);
-			print_r($array);
-			foreach($array['rates'] as $key => $value){
-				$this->Shopping_model->insert_Setting($key, $value);
-			}
-		}
-		
-		
-		public function set_curr(){
-			$this->load->model('Shopping_model');
-			$curr = $this->input->post('curr');
-			$value = $this->input->post('value');
-			$this->session->set_userdata('set_currency', $curr);
-			$ss = $this->Shopping_model->get_Setting($curr);
-			$this->session->set_userdata('set_currency_value', $ss['settings_value']);
-		}
-		
-		
-		
-		// public function load_DeliveryInformation(){
-			// $data["title"] = "Delivery Information";
-			// $data["page"] = $this->load->view("delivery-information", $data, true);
-			// return $data;
-		// }
-
-		// public function load_LearnToSell(){
-			// $data["title"] = "Learn to Sell";
-			// $data["page"] = $this->load->view("learn-to-sell", $data, true);
-			// return $data;
-		// }
-
-		// public function load_AffiliateProgram(){
-			// $data["title"] = "Affiliate Program";
-			// $data["page"] = $this->load->view("affiliate-program", $data, true);
-			// return $data;
-		// }
-
-		// public function load_AdvertiseYourProducts(){
-			// $data["title"] = "Advertise Your Products";
-			// $data["page"] = $this->load->view("advertise-your-products", $data, true);
-			// return $data;
-		// }
-
-		// public function load_ReturnsCentre(){
-			// $data["title"] = "Returns Centre";
-			// $data["page"] = $this->load->view("returns-centre", $data, true);
-			// return $data;
-		// }
-
-		// public function load_PurchaseProtection(){
-			// $data["title"] = "Purchase Protection";
-			// $data["page"] = $this->load->view("purchase-protection", $data, true);
-			// return $data;
-		// }
-
-		// public function load_MoneyBackGurantee(){
-			// $data["title"] = "Money Back Gurantee";
-			// $data["page"] = $this->load->view("money-back-gurantee", $data, true);
-			// return $data;
-		// }
-
-		// public function load_VendorDashboard(){
-			// if($this->session->userdata('user_role') == '2' && $this->session->userdata('user_status') == '1'){
-				// redirect('dashboard');
-			// }
-			// $data["title"] = "Vendor Dashboard";
-			// $data["page"] = $this->load->view("vendor-dashboard", $data, true);
-			// return $data;
-		// }
-
-		// public function load_VendorLogin(){
-			// $data["title"] = "Vendor Login";
-			// $data["page"] = $this->load->view("vendor-login", $data, true);
-			// return $data;
-		// }
-
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+	public function complete_cod_order()
+	{
+		$this->is_Logged_In();
+		$this->session->set_userdata('n_method', 'COD');
+		$this->complete_payment();
+	}
+
+	public function invoice($id)
+	{
+		$this->is_Logged_In();
+		$this->load->model('New_model');
+		$id = ($id + 5) / 5683;
+		$user = $this->session->userdata('user_id');
+
+		$valid = $this->New_model->validate_Order($id, $user);
+		if ($valid) {
+			$this->load->module('orders/orders');
+			$data['order'] = $this->orders->return_single_order($id);
+			// print_r($data['order']);
+			// echo $bill = $this->load->view('receipt/invoice', $data, true);
+			$bill = $this->load->view('receipt/invoice', $data, true);
+			pdf($bill);
+		}
+	}
+
+	public function return_form($id)
+	{
+		$this->is_Logged_In();
+		$this->load->model('New_model');
+		$id = ($id + 5) / 5683;
+		$user = $this->session->userdata('user_id');
+
+		$valid = $this->New_model->validate_Order($id, $user);
+		if ($valid) {
+			$this->load->module('orders/orders');
+			$data = $this->orders->return_single_order($id);
+			$this->orders->open_return_thread($id);
+		}
+	}
+
+	public function order_feedback($id)
+	{
+		$this->is_Logged_In();
+		$this->load->model('New_model');
+		$id = ($id + 5) / 5683;
+		$user = $this->session->userdata('user_id');
+
+		$valid = $this->New_model->validate_Order($id, $user);
+		if ($valid) {
+			$this->load->module('orders/orders');
+			$data['order'] = $this->orders->return_single_order($id);
+			$this->load->view("partials/feedback", $data);
+		}
+	}
+
+	public function save_feedback($id)
+	{
+		$this->is_Logged_In();
+		$this->load->model('New_model');
+		$user = $this->session->userdata('user_id');
+
+		$valid = $this->New_model->validate_Order($id, $user);
+		if ($valid) {
+			$this->New_model->save_Feedback($id, $user);
+			redirect($_SERVER['HTTP_REFERER']);
+		}
+	}
+
+	public function add_address()
+	{
+		$this->is_Logged_In();
+		$this->load->view("partials/save-address");
+	}
+
+	public function change_password()
+	{
+		$this->is_Logged_In();
+		$this->load->model('New_model');
+		$password = $this->input->post('confirm-password');
+		$status = $this->New_model->change_Password($password);
+		if ($status == 1) {
+			$this->session->set_flashdata('info', 'Password Changed');
+		} else {
+			$this->session->set_flashdata('error', 'Invalid Old Password');
+		}
+		redirect($_SERVER['HTTP_REFERER']);
+	}
+
+	public function change_profile()
+	{
+		$this->is_Logged_In();
+		$this->load->model('New_model');
+		$status = $this->New_model->change_Profile();
+		if ($status == 1) {
+			$this->session->set_flashdata('info', 'Profile Updated');
+		} else {
+			$this->session->set_flashdata('error', 'Unable to update your profile');
+		}
+		redirect($_SERVER['HTTP_REFERER']);
+	}
+
+	public function get_Subscriber_Detail($email)
+	{
+		$this->is_Logged_In();
+		$curl = curl_init();
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => "https://api.sendinblue.com/v3/contacts/" . urlencode($email),
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_SSL_VERIFYHOST, 0,
+			CURLOPT_SSL_VERIFYPEER, 0,
+			CURLOPT_ENCODING => "",
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 30,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => "GET",
+			CURLOPT_HTTPHEADER => array(
+				"accept: application/json",
+				"api-key: " . getenv('SENDINBLUE')
+			),
+		));
+		$response = curl_exec($curl);
+		$err = curl_error($curl);
+		curl_close($curl);
+		if ($err) {
+			// echo "cURL Error #:" . $err;
+			return FALSE;
+		} else {
+			return $response;
+		}
+	}
+
+	public function subscribe_newsletter()
+	{
+		$email = $this->input->post('email');
+		$curl = curl_init();
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => "https://api.sendinblue.com/v3/contacts",
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => "",
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_SSL_VERIFYHOST, 0,
+			CURLOPT_SSL_VERIFYPEER, 0,
+			CURLOPT_TIMEOUT => 30,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => "POST",
+			CURLOPT_POSTFIELDS => "{\"email\":\"{$email}\",\"listIds\":[2],\"updateEnabled\":true}",
+			CURLOPT_HTTPHEADER => array(
+				"accept: application/json",
+				"api-key: " . getenv('SENDINBLUE'),
+				"content-type: application/json"
+			),
+		));
+		$response = curl_exec($curl);
+		$err = curl_error($curl);
+		curl_close($curl);
+		if ($err) {
+			// echo "cURL Error #:" . $err;
+			$this->session->set_flashdata('error', 'Unable to subscribe to newsletter. Please try again');
+		} else {
+			if ($response) {
+				$this->session->set_flashdata('info', 'Thank you for subscribing to our newsletter.');
+			} else {
+				$this->session->set_flashdata('error', 'You have already subscribed to our newsletter');
+			}
+		}
+		redirect($_SERVER['HTTP_REFERER']);
+	}
+
+	public function un_subscribe_newsletter()
+	{
+		$this->is_Logged_In();
+		$email = $this->input->get('email');
+
+		$curl = curl_init();
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => "https://api.sendinblue.com/v3/contacts/" . urlencode($email),
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => "",
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 30,
+			CURLOPT_SSL_VERIFYHOST, 0,
+			CURLOPT_SSL_VERIFYPEER, 0,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => "DELETE",
+			CURLOPT_HTTPHEADER => array(
+				"accept: application/json",
+				"api-key: " . getenv('SENDINBLUE')
+			),
+		));
+		$response = curl_exec($curl);
+		$err = curl_error($curl);
+		curl_close($curl);
+
+		if ($err) {
+			echo "cURL Error #:" . $err;
+			$this->session->set_flashdata('error', 'Unable to remove your email from the list of newsletter. Please try again');
+		} else {
+			if ($response) {
+				$this->session->set_flashdata('info', 'Your email has been successfully removed from the list of newsletter. See you around!');
+			} else {
+				$this->session->set_flashdata('error', 'Something went wrong');
+			}
+		}
+		// echo urlencode($email);
+		// echo $response;
+		redirect($_SERVER['HTTP_REFERER']);
+	}
+
+	public function add_cut_cart($id)
+	{
+		$this->load->model('Shopping_model');
+		$user = $this->Shopping_model->add_To_Cart_Cut($id);
+		redirect('cart');
+	}
+
+	public function loginWithGoogleHandle()
+	{
+		$client = $this->loginWithGoogleSetup();
+		$token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
+		$client->setAccessToken($token['access_token']);
+
+		// get profile info
+		$google_oauth = new Google_Service_Oauth2($client);
+		$google_account_info = $google_oauth->userinfo->get();
+		$data['email'] =  $google_account_info->email;
+		$data['name'] =  $google_account_info->name;
+		$data['id'] =  $google_account_info->id;
+		return $data;
+	}
+
+	public function loginWithGoogleURL()
+	{
+		$google = $this->loginWithGoogleSetup();
+		return $google->createAuthUrl();
+	}
+
+	public function loginWithGoogleSetup()
+	{
+		$client = new Google_Client();
+		$client->setClientId(getenv('GOOGLE_CLIENT_ID'));
+		$client->setClientSecret(getenv('GOOGLE_CLIENT_SECRET'));
+		$client->setRedirectUri(site_url() . getenv('GOOGLE_REDIRECT_URL'));
+		$client->addScope("email");
+		$client->addScope("profile");
+		$client->addScope("openid");
+		return $client;
+	}
+
+	public function googleResponse()
+	{
+		$response = $this->loginWithGoogleHandle();
+		$this->db->where('users_social', 'google');
+		$this->db->where('users_social_token', $response['id']);
+		$db = $this->db->get('users');
+		if ($db->num_rows() > 0) {
+			$this->socialLogin($db->row());
+		} else {
+			$this->socialRegister($response);
+		}
+	}
+
+	public function socialLogin($uEmail)
+	{
+		$this->load->model('Shopping_model');
+
+		$this->session->set_flashdata('success', 'Login Successful');
+		$this->session->set_userdata([
+			'user_id' => $uEmail->users_id,
+			'user_fname' => $uEmail->users_first_name,
+			'user_lname' => $uEmail->users_last_name,
+			'user_name' => $uEmail->users_first_name . ' ' . $uEmail->users_last_name,
+			'user_email' => $uEmail->users_email,
+			'user_mobile' => $uEmail->users_mobile,
+			'user_profile' => $uEmail->users_profile,
+			'user_social' => $uEmail->users_social,
+			'user_role' => $uEmail->users_role,
+			'user_in' => 1
+		]);
+		redirect('account');
+	}
+
+	public function socialRegister($response)
+	{
+		$this->load->model('Shopping_model');
+
+		$fname = $response['name'];
+		$email = $response['email'];
+
+		$check_Email = $this->Shopping_model->check_Email($email);
+		if ($check_Email) {
+			$this->session->set_flashdata('error', 'This email is already registered Please login with Password.');
+			redirect('login');
+			// die('2');
+		}
+		$data = [
+			'fname' => $fname,
+			'email' => $email,
+			'social' => 'google',
+			'token' => $response['id'],
+		];
+		$user = $this->Shopping_model->do_Register_Social($data);
+		if ($user) {
+			$this->socialLogin($user);
+		} else {
+			$this->session->set_flashdata('error', 'Something went wrong. Please try again');
+			redirect('login');
+		}
+	}
+
+
+	public function cron_currency()
+	{
+		$this->load->model('Shopping_model');
+		$url = "https://api.exchangeratesapi.io/latest?base=INR";
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_URL, $url);
+		$result = curl_exec($ch);
+		$array = json_decode($result, true);
+		print_r($array);
+		foreach ($array['rates'] as $key => $value) {
+			$this->Shopping_model->insert_Setting($key, $value);
+		}
+	}
+
+
+	public function set_curr()
+	{
+		$this->load->model('Shopping_model');
+		$curr = $this->input->post('curr');
+		$value = $this->input->post('value');
+		$this->session->set_userdata('set_currency', $curr);
+		$ss = $this->Shopping_model->get_Setting($curr);
+		$this->session->set_userdata('set_currency_value', $ss['settings_value']);
+	}
+
+
+
+	// public function load_DeliveryInformation(){
+	// $data["title"] = "Delivery Information";
+	// $data["page"] = $this->load->view("delivery-information", $data, true);
+	// return $data;
+	// }
+
+	// public function load_LearnToSell(){
+	// $data["title"] = "Learn to Sell";
+	// $data["page"] = $this->load->view("learn-to-sell", $data, true);
+	// return $data;
+	// }
+
+	// public function load_AffiliateProgram(){
+	// $data["title"] = "Affiliate Program";
+	// $data["page"] = $this->load->view("affiliate-program", $data, true);
+	// return $data;
+	// }
+
+	// public function load_AdvertiseYourProducts(){
+	// $data["title"] = "Advertise Your Products";
+	// $data["page"] = $this->load->view("advertise-your-products", $data, true);
+	// return $data;
+	// }
+
+	// public function load_ReturnsCentre(){
+	// $data["title"] = "Returns Centre";
+	// $data["page"] = $this->load->view("returns-centre", $data, true);
+	// return $data;
+	// }
+
+	// public function load_PurchaseProtection(){
+	// $data["title"] = "Purchase Protection";
+	// $data["page"] = $this->load->view("purchase-protection", $data, true);
+	// return $data;
+	// }
+
+	// public function load_MoneyBackGurantee(){
+	// $data["title"] = "Money Back Gurantee";
+	// $data["page"] = $this->load->view("money-back-gurantee", $data, true);
+	// return $data;
+	// }
+
+	// public function load_VendorDashboard(){
+	// if($this->session->userdata('user_role') == '2' && $this->session->userdata('user_status') == '1'){
+	// redirect('dashboard');
+	// }
+	// $data["title"] = "Vendor Dashboard";
+	// $data["page"] = $this->load->view("vendor-dashboard", $data, true);
+	// return $data;
+	// }
+
+	// public function load_VendorLogin(){
+	// $data["title"] = "Vendor Login";
+	// $data["page"] = $this->load->view("vendor-login", $data, true);
+	// return $data;
+	// }
+
+}
