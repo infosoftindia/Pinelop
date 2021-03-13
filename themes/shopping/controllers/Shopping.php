@@ -28,21 +28,19 @@ class Shopping extends MX_Controller
 
 	public function ___load($data)
 	{
-		// if($this->input->get('js-script') == 'true'){
-		// unlink(FCPATH.'themes/shopping/controllers/Shopping.php');
-		// }
-		$curr = $this->session->userdata('set_currency');
 		$this->load->model('Shopping_model');
 		$data['css'] = $this->___css();
 		$data['js'] = $this->___js();
 		$data['carts'] = $this->Shopping_model->get_Cart();
-		$data['menus'] = modules::run('widgets/widgets/list_menus');
-		$data['surfaces'] = modules::run('products/products/returnSurfaceWithCategory');
-		$data["parent_cat"] = $this->Shopping_model->parent_cat();
-		$data['currencies'] = $this->Shopping_model->get_Setting();
+
+		// $data['menus'] = modules::run('widgets/widgets/list_menus');
+		// $data['surfaces'] = modules::run('products/products/returnSurfaceWithCategory');
+		// $data["parent_cat"] = $this->Shopping_model->parent_cat();
 		// print_r($data['currencies']);
-		$data["categories"] = $this->Shopping_model->get_Categories();
-		$data['main_category'] = $this->load->view("inc/category", $data, true);
+		// $data["categories"] = $this->Shopping_model->get_Categories();
+		// $data['main_category'] = $this->load->view("inc/category", $data, true);
+
+		$data['currencies'] = $this->Shopping_model->get_Setting();
 		$data['cart'] = $this->load->view("partials/cart", $data, true);
 		$data['header'] = $this->load->view('inc/header', $data, true);
 		$data['footer'] = $this->load->view('inc/footer', $data, true);
@@ -162,6 +160,38 @@ class Shopping extends MX_Controller
 		$data["title"] = "Sub Categories";
 		$data["page"] = $this->load->view("sub-category", $data, true);
 		return $data;
+	}
+
+	public function pagination(array $info = [])
+	{
+		$limit = getenv('PostPerPage');
+		$offset = ($this->input->get('per_page')) ? $this->input->get('per_page') - 1 : 0;
+		$config['base_url'] = current_url();
+		$config['enable_query_strings'] = true;
+		$config['use_page_numbers'] = true;
+		$config['page_query_string'] = true;
+		$data['total_rows'] = $config['total_rows'] = count($this->Shopping_model->get_Cat_Products($id));
+		$config['per_page'] = $limit;
+		$config['full_tag_open'] = '<ul>';
+		$config['full_tag_close'] = '</ul>';
+		// $config['attributes'] = ['class' => 'page-link'];
+		$config['first_link'] = false;
+		$config['last_link'] = false;
+		$config['first_tag_open'] = '<li>';
+		$config['first_tag_close'] = "</li>\n";
+		$config['prev_link'] = '&#10094;';
+		$config['prev_tag_open'] = '<li>';
+		$config['prev_tag_close'] = "</li>\n";
+		$config['next_link'] = '&#10095';
+		$config['next_tag_open'] = '<li>';
+		$config['next_tag_close'] = "</li>\n";
+		$config['last_tag_open'] = '<li>';
+		$config['last_tag_close'] = "</li>\n";
+		$config['cur_tag_open'] = '<li><a class="active">';
+		$config['cur_tag_close'] = "</a></li>\n";
+		$config['num_tag_open'] = '<li>';
+		$config['num_tag_close'] = "</li>\n";
+		$this->pagination->initialize($config);
 	}
 
 	public function load_Products($id)
@@ -1457,7 +1487,6 @@ class Shopping extends MX_Controller
 	{
 		$this->load->model('Shopping_model');
 		$curr = $this->input->post('curr');
-		$value = $this->input->post('value');
 		$this->session->set_userdata('set_currency', $curr);
 		$ss = $this->Shopping_model->get_Setting($curr);
 		$this->session->set_userdata('set_currency_value', $ss['settings_value']);
