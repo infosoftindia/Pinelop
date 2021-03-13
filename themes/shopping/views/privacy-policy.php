@@ -1,23 +1,45 @@
-﻿<main class="bg_gray">
-	<div class="top_banner">
-		<div class="opacity-mask d-flex align-items-center" data-opacity-mask="rgba(0, 0, 0, 0.3)">
-			<div class="container">
-				<div class="breadcrumbs">
-					<ul>
-						<li><a href="<?= site_url() ?>">Home</a></li>
-						<li>Privacy Policy</li>
-					</ul>
+﻿<style>
+	.term_conditions p {
+		text-align: justify !important;
+	}
+</style>
+<!-- START SECTION BREADCRUMB -->
+<div class="breadcrumb_section bg_gray page-title-mini">
+	<div class="container">
+		<!-- STRART CONTAINER -->
+		<div class="row align-items-center">
+			<div class="col-md-6">
+				<div class="page-title">
+					<h1>Privacy Policies</h1>
 				</div>
-				<h1>Privacy Policy</h1>
+			</div>
+			<div class="col-md-6">
+				<ol class="breadcrumb justify-content-md-end">
+					<li class="breadcrumb-item"><a href="<?= site_url() ?>">Home</a></li>
+					<li class="breadcrumb-item active">Privacy Policies</li>
+				</ol>
 			</div>
 		</div>
-		<img src="img/bg_cat_shoes.jpg" class="img-fluid" alt="">
-	</div>
-	<div class="bg_white">
-		<div class="container margin_90_0">
-			<div class="row justify-content-between align-items-center">
-				<?= $setting['pages_description'] ?>
+	</div><!-- END CONTAINER-->
+</div>
+<!-- END SECTION BREADCRUMB -->
+
+<!-- START MAIN CONTENT -->
+<div class="main_content">
+
+	<!-- STAT SECTION FAQ -->
+	<div class="section">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="term_conditions">
+						<?= $setting['pages_description'] ?>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
-</main>
+	<!-- END SECTION FAQ -->
+
+</div>
+<!-- END MAIN CONTENT -->

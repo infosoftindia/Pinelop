@@ -1,4 +1,9 @@
-﻿<!-- START SECTION BREADCRUMB -->
+﻿<style>
+    .term_conditions p {
+        text-align: justify !important;
+    }
+</style>
+<!-- START SECTION BREADCRUMB -->
 <div class="breadcrumb_section bg_gray page-title-mini">
     <div class="container">
         <!-- STRART CONTAINER -->
