@@ -151,6 +151,9 @@ class Settings extends MX_Controller
 			$data['setting1'] = $this->db->where('pages_id', '1')->get('pages')->row_array();
 			$data['setting2'] = $this->db->where('pages_id', '2')->get('pages')->row_array();
 			$data['setting3'] = $this->db->where('pages_id', '3')->get('pages')->row_array();
+			$data['setting4'] = $this->db->where('pages_id', '4')->get('pages')->row_array();
+			$data['setting5'] = $this->db->where('pages_id', '5')->get('pages')->row_array();
+			$data['setting6'] = $this->db->where('pages_id', '6')->get('pages')->row_array();
 			$data['page'] = $this->load->view('site_legal', $data, true);
 			echo modules::run('layouts/layouts/load', $data);
 		} else {
@@ -174,5 +177,17 @@ class Settings extends MX_Controller
 			'pages_description' => $this->input->post('about'),
 		];
 		$this->db->where('pages_id', '3')->update('pages', $data);
+		$data = [
+			'pages_description' => $this->input->post('return_policy'),
+		];
+		$this->db->where('pages_id', '4')->update('pages', $data);
+		$data = [
+			'pages_description' => $this->input->post('order_tracking'),
+		];
+		$this->db->where('pages_id', '5')->update('pages', $data);
+		$data = [
+			'pages_description' => $this->input->post('shipping_cost'),
+		];
+		$this->db->where('pages_id', '6')->update('pages', $data);
 	}
 }

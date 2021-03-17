@@ -62,15 +62,15 @@ a.payment_method{
 							<h4 class="card-title"></h4>
 							<div id="accordion">
 								<div class="card card-no-border">
-									<!--<div class="card-header bg-custom">
-										<a class="collapsed card-link" data-toggle="collapse" href="#collapsePayTm">
-											Pay with PayTm
+									<div class="card-header bg-custom">
+										<a class="collapsed card-link" data-toggle="collapse" href="#collapsePayPal">
+											Pay with PayPal
 										</a>
-										</div>-->
-									<div id="collapsePayTm" class="collapse" data-parent="#accordion" style="border: 1px solid;">
+										</div>
+									<div id="collapsePayPal" class="collapse" data-parent="#accordion" style="border: 1px solid;">
 										<div class="card-body">
-											<p>Paytm is an Indian e-commerce payment system and financial technology company, based out of Noida, India.</p>
-											<p><a href="<?=site_url('place-order').'?mode=paytm&address='.$address?>" class="btn btn-sm btn-info">Continue with PayTm</a></p>
+											<p>Paypal is an e-commerce payment system and financial technology company, available worldwide.</p>
+											<p><a href="<?=site_url('place-order').'?mode=paypal&address='.$address?>" class="btn btn-sm btn-info">Continue with PayPal</a></p>
 										</div>
 									</div>
 									<div class="card card-no-border">

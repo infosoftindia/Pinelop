@@ -74,7 +74,7 @@ p {
 							</div>
 							<div class="col-4">
 								<b class="black">Payment method</b>
-								<p><?=($this->input->get('mode') == 'paytm')?'PayTm':'COD'?></p>
+								<p><?=($this->input->get('mode') == 'paypal')?'PayPal':'COD'?></p>
 								<b class="black">Billing address</b>
 								<p>Same as delivery address</p>
 							</div> 
@@ -83,7 +83,7 @@ p {
 								<div class="input-group mb-0">
 									<input type="text" class="form-control" placeholder="Enter Code" id="coupon-code" value="<?=get_cookie('my_coupon')?>">
 									<div class="input-group-append">
-										<button class="input-group-text btn btn-success" type="button" id="apply-coupon">Apply</button>
+										<button class="input-group-text btn btn-success btn-sm" type="button" id="apply-coupon">Apply</button>
 									</div>
 								</div>
 								<p id="coupon_message" class="text-danger"></p>
@@ -135,7 +135,7 @@ p {
 					<div class="col-lg-4 col-md-4">
 						<div class="card">
 							<div class="card-body">
-								<a href="<?=site_url(($this->input->get('mode') == 'paytm')?'shopping/make_payment':'shopping/complete_cod_order')?>" class="btn btn-fill-out mb-3">Place Your Order and Pay </a>
+								<a href="<?=site_url(($this->input->get('mode') == 'paypal')?'shopping/make_payment':'shopping/complete_cod_order')?>" class="btn btn-fill-out mb-3">Place Your Order and Pay </a>
 								<p class="text-justify" style="color: gray">You'll be securely payment page to complete your purchase. </p>
 								<p><b>Order Summary</b></p>
 								<div class="d-flex justify-content-between">

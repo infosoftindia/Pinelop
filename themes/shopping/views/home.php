@@ -61,7 +61,7 @@
                         </div>
                         <div class="icon_box_content">
                             <h6>Money Returns</h6>
-                            <p>10 Days money return</p>
+                            <p>30 Days money return</p>
                         </div>
                     </div>
                 </div>

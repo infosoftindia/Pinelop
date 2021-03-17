@@ -12,11 +12,11 @@
 							</div>
 							<div class="widget">
 								<ul class="social_icons social_white">
-									<li><a href="#"><i class="ion-social-facebook"></i></a></li>
-									<li><a href="#"><i class="ion-social-twitter"></i></a></li>
-									<li><a href="#"><i class="ion-social-googleplus"></i></a></li>
-									<li><a href="#"><i class="ion-social-youtube-outline"></i></a></li>
-									<li><a href="#"><i class="ion-social-instagram-outline"></i></a></li>
+									<?php if(getenv('facebook')) { ?><li><a href="<?=getenv('facebook')?>"><i class="ion-social-facebook"></i></a></li><?php } ?>
+									<?php if(getenv('instagram')) { ?><li><a href="<?=getenv('instagram')?>"><i class="ion-social-instagram-outline"></i></a></li><?php } ?>
+									<?php if(getenv('twitter')) { ?><li><a href="<?=getenv('twitter')?>"><i class="ion-social-twitter"></i></a></li><?php } ?>
+									<?php if(getenv('mobile')) { ?><li><a href="https://api.whatsapp.com/send?phone=<?=getenv('mobile')?>"><i class="fab fa-whatsapp"></i></a></li><?php } ?>
+									<?php if(getenv('youtube')) { ?><li><a href="<?=getenv('youtube')?>"><i class="ion-social-youtube-outline"></i></a></li><?php } ?>
 								</ul>
 							</div>
 						</div>
@@ -38,8 +38,10 @@
 								<ul class="widget_links">
 									<li><a href="<?= site_url('terms-and-conditions') ?>">Terms & Condition</a></li>
 									<li><a href="<?= site_url('privacy-policy') ?>">Privacy Policy</a></li>
+									<li><a href="<?= site_url('return-policy') ?>">Return Policy</a></li>
+									<li><a href="<?= site_url('order-tracking') ?>">Order Tracking</a></li>
+									<li><a href="<?= site_url('shipping-cost-and-policy') ?>">Shipping Cost & Policy</a></li>
 									<li><a href="<?= site_url('faq') ?>">FAQ</a></li>
-									<li><a href="#">Help</a></li>
 								</ul>
 							</div>
 						</div>
@@ -47,11 +49,17 @@
 							<div class="widget">
 								<h6 class="widget_title">My Account</h6>
 								<ul class="widget_links">
-									<li><a href="#">My Account</a></li>
-									<li><a href="#">Discount</a></li>
-									<li><a href="#">Returns</a></li>
-									<li><a href="#">Orders History</a></li>
-									<li><a href="#">Order Tracking</a></li>
+									<?php if (!$this->session->userdata('user_id')) { ?>
+									<li><a href="<?=site_url('login')?>">Login</a></li>
+									<li><a href="<?=site_url('register')?>">Register</a></li>
+									<?php }else{ ?>
+									<li><a href="<?=site_url('account')?>">My Account</a></li>
+									<li><a href="<?=site_url('account?page=orders')?>">Orders</a></li>
+									<li><a href="<?=site_url('account?page=address')?>">My Address</a></li>
+									<li><a href="<?=site_url('account?page=account-detail')?>">Account Detail</a></li>
+									<li><a href="<?=site_url('account?page=password-detail')?>">Change Password</a></li>
+									<?php } ?>
+									
 								</ul>
 							</div>
 						</div>
@@ -65,11 +73,15 @@
 									</li>
 									<li>
 										<i class="ti-email"></i>
-										<a href="mailto:<?= getenv('email') ?>"><?= getenv('email') ?></a>
+										<a href="mailto:<?=getenv('email')?>"><?=getenv('email')?></a>
 									</li>
 									<li>
 										<i class="ti-mobile"></i>
-										<p><a href="tel:<?= getenv('mobile') ?>"><?= getenv('mobile') ?></a></p>
+										<p><a href="tel:<?=getenv('mobile')?>"><?=getenv('mobile')?></a></p>
+									</li>
+									<li>
+										 
+										<p>Regd No. 102885392 </p>
 									</li>
 								</ul>
 							</div>
@@ -99,6 +111,9 @@
 		<!-- END FOOTER -->
 
 		<a href="#" class="scrollup" style="display: none;"><i class="ion-ios-arrow-up"></i></a>
+		<a href="https://api.whatsapp.com/send?phone=<?=getenv('mobile')?>" class="float" target="_blank">
+		<i class="fab fa-whatsapp my-float"></i>
+		</a>
 
 		<?= $js ?>
 

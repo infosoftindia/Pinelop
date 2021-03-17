@@ -23,7 +23,9 @@
 			$('.page-item').each(function(){
 				$(this).children('a').addClass('page-link');
 			})
-			
+			<?php if($this->input->get('page') != ''){ ?>
+				$('#<?=$this->input->get('page')?>-tab').click();
+			<?php } ?>
 			$('.currency_list').change(function(){
 				var curr = $(this).val();
 				$.post('<?=site_url('shopping/set_curr')?>', { curr : curr }, function(){

@@ -21,7 +21,7 @@
 			<link rel="stylesheet" href="<?=base_url('themes/shopping/assets/')?>css/slick-theme.css">
 			<link rel="stylesheet" href="<?=base_url('themes/shopping/assets/')?>css/style.css">
 			<link rel="stylesheet" href="<?=base_url('themes/shopping/assets/')?>css/responsive.css">
-			<link href="https://cdn.lineicons.com/2.0/LineIcons.css" rel="stylesheet">
+			<link href="//cdn.lineicons.com/2.0/LineIcons.css" rel="stylesheet">
 			<link href="<?=base_url('themes/shopping/assets/')?>toast/toast.min.css" rel="stylesheet">
 			<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
 			
@@ -33,5 +33,24 @@
 				padding: 0 7px !important;
 				min-width: 32px !important;
 				width: auto;
+			}
+			
+			.float{
+				position:fixed;
+				width:50px;
+				height:50px;
+				bottom:70px;
+				right:20px;
+				background-color:#25d366;
+				color:#FFF;
+				border-radius:50px;
+				text-align:center;
+				font-size:30px;
+				/* box-shadow: 2px 2px 3px #999; */
+				z-index:100;
+			}
+
+			.my-float{
+				margin-top:11px;
 			}
 		</style>

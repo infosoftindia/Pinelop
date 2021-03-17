@@ -11,7 +11,7 @@
     <meta name="keywords" content="ecommerce, electronics store, Fashion store, furniture store,  bootstrap 4, clean, minimal, modern, online store, responsive, retail, shopping, ecommerce store">
 
     <!-- SITE TITLE -->
-    <title><?= $title ?> | Shopping Cart</title>
+    <title><?= $title ?> | Pinelop</title>
     <?= $css ?>
 
 </head>

@@ -382,6 +382,27 @@ class Shopping extends MX_Controller
 		$data["page"] = $this->load->view("terms-conditions", $data, true);
 		return $data;
 	}
+	
+	public function load_ReturnPolicy(){
+		$data["title"] = "Return Policy";
+		$data['setting'] = $this->db->where('pages_id', '4')->get('pages')->row_array();
+		$data["page"] = $this->load->view("return-policy", $data, true);
+		return $data;
+	}
+	
+	public function load_OrderTracking(){
+		$data["title"] = "Order Tracking";
+		$data['setting'] = $this->db->where('pages_id', '5')->get('pages')->row_array();
+		$data["page"] = $this->load->view("order-tracking", $data, true);
+		return $data;
+	}
+
+	public function load_ShippingCostAndPolicy(){
+		$data["title"] = "Shipping Cost And Policy";
+		$data['setting'] = $this->db->where('pages_id', '6')->get('pages')->row_array();
+		$data["page"] = $this->load->view("shipping-cost-and-policy", $data, true);
+		return $data;
+	}
 
 	public function load_Faq()
 	{
@@ -638,6 +659,33 @@ class Shopping extends MX_Controller
 	}
 
 	public function load_PaytmSuccess()
+	{
+		$trans = [
+			'transactions_user' => $this->session->userdata('user_id'),
+			'transactions_gateway' => 'PayTm',
+			'transactions_order_id' => $this->input->post('ORDERID'),
+			'transactions_mid' => $this->input->post('MID'),
+			'transactions_txnid' => $this->input->post('TXNID'),
+			'transactions_amount' => $this->input->post('TXNAMOUNT'),
+			'transactions_mode' => $this->input->post('PAYMENTMODE'),
+			'transactions_currency' => $this->input->post('CURRENCY'),
+			'transactions_txndate' => $this->input->post('TXNDATE'),
+			'transactions_status' => $this->input->post('STATUS'),
+			'transactions_response_code' => $this->input->post('RESPCODE'),
+			'transactions_message' => $this->input->post('RESPMSG'),
+			'transactions_created' => now()
+		];
+		$this->Basic_model->save_Transaction_PayTm($trans);
+
+		if ($this->input->post('RESPCODE') == '01' || $this->input->post('RESPCODE') == '400' || $this->input->post('RESPCODE') == '402') {
+			$this->session->set_userdata('n_method', 'PayTm');
+			$this->complete_payment();
+		} else {
+			redirect('order-failed');
+		}
+	}
+
+	public function load_PaypalSuccess()
 	{
 		$trans = [
 			'transactions_user' => $this->session->userdata('user_id'),
@@ -1116,45 +1164,12 @@ class Shopping extends MX_Controller
 			$priceTotal = $coupon['total_amount'];
 		}
 
-		$this->load->helper('paytm');
-		$TXN_AMOUNT = $priceTotal;
-		$checkSum = "";
-		$paramList = array();
-		$url = "";
+		echo '<center><h1>Please do not refresh this page...</h1></center>';
+		$data1["CALLBACK_URL"] = base_url('paypal-success') . '?amount=' . $priceTotal . '&txnid=';
+		$data1["order"] = '1';
+		$data1["price"] = '1';
 
-		if (getenv('PAYTM_ENVIRONMENT') == 'TEST') {
-			$PAYTM_STATUS_QUERY_NEW_URL = 'https://securegw-stage.paytm.in/merchant-status/getTxnStatus';
-			$PAYTM_TXN_URL = 'https://securegw-stage.paytm.in/theia/processTransaction';
-		} elseif (getenv('PAYTM_ENVIRONMENT') == 'PROD') {
-			$PAYTM_STATUS_QUERY_NEW_URL = 'https://securegw.paytm.in/merchant-status/getTxnStatus';
-			$PAYTM_TXN_URL = 'https://securegw.paytm.in/theia/processTransaction';
-		}
-
-		$paramList["MID"] = getenv('PAYTM_MERCHANT_MID');
-		$paramList["ORDER_ID"] = "ORDS" . uniqid(rand());
-		$paramList["CUST_ID"] = "CUST" . rand(100, 999);
-		$paramList["INDUSTRY_TYPE_ID"] = 'Retail';
-		$paramList["CHANNEL_ID"] = 'WEB';
-		$paramList["TXN_AMOUNT"] = $TXN_AMOUNT;
-		$paramList["WEBSITE"] = getenv('PAYTM_MERCHANT_WEBSITE');
-
-		$paramList["CALLBACK_URL"] = base_url('paytm-success') . '?amount=' . $TXN_AMOUNT . '&txnid=' . $paramList["ORDER_ID"];
-
-		$checkSum = getChecksumFromArray($paramList, getenv('PAYTM_MERCHANT_KEY'));
-		echo '<center><h1>Please do not refresh this page...</h1></center>
-			<form method="post" action="' . $PAYTM_TXN_URL . '" name="f1">
-				<table border="1">
-					<tbody>';
-		foreach ($paramList as $name => $value) {
-			echo '<input type="hidden" name="' . $name . '" value="' . $value . '">';
-		}
-		echo '<input type="hidden" name="CHECKSUMHASH" value="' . $checkSum . '">
-					</tbody>
-				</table>
-				<script type="text/javascript">
-					document.f1.submit();
-				</script>
-			</form>';
+		$this->load->view("paypal", $data1);
 	}
 
 	public function complete_cod_order()
