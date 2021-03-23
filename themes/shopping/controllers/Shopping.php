@@ -39,7 +39,8 @@ class Shopping extends MX_Controller
 		// print_r($data['currencies']);
 		// $data["categories"] = $this->Shopping_model->get_Categories();
 		// $data['main_category'] = $this->load->view("inc/category", $data, true);
-
+		
+		$data["categories"] = $this->Shopping_model->get_Categories();
 		$data['currencies'] = $this->Shopping_model->get_Setting();
 		$data['cart'] = $this->load->view("partials/cart", $data, true);
 		$data['header'] = $this->load->view('inc/header', $data, true);
@@ -1505,6 +1506,39 @@ class Shopping extends MX_Controller
 		$this->session->set_userdata('set_currency', $curr);
 		$ss = $this->Shopping_model->get_Setting($curr);
 		$this->session->set_userdata('set_currency_value', $ss['settings_value']);
+	}
+
+	public function cron()
+	{
+		$this->load->model('Shopping_model');
+		$posts = $this->db->where('posts_type', 'product')->where('posts_status', '1')->join('products', 'posts_id = products_post', 'left')->get('posts')->result_array();
+		$this->db->query('TRUNCATE search');
+		if($posts){
+			foreach($posts as $post){
+				$filter =1;
+				$data = [];
+				$price = $post['products_price'];
+				$salePrice = $post['products_sale_price'];
+				if($salePrice != '0' && $salePrice != '' && $salePrice < $price){
+					$sPrice = $salePrice;
+				}else{
+					$sPrice = $price;
+				}
+				$data = [
+					'search_product' => $post['posts_id'],
+					'search_title' => $post['posts_title'],
+					'search_price' => $sPrice,
+					'search_brand' => $post['products_brand'],
+					'search_amount' => $post['products_price']??0,
+					'search_sale' => ($post['products_sale_price'] > 0)?$post['products_sale_price']:0,
+					'search_image' => $post['posts_cover'],
+					'search_slug' => $post['posts_slug'],
+					'search_desc' => $post['products_short_description'],
+					'search_filter' => $filter
+				];
+				$this->db->insert('search', $data);
+			}
+		}
 	}
 
 

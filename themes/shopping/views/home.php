@@ -187,7 +187,7 @@
                         <?php
                         if ($dailyDeals) {
                             foreach ($dailyDeals as $product) {
-                                echo '<div class="item">' . product_widget($product['posts_id']) . '</div>';
+                                echo '<div class="item">' . product_widget($product) . '</div>';
                             }
                         }
                         ?>
@@ -238,7 +238,7 @@
                 <?php
                 if ($products) {
                     foreach ($products as $product) {
-                        echo '<div class="col-lg-3 col-md-4 col-6">' . product_grid($product['posts_id']) . '</div>';
+                        echo '<div class="col-lg-3 col-md-4 col-6">' . product_grid($product) . '</div>';
                     }
                 }
                 ?>

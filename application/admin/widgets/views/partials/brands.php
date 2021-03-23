@@ -18,7 +18,7 @@
 		<div class="col-md-3"></div>
 		<div class="col-md-6 p-3" style="border: 2px solid #179978; border-radius: 5px">
 			<div class="input-group mb-3">
-				<input class="form-control mb-2" type="text" name="url_link" placeholder="Enter URL">
+				<input class="form-control mb-2" type="text" name="url_link" placeholder="Enter Name">
 				<div class="input-group-append">
 					<label class="btn btn-info" for="browseLogo">
 						<input type="file" name="userfile" hidden id="browseLogo" required>

@@ -82,26 +82,20 @@
 			$this->db->where('categories_slug', $slug);
 			$category = $this->db->get('categories')->row_array();
 			
-			$this->db->where('posts_status', '1');
-			$this->db->where('posts_type', 'product');
 			if($limit){
 				$this->db->limit($limit, $offset);
 			}
 			
 			$this->db->where('products_category_category', $category['categories_id']);
-			$this->db->join('posts', 'products_category_post = posts_id', 'left');
-			$this->db->join('products', 'products_post = posts_id', 'left');
+			$this->db->join('search', 'products_category_post = search_product', 'left');
 			return $this->db->get('products_category')->result_array();
 		}
 		
 		public function get_All_Products($limit = FALSE, $offset = FALSE){
-			$this->db->where('posts_status', '1');
-			$this->db->where('posts_type', 'product');
 			if($limit){
 				$this->db->limit($limit, $offset);
 			}
-			$this->db->join('products', 'products_post = posts_id', 'left');
-			return $this->db->get('posts')->result_array();
+			return $this->db->get('search')->result_array();
 		}
 		
 		public function get_Cat_Products($id = FALSE, $limit = FALSE, $offset = FALSE){
@@ -419,9 +413,9 @@
 			return $this->db->insert_id();
 		}
 		
-		public function grid_Product($id){
-			$data["product"] = $this->Basic_model->singlePost($id, 'products');
-			return $this->load->view("partials/product", $data, true);
+		public function grid_Product($data){
+			$p["product"] = $data;
+			return $this->load->view("partials/product", $p, true);
 		}
 		
 		public function grid_Sub_Category($cat){
@@ -436,19 +430,16 @@
 		
 		
 		public function widget_Product($id){
-			$data["product"] = $this->Basic_model->singlePost($id, 'products');
+			$data["product"] = $id;
 			return $this->load->view("partials/product-widget", $data, true);
 		}
 		
 		public function get_Daily_Deals($limit = FALSE, $offset = FALSE){
 			$data = [];
-			$this->db->where('posts_status', '1');
-			$this->db->where('posts_type', 'product');
 			if($limit){
 				$this->db->limit($limit, $offset);
 			}
-			$this->db->join('posts', 'products_daily_deals_post = posts_id', 'left');
-			$this->db->join('products', 'products_post = posts_id', 'left');
+			$this->db->join('search', 'products_daily_deals_post = search_product', 'left');
 			return $this->db->get('products_daily_deals')->result_array();
 		}
 		
@@ -466,15 +457,12 @@
 		}
 		
 		public function get_Products($limit = FALSE, $offset = FALSE){
-			$this->db->where('posts_status', '1');
-			$this->db->where('posts_type', 'product');
 			if($limit){
 				$this->db->limit($limit, $offset);
 			}
-			$this->db->join('products', 'products_post = posts_id', 'left');
-			$this->db->order_by('posts_id', 'DESC');
-			$this->db->group_by('posts_title');
-			return $this->db->get('posts')->result_array();
+			$this->db->order_by('search_id', 'DESC');
+			$this->db->group_by('search_title');
+			return $this->db->get('search')->result_array();
 		}
 		
 		public function get_Product($limit = FALSE, $offset = FALSE){
@@ -543,8 +531,7 @@
 				$this->db->limit($limit, $offset);
 			}
 			$this->db->join('products_best_offers', 'products_best_offers_id = best_offer_products_offer', 'left');
-			$this->db->join('posts', 'best_offer_products_post = posts_id', 'left');
-			$this->db->join('products', 'products_post = posts_id', 'left');
+			$this->db->join('search', 'best_offer_products_post = search_product', 'left');
 			return $this->db->get('best_offer_products')->result_array();
 		}
 		

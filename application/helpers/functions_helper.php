@@ -236,12 +236,15 @@ function allowUser($array)
 	}
 }
 
-function pPrice($price, $exc = FALSE)
+function pPrice($price, $numonly = FALSE)
 {
 	$prc = &get_instance();
 	$curr_val = $prc->session->userdata('set_currency_value');
 	$curr = $prc->session->userdata('set_currency');
 	$price = $price * $curr_val;
+	if($numonly == 1){
+		return round($price, 2);
+	}
 	return $curr . ' ' . round($price, 2);
 }
 

@@ -17,6 +17,7 @@
 			<link rel="stylesheet" href="<?=base_url('themes/shopping/assets/')?>owlcarousel/css/owl.theme.css">
 			<link rel="stylesheet" href="<?=base_url('themes/shopping/assets/')?>owlcarousel/css/owl.theme.default.min.css">
 			<link rel="stylesheet" href="<?=base_url('themes/shopping/assets/')?>css/magnific-popup.css">
+			<link rel="stylesheet" href="<?=base_url('themes/shopping/assets/')?>css/jquery-ui.css">
 			<link rel="stylesheet" href="<?=base_url('themes/shopping/assets/')?>css/slick.css">
 			<link rel="stylesheet" href="<?=base_url('themes/shopping/assets/')?>css/slick-theme.css">
 			<link rel="stylesheet" href="<?=base_url('themes/shopping/assets/')?>css/style.css">

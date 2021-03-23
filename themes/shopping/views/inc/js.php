@@ -20,6 +20,12 @@
 		<script src="<?=site_url('themes/shopping/assets/')?>toast/toast.min.js"></script>
 		<script src="<?=base_url('themes/shopping/assets/')?>js/shop.js"></script>
 		<script>
+			$('.formSubmit').change(function(){
+				var frm = $(this).data('form');
+				var vall = $(this).val();
+				$('#sorting_val').val(vall);
+				$(frm).submit();
+			})
 			$('.page-item').each(function(){
 				$(this).children('a').addClass('page-link');
 			})
@@ -33,6 +39,9 @@
 				});
 			})
 			
+			function saveValue(val, output){
+				$(output).val(val);
+			}
 			function addValue(val, output, image){
 				$(output).val(val);
 				// alert(image)

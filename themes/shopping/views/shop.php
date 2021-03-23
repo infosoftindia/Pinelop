@@ -31,28 +31,19 @@
                     <div class="col-12">
                         <div class="product_header">
                             <div class="product_header_left">
-                                <div class="custom_select">
-                                    <select class="form-control form-control-sm">
-                                        <option value="order">Default sorting</option>
-                                        <option value="popularity">Sort by popularity</option>
-                                        <option value="date">Sort by newness</option>
-                                        <option value="price">Sort by price: low to high</option>
-                                        <option value="price-desc">Sort by price: high to low</option>
-                                    </select>
-                                </div>
-                            </div>
+								<div class="custom_select">
+									<select class="form-control form-control-sm formSubmit" data-form="#sortingform" name="sort">
+										<option value="order" <?=$this->input->get('sort') == 'order'?'selected':''?>>Default sorting</option>
+										<option value="date" <?=$this->input->get('sort') == 'date'?'selected':''?>>Sort by newness</option>
+										<option value="price" <?=$this->input->get('sort') == 'price'?'selected':''?>>Sort by price: low to high</option>
+										<option value="price-desc" <?=$this->input->get('sort') == 'price-desc'?'selected':''?>>Sort by price: high to low</option>
+									</select>
+								</div>
+							</div>
                             <div class="product_header_right">
                             	<div class="products_view">
                                     <a href="javascript:Void(0);" class="shorting_icon grid active"><i class="ti-view-grid"></i></a>
                                     <a href="javascript:Void(0);" class="shorting_icon list"><i class="ti-layout-list-thumb"></i></a>
-                                </div>
-                                <div class="custom_select">
-                                    <select class="form-control form-control-sm">
-                                        <option value="">Showing</option>
-                                        <option value="9">9</option>
-                                        <option value="12">12</option>
-                                        <option value="18">18</option>
-                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -62,7 +53,7 @@
 					<?php
 						if($posts){
 							foreach($posts as $post){
-								echo '<div class="col-6 col-md-4">'.product_grid($post['posts_id']).'</div>';
+								echo '<div class="col-6 col-md-4">'.product_grid($post).'</div>';
 							}
 						}
 					?>
@@ -76,42 +67,105 @@
 				<?php } ?>
         	</div>
             <div class="col-lg-3 order-lg-first mt-4 pt-2 mt-lg-0 pt-lg-0">
-            	<div class="sidebar">
-					
-                    <div class="widget">
-                    	<h5 class="widget_title">Filter</h5>
-                        <div class="filter_price">
-                             <div id="price_filter" data-min="0" data-max="500" data-min-value="50" data-max-value="300" data-price-sign="$"></div>
-                             <div class="price_range">
-                                 <span>Price: <span id="flt_price"></span></span>
-                                 <input type="hidden" id="price_first">
-                                 <input type="hidden" id="price_second">
-                             </div>
-                         </div>
-                    </div>
-					<?php if($categories) {?>
-                	<div class="widget">
-                        <h5 class="widget_title">Categories</h5>
-                        <ul class="widget_categories">
-							<?php foreach($categories as $category) { ?>
-                            <li><a href="<?=site_url('category/'.$category['categories_slug'])?>"><span class="categories_name active"><?=$category['categories_name']?></span><!--<span class="categories_num">()</span></a></li>-->
-							<?php } ?>
-                        </ul>
-                    </div>
-					<?php } ?>
-                    <div class="widget pt-4">
-                        <div class="shop_banner">
-                            <div class="banner_img overlay_bg_20">
-                                <img src="<?=site_url('themes/shopping/assets/')?>images/sidebar_banner_img.jpg" alt="sidebar_banner_img">
-                            </div> 
-                            <div class="shop_bn_content2 text_white">
-                                <h5 class="text-uppercase shop_subtitle">New Collection</h5>
-                                <h3 class="text-uppercase shop_title">Sale 30% Off</h3>
-                                <a href="#" class="btn btn-white rounded-0 btn-sm text-uppercase">Shop Now</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+				<form method="get" action="" id="sortingform">
+					<div class="sidebar">
+						<div class="widget">
+							<h5 class="widget_title">Filter</h5>
+							<div class="filter_price">
+								<?php
+									$min = ($this->input->get('min') > -1)?$this->input->get('min'):50;
+									$max = ($this->input->get('max') > -1)?$this->input->get('max'):2500;
+								?>
+								 <div id="price_filter" data-min="0" data-max="<?=pPrice(5000, 1)?>" data-min-value="<?=pPrice($min, 1)?>" data-max-value="<?=pPrice($max, 1)?>" data-price-sign="<?=$this->session->userdata('set_currency')?>"></div>
+								 <div class="price_range">
+									 <span>Price: <span id="flt_price"></span></span>
+									 <input type=" hidden" id="price_first" name="min" value="<?=$min?>">
+									 <input type=" hidden" id="price_second" name="max" value="<?=$max?>">
+								 </div>
+							 </div>
+						</div>
+						
+						<div class="widget">
+							<h5 class="widget_title">Color</h5>
+							<div class="product_color_switch">
+								<span data-color="#87554B" onclick="saveValue('red', '#color')"></span>
+								<span data-color="#333333" onclick="saveValue('blue', '#color')"></span>
+								<span data-color="#DA323F" onclick="saveValue('', '#color')"></span>
+								<span data-color="#2F366C" onclick="saveValue('', '#color')"></span>
+								<span data-color="#B5B6BB" onclick="saveValue('', '#color')"></span>
+								<span data-color="#B9C2DF" onclick="saveValue('', '#color')"></span>
+								<span data-color="#5FB7D4" onclick="saveValue('', '#color')"></span>
+								<span data-color="#2F366C" onclick="saveValue('', '#color')"></span>
+							</div>
+							<input type="hidden " name="color" value="" id="color">
+							<input type="hidden " name="sort" value="<?=$this->input->get('sort')?>" id="sorting_val">
+						</div>
+						
+						<div class="widget">
+							<h5 class="widget_title">Brand</h5>	
+							<ul class="list_brand">
+								<li>
+									<div class="custome-checkbox">
+										<input class="form-check-input" type="checkbox" name="checkbox" id="Arrivals" value="">
+										<label class="form-check-label" for="Arrivals"><span>New Arrivals</span></label>
+									</div>
+								</li>
+								<li>
+									<div class="custome-checkbox">
+										<input class="form-check-input" type="checkbox" name="checkbox" id="Lighting" value="">
+										<label class="form-check-label" for="Lighting"><span>Lighting</span></label>
+									</div>
+								</li>
+								<li>
+									<div class="custome-checkbox">
+										<input class="form-check-input" type="checkbox" name="checkbox" id="Tables" value="">
+										<label class="form-check-label" for="Tables"><span>Tables</span></label>
+									</div>
+								</li>
+								<li>
+									<div class="custome-checkbox">
+										<input class="form-check-input" type="checkbox" name="checkbox" id="Chairs" value="">
+										<label class="form-check-label" for="Chairs"><span>Chairs</span></label>
+									</div>
+								</li>
+								<li>
+									<div class="custome-checkbox">
+										<input class="form-check-input" type="checkbox" name="checkbox" id="Accessories" value="">
+										<label class="form-check-label" for="Accessories"><span>Accessories</span></label>
+									</div>
+								</li>
+								<button type="submit" class="btn btn-fill-out btn-sm text-uppercase">Apply Filter</button>
+							</ul>
+						</div>
+						
+						
+						<?php if($categories) {?>
+						<div class="widget">
+							<h5 class="widget_title">Categories</h5>
+							<ul class="widget_categories">
+								<?php foreach($categories as $category) { ?>
+								<li><a href="<?=site_url('category/'.$category['categories_slug'])?>"><span class="categories_name active"><?=$category['categories_name']?></span><!--<span class="categories_num">()</span></a></li>-->
+								<?php } ?>
+							</ul>
+						</div>
+						<?php } ?>
+						
+						
+						
+						<div class="widget pt-4">
+							<div class="shop_banner">
+								<div class="banner_img overlay_bg_20">
+									<img src="<?=site_url('themes/shopping/assets/')?>images/sidebar_banner_img.jpg" alt="sidebar_banner_img">
+								</div> 
+								<div class="shop_bn_content2 text_white">
+									<h5 class="text-uppercase shop_subtitle">New Collection</h5>
+									<h3 class="text-uppercase shop_title">Sale 30% Off</h3>
+									<a href="#" class="btn btn-white rounded-0 btn-sm text-uppercase">Shop Now</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
             </div>
         </div>
     </div>
