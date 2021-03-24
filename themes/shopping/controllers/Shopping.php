@@ -39,7 +39,7 @@ class Shopping extends MX_Controller
 		// print_r($data['currencies']);
 		// $data["categories"] = $this->Shopping_model->get_Categories();
 		// $data['main_category'] = $this->load->view("inc/category", $data, true);
-		
+
 		$data["categories"] = $this->Shopping_model->get_Categories();
 		$data['currencies'] = $this->Shopping_model->get_Setting();
 		$data['cart'] = $this->load->view("partials/cart", $data, true);
@@ -139,7 +139,8 @@ class Shopping extends MX_Controller
 		$this->pagination->initialize($config);
 
 		$data["posts"] = $this->Shopping_model->get_All_Products($limit, $offset);
-		$data["grades"] = $this->Shopping_model->get_Grades();
+		$data["colours"] = $this->Shopping_model->getColours();
+		$data["brands"] = $this->Shopping_model->getBrands();
 		$data["categories"] = $this->Shopping_model->get_Categories();
 		$data['total_rows'] = count($data["posts"]);
 		$data["title"] = "Quick Shop";
@@ -163,7 +164,7 @@ class Shopping extends MX_Controller
 		return $data;
 	}
 
-	public function pagination(array $info = [])
+	public function pagination($count)
 	{
 		$limit = getenv('PostPerPage');
 		$offset = ($this->input->get('per_page')) ? $this->input->get('per_page') - 1 : 0;
@@ -171,7 +172,7 @@ class Shopping extends MX_Controller
 		$config['enable_query_strings'] = true;
 		$config['use_page_numbers'] = true;
 		$config['page_query_string'] = true;
-		$data['total_rows'] = $config['total_rows'] = count($this->Shopping_model->get_Cat_Products($id));
+		$data['total_rows'] = $config['total_rows'] = $count;
 		$config['per_page'] = $limit;
 		$config['full_tag_open'] = '<ul>';
 		$config['full_tag_close'] = '</ul>';
@@ -304,6 +305,8 @@ class Shopping extends MX_Controller
 		$data["categories"] = $this->Shopping_model->get_Categories();
 		$data["posts"] = $this->Shopping_model->get_Daily_Deals();
 		$data['total_rows'] = count($data["posts"]);
+		$data["colours"] = $this->Shopping_model->getColours();
+		$data["brands"] = $this->Shopping_model->getBrands();
 		$data["page"] = $this->load->view("shop", $data, true);
 		return $data;
 	}
@@ -323,6 +326,8 @@ class Shopping extends MX_Controller
 		$data["page"] = $this->load->view("best-offers", $data, true);
 		$data['total_rows'] = 0;
 		if ($id) {
+			$data["colours"] = $this->Shopping_model->getColours();
+			$data["brands"] = $this->Shopping_model->getBrands();
 			$data["posts"] = $this->Shopping_model->get_Best_Offers_Products($id);
 			$data['total_rows'] = count($data["posts"]);
 			$data["title"] = @$data["posts"][0]['products_best_offers_title'];
@@ -383,22 +388,25 @@ class Shopping extends MX_Controller
 		$data["page"] = $this->load->view("terms-conditions", $data, true);
 		return $data;
 	}
-	
-	public function load_ReturnPolicy(){
+
+	public function load_ReturnPolicy()
+	{
 		$data["title"] = "Return Policy";
 		$data['setting'] = $this->db->where('pages_id', '4')->get('pages')->row_array();
 		$data["page"] = $this->load->view("return-policy", $data, true);
 		return $data;
 	}
-	
-	public function load_OrderTracking(){
+
+	public function load_OrderTracking()
+	{
 		$data["title"] = "Order Tracking";
 		$data['setting'] = $this->db->where('pages_id', '5')->get('pages')->row_array();
 		$data["page"] = $this->load->view("order-tracking", $data, true);
 		return $data;
 	}
 
-	public function load_ShippingCostAndPolicy(){
+	public function load_ShippingCostAndPolicy()
+	{
 		$data["title"] = "Shipping Cost And Policy";
 		$data['setting'] = $this->db->where('pages_id', '6')->get('pages')->row_array();
 		$data["page"] = $this->load->view("shipping-cost-and-policy", $data, true);
@@ -456,6 +464,8 @@ class Shopping extends MX_Controller
 		$data['category'] = false;
 		$data["grades"] = $this->Shopping_model->get_Grades();
 		$data['posts'] = $this->New_model->search_Result($limit, $offset);
+		$data["colours"] = $this->Shopping_model->getColours();
+		$data["brands"] = $this->Shopping_model->getBrands();
 		$data['total_rows'] = count($data["posts"]);
 		$data["title"] = "Search Result";
 		$data["page"] = $this->load->view("shop", $data, true);
@@ -499,6 +509,7 @@ class Shopping extends MX_Controller
 
 		$data["categories"] = $this->Shopping_model->get_Categories();
 		$data["grades"] = $this->Shopping_model->get_Grades();
+		$data["brands"] = $this->Shopping_model->getBrands();
 		$data["posts"] = $this->New_model->search_Result($limit, $offset);
 		$data['total_rows'] = count($data["posts"]);
 		$data["title"] = "Search Result";
@@ -568,6 +579,8 @@ class Shopping extends MX_Controller
 
 		$data["categories"] = $this->Shopping_model->get_Categories();
 		// print_r($data);
+		$data["colours"] = $this->Shopping_model->getColours();
+		$data["brands"] = $this->Shopping_model->getBrands();
 		$data['posts'] = $this->Shopping_model->get_Products_By_Categories_Slug($slug, $limit, $offset);
 		$data["title"] = $data['category']['categories_name'];
 		$data["page"] = $this->load->view("shop", $data, true);
@@ -1513,15 +1526,16 @@ class Shopping extends MX_Controller
 		$this->load->model('Shopping_model');
 		$posts = $this->db->where('posts_type', 'product')->where('posts_status', '1')->join('products', 'posts_id = products_post', 'left')->get('posts')->result_array();
 		$this->db->query('TRUNCATE search');
-		if($posts){
-			foreach($posts as $post){
-				$filter =1;
+		$this->db->query('TRUNCATE search_filter');
+		if ($posts) {
+			foreach ($posts as $post) {
+				$filter = 1;
 				$data = [];
 				$price = $post['products_price'];
 				$salePrice = $post['products_sale_price'];
-				if($salePrice != '0' && $salePrice != '' && $salePrice < $price){
+				if ($salePrice != '0' && $salePrice != '' && $salePrice < $price) {
 					$sPrice = $salePrice;
-				}else{
+				} else {
 					$sPrice = $price;
 				}
 				$data = [
@@ -1529,14 +1543,31 @@ class Shopping extends MX_Controller
 					'search_title' => $post['posts_title'],
 					'search_price' => $sPrice,
 					'search_brand' => $post['products_brand'],
-					'search_amount' => $post['products_price']??0,
-					'search_sale' => ($post['products_sale_price'] > 0)?$post['products_sale_price']:0,
+					'search_amount' => $post['products_price'] ?? 0,
+					'search_sale' => ($post['products_sale_price'] > 0) ? $post['products_sale_price'] : 0,
 					'search_image' => $post['posts_cover'],
 					'search_slug' => $post['posts_slug'],
-					'search_desc' => $post['products_short_description'],
-					'search_filter' => $filter
+					'search_desc' => $post['products_short_description']
 				];
 				$this->db->insert('search', $data);
+				$ins_id = $this->db->insert_id();
+
+				$attributes = $this->db->where('product_attributes_post', $post['posts_id'])->get('product_attributes')->result_array();
+				if ($attributes) {
+					foreach ($attributes as $attribute) {
+						$variables = $this->db->where('product_variables_attribute', $attribute['product_attributes_id'])->get('product_variables')->result_array();
+						if ($variables) {
+							foreach ($variables as $variable) {
+								$filter = [
+									'search_filter_search' => $ins_id,
+									'search_filter_key' => $attribute['product_attributes_name'],
+									'search_filter_value' => $variable['product_variables_value'],
+								];
+								$this->db->insert('search_filter', $filter);
+							}
+						}
+					}
+				}
 			}
 		}
 	}
