@@ -1499,7 +1499,7 @@ class Shopping extends MX_Controller
 	public function cron_currency()
 	{
 		$this->load->model('Shopping_model');
-		$url = "https://api.exchangeratesapi.io/latest?base=INR";
+		$url = "https://api.exchangeratesapi.io/latest?base=USD";
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_URL, $url);
@@ -1570,6 +1570,13 @@ class Shopping extends MX_Controller
 				}
 			}
 		}
+	}
+
+	public function rate_product($id)
+	{
+		$this->is_Logged_In();
+		$data['id'] = $id;
+		$this->load->view("partials/save-rate", $data);
 	}
 
 

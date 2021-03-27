@@ -5,10 +5,10 @@
     <!-- Meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta content="Anil z" name="author">
+    <meta content="iPatco, Prashant Rijal, Shikha Panwar" name="author">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Shopwise is Powerful features and You Can Use The Perfect Build this Template For Any eCommerce Website. The template is built for sell Fashion Products, Shoes, Bags, Cosmetics, Clothes, Sunglasses, Furniture, Kids Products, Electronics, Stationery Products and Sporting Goods.">
-    <meta name="keywords" content="ecommerce, electronics store, Fashion store, furniture store,  bootstrap 4, clean, minimal, modern, online store, responsive, retail, shopping, ecommerce store">
+    <meta name="description" content="Pinelop is a digital project that represents the largest and most complete online showcase of every day home and lifestyle products. Within Pinelop there are several areas: first of all useful fashionable consumables, Pinelop is a whole world of gifts, souvenirs and kitchen items ... all of them 100% designed for your needs.">
+    <meta name="keywords" content="pinelop,shopping cart, shopping, ipatco, iPatco, Shop">
 
     <!-- SITE TITLE -->
     <title><?= $title ?> | Pinelop</title>
@@ -130,55 +130,6 @@
                             <li class="dropdown">
                                 <a class="nav-link <?= (current_url() == site_url('best-offers')) ? 'active' : '' ?>" href="<?= site_url('best-offers') ?>">Best Offers</a>
                             </li>
-
-
-                            <!--<li class="dropdown dropdown-mega-menu">
-                            <a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">Products</a>
-                            <div class="dropdown-menu">
-                                <ul class="mega-menu d-lg-flex">
-									<li class="mega-menu-col col-lg-3">
-										<ul> 
-											<li class="dropdown-header">Woman's</li>
-											<li><a class="dropdown-item nav-link nav_item" href="shop-list-left-sidebar.html">Vestibulum sed</a></li>
-											<li><a class="dropdown-item nav-link nav_item" href="shop-left-sidebar.html">Donec porttitor</a></li>
-											<li><a class="dropdown-item nav-link nav_item" href="shop-right-sidebar.html">Donec vitae facilisis</a></li>
-											<li><a class="dropdown-item nav-link nav_item" href="shop-list.html">Curabitur tempus</a></li>
-											<li><a class="dropdown-item nav-link nav_item" href="shop-load-more.html">Vivamus in tortor</a></li>
-										</ul>
-									</li>
-									<li class="mega-menu-col col-lg-3">
-										<ul>
-											<li class="dropdown-header">Men's</li>
-											<li><a class="dropdown-item nav-link nav_item" href="shop-cart.html">Donec vitae ante ante</a></li>
-											<li><a class="dropdown-item nav-link nav_item" href="checkout.html">Etiam ac rutrum</a></li>
-											<li><a class="dropdown-item nav-link nav_item" href="wishlist.html">Quisque condimentum</a></li>
-											<li><a class="dropdown-item nav-link nav_item" href="compare.html">Curabitur laoreet</a></li>
-											<li><a class="dropdown-item nav-link nav_item" href="order-completed.html">Vivamus in tortor</a></li>
-										</ul>
-									</li>
-									<li class="mega-menu-col col-lg-3">
-										<ul>
-											<li class="dropdown-header">Kid's</li>
-											<li><a class="dropdown-item nav-link nav_item" href="shop-product-detail.html">Donec vitae facilisis</a></li>
-											<li><a class="dropdown-item nav-link nav_item" href="shop-product-detail-left-sidebar.html">Quisque condimentum</a></li>
-											<li><a class="dropdown-item nav-link nav_item" href="shop-product-detail-right-sidebar.html">Etiam ac rutrum</a></li>
-											<li><a class="dropdown-item nav-link nav_item" href="shop-product-detail-thumbnails-left.html">Donec vitae ante ante</a></li>
-											<li><a class="dropdown-item nav-link nav_item" href="shop-product-detail-thumbnails-left.html">Donec porttitor</a></li>
-										</ul>
-									</li>
-									<li class="mega-menu-col col-lg-3">
-										<ul>
-											<li class="dropdown-header">Accessories</li>
-											<li><a class="dropdown-item nav-link nav_item" href="shop-product-detail.html">Donec vitae facilisis</a></li>
-											<li><a class="dropdown-item nav-link nav_item" href="shop-product-detail-left-sidebar.html">Quisque condimentum</a></li>
-											<li><a class="dropdown-item nav-link nav_item" href="shop-product-detail-right-sidebar.html">Etiam ac rutrum</a></li>
-											<li><a class="dropdown-item nav-link nav_item" href="shop-product-detail-thumbnails-left.html">Donec vitae ante ante</a></li>
-											<li><a class="dropdown-item nav-link nav_item" href="shop-product-detail-thumbnails-left.html">Donec porttitor</a></li>
-										</ul>
-									</li>
-								</ul>
-                            </div>
-                        </li>-->
 
                             <li><a class="nav-link nav_item <?= (current_url() == site_url('contact-us')) ? 'active' : '' ?>" href="<?= site_url('contact-us') ?>">Contact Us</a></li>
                         </ul>

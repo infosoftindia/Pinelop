@@ -209,9 +209,9 @@
 									<li class="nav-item">
 										<a class="nav-link active" id="Description-tab" data-toggle="tab" href="#Description" role="tab" aria-controls="Description" aria-selected="true">Description</a>
 									</li>
-									<li class="nav-item">
+									<!-- <li class="nav-item">
 										<a class="nav-link" id="Additional-info-tab" data-toggle="tab" href="#Additional-info" role="tab" aria-controls="Additional-info" aria-selected="false">Additional info</a>
-									</li>
+									</li> -->
 									<li class="nav-item">
 										<a class="nav-link" id="Reviews-tab" data-toggle="tab" href="#Reviews" role="tab" aria-controls="Reviews" aria-selected="false">Reviews (<?= count($post['comments']) ?>)</a>
 									</li>
@@ -226,7 +226,7 @@
 										}
 										?>
 									</div>
-
+									<!-- 
 									<div class="tab-pane fade" id="Additional-info" role="tabpanel" aria-labelledby="Additional-info-tab">
 										<table class="table table-bordered">
 											<tr>
@@ -247,43 +247,8 @@
 											</tr>
 										</table>
 									</div>
-
+ -->
 									<div class="tab-pane fade" id="Reviews" role="tabpanel" aria-labelledby="Reviews-tab">
-										<div class="review_form field_form mb-5">
-											<h5>Add a review</h5>
-											<?php if ($this->session->userdata('user_id')) { ?>
-												<form method="POST" action="<?= site_url('shopping/save_comment/' . $post['posts_id'] * 2722) ?>" class="row mt-3">
-													<div class="form-group col-12">
-														<div class="star_rating">
-															<span data-value="1"><i class="far fa-star"></i></span>
-															<span data-value="2"><i class="far fa-star"></i></span>
-															<span data-value="3"><i class="far fa-star"></i></span>
-															<span data-value="4"><i class="far fa-star"></i></span>
-															<span data-value="5"><i class="far fa-star"></i></span>
-														</div>
-													</div>
-													<div class="form-group col-md-6">
-														<input required="required" id="star_ratingg" name="rate" type="hidden" autocomplete="off">
-														<input required="required" placeholder="Enter Name *" class="form-control" name="name" type="text" autocomplete="off">
-													</div>
-													<div class="form-group col-md-6">
-														<input required="required" placeholder="Enter Email *" class="form-control" name="email" type="email" autocomplete="off">
-													</div>
-													<div class="form-group col-12">
-														<textarea required="required" placeholder="Your review *" class="form-control" name="message" rows="4"></textarea>
-													</div>
-
-													<div class="form-group col-12">
-
-														<button type="submit" class="btn btn-fill-out" name="submit" value="Submit">Submit Review</button>
-													</div>
-												</form>
-											<?php } else { ?>
-												<p class="text-center">Note: Please Login For Submit Review..! &nbsp;&nbsp; <u><a href="<?= site_url('login') ?>">Go To Login Page</a></u></p>
-											<?php } ?>
-										</div>
-
-
 										<div class="comments pt-4">
 											<h5 class="product_tab_title">(<?= count($post['comments']) ?>) Review For <span><?= $post['posts_title'] ?></span></h5>
 											<ul class="list_none comment_list mt-4">
@@ -317,61 +282,62 @@
 							</div>
 						</div>
 					</div>
+				</div>
+				<div class="row">
+					<div class="col-12">
+						<div class="small_divider"></div>
+						<div class="divider"></div>
+						<div class="medium_divider"></div>
+					</div>
+				</div>
+
+				<?php if ($post['similars']) { ?>
 					<div class="row">
 						<div class="col-12">
-							<div class="small_divider"></div>
-							<div class="divider"></div>
-							<div class="medium_divider"></div>
-						</div>
-					</div>
-
-					<?php if ($post['similars']) { ?>
-						<div class="row">
-							<div class="col-12">
-								<div class="heading_s1">
-									<h3>Releted Products</h3>
-								</div>
-								<div class="row">
-									<div class="col-md-12">
-										<div class="releted_product_slider carousel_slider owl-carousel owl-theme" data-margin="20" data-responsive='{"0":{"items": "1"}, "481":{"items": "2"}, "768":{"items": "3"}, "1199":{"items": "4"}}'>
-											<?php
-											if ($post['similars']) {
-												foreach ($post['similars'] as $similar) {
-													echo '<div class="item">' . product_widget($similar) . '</div>';
-												}
+							<div class="heading_s1">
+								<h3>Releted Products</h3>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<div class="releted_product_slider carousel_slider owl-carousel owl-theme" data-margin="20" data-responsive='{"0":{"items": "1"}, "481":{"items": "2"}, "768":{"items": "3"}, "1199":{"items": "4"}}'>
+										<?php
+										if ($post['similars']) {
+											foreach ($post['similars'] as $similar) {
+												echo '<div class="item">' . product_widget($similar) . '</div>';
 											}
-											?>
-										</div>
+										}
+										?>
 									</div>
 								</div>
 							</div>
 						</div>
-					<?php } ?>
-				</div>
+					</div>
+				<?php } ?>
 			</div>
-			<!-- END SECTION SHOP -->
+		</div>
+		<!-- END SECTION SHOP -->
 
-			<!-- START SECTION SUBSCRIBE NEWSLETTER -->
-			<div class="section bg_default small_pt small_pb">
-				<div class="container">
-					<div class="row align-items-center">
-						<div class="col-md-6">
-							<div class="heading_s1 mb-md-0 heading_light">
-								<h3>Subscribe Our Newsletter</h3>
-							</div>
+		<!-- START SECTION SUBSCRIBE NEWSLETTER -->
+		<div class="section bg_default small_pt small_pb">
+			<div class="container">
+				<div class="row align-items-center">
+					<div class="col-md-6">
+						<div class="heading_s1 mb-md-0 heading_light">
+							<h3>Subscribe Our Newsletter</h3>
 						</div>
-						<div class="col-md-6">
-							<div class="newsletter_form">
-								<form>
-									<input type="text" required="" class="form-control rounded-0" placeholder="Enter Email Address">
-									<button type="submit" class="btn btn-dark rounded-0" name="submit" value="Submit">Subscribe</button>
-								</form>
-							</div>
+					</div>
+					<div class="col-md-6">
+						<div class="newsletter_form">
+							<form>
+								<input type="text" required="" class="form-control rounded-0" placeholder="Enter Email Address">
+								<button type="submit" class="btn btn-dark rounded-0" name="submit" value="Submit">Subscribe</button>
+							</form>
 						</div>
 					</div>
 				</div>
 			</div>
-			<!-- START SECTION SUBSCRIBE NEWSLETTER -->
+		</div>
+		<!-- START SECTION SUBSCRIBE NEWSLETTER -->
 		</div>
 		<!-- END MAIN CONTENT -->
 
