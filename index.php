@@ -55,15 +55,32 @@
  * NOTE: If you change these, also change the error_reporting() code below
  */
 
+
+// Path to the front controller (this file) directory
+define('FCPATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
+
 include 'vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(FCPATH);
 $dotenv->load();
 
 define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : getenv('environment'));
 
-
 if ($_COOKIE["users_local_session"] == '') {
 	setcookie("users_local_session", md5(uniqid(time(), true)), time() + 31536000);
+}
+
+if (ENVIRONMENT == 'production') {
+	if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "") {
+		$redirect = "https://" . str_replace("www.", "", $_SERVER['HTTP_HOST']) . $_SERVER['REQUEST_URI'];
+		header("HTTP/1.1 301 Moved Permanently");
+		header("Location: $redirect");
+	}
+
+	$protocol = (@$_SERVER["HTTPS"] == "on") ? "https://" : "http://";
+	if (substr($_SERVER['HTTP_HOST'], 0, 4) !== 'www.') {
+		header('Location: ' . $protocol . 'www.' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+		exit;
+	}
 }
 
 
@@ -231,9 +248,6 @@ define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
 
 // Path to the system directory
 define('BASEPATH', $system_path);
-
-// Path to the front controller (this file) directory
-define('FCPATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 
 // Name of the "system" directory
 define('SYSDIR', basename(BASEPATH));
