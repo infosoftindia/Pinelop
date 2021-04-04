@@ -97,7 +97,7 @@ class Products_model extends CI_Model
 		return $id;
 	}
 
-	public function update($id, $image, $slug, $front, $back)
+	public function update($id, $image, $slug)
 	{
 		$categories = $this->input->post('category');
 		$similars = $this->input->post('similars');
@@ -372,20 +372,40 @@ class Products_model extends CI_Model
 	// }
 
 
-	public function delete_Variant($id)
+	public function delete_Attributes($id)
 	{
+		$this->db->where('product_variables_attribute', $id);
+		$this->db->delete('product_variables');
 		$this->db->where('product_attributes_id', $id);
 		$this->db->delete('product_attributes');
+	}
+
+	public function delete_Variant($id)
+	{
+		$this->db->where('product_variables_id', $id);
+		$this->db->delete('product_variables');
 	}
 
 	public function add_Variant($id, $image)
 	{
 		$data = array(
+			'product_variables_value' => $this->input->post('name'),
 			'product_variables_price' => $this->input->post('price'),
 			'product_variables_image' => $image,
 		);
 		$this->db->where('product_variables_id', $id);
 		$this->db->update('product_variables', $data);
+	}
+
+	public function new_Variant($id, $image)
+	{
+		$data = array(
+			'product_variables_value' =>  $this->input->post('name'),
+			'product_variables_price' => $this->input->post('price'),
+			'product_variables_image' => $image,
+			'product_variables_attribute' => $id,
+		);
+		$this->db->insert('product_variables', $data);
 	}
 
 	public function variants($id = FALSE)
@@ -404,5 +424,17 @@ class Products_model extends CI_Model
 	public function brands()
 	{
 		return $this->db->order_by('brands_url')->get('brands')->result_array();
+	}
+
+	public function multipleImages($id, $files)
+	{
+		if ($files) {
+			foreach ($files as $file) {
+				$this->db->insert('products_gallery', [
+					'products_gallery_post' => $id,
+					'products_gallery_image' => $file
+				]);
+			}
+		}
 	}
 }

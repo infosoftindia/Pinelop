@@ -45,36 +45,15 @@
 											<img src="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>" alt="product_small_img1">
 										</a>
 									</div>
-									<div class="item">
-										<a href="#" class="product_gallery_item" data-image="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>" data-zoom-image="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>">
-											<img src="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>" alt="product_small_img2">
-										</a>
-									</div>
-									<div class="item">
-										<a href="#" class="product_gallery_item" data-image="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>" data-zoom-image="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>">
-											<img src="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>" alt="product_small_img3">
-										</a>
-									</div>
-									<div class="item">
-										<a href="#" class="product_gallery_item" data-image="assets/images/product_img1-4.jpg" data-zoom-image="assets/images/product_zoom_img4.jpg">
-											<img src="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>" alt="product_small_img4">
-										</a>
-									</div>
-									<div class="item">
-										<a href="#" class="product_gallery_item active" data-image="assets/images/product_img1.jpg" data-zoom-image="assets/images/product_zoom_img1.jpg">
-											<img src="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>" alt="product_small_img1">
-										</a>
-									</div>
-									<div class="item">
-										<a href="#" class="product_gallery_item" data-image="assets/images/product_img1-2.jpg" data-zoom-image="assets/images/product_zoom_img2.jpg">
-											<img src="assets/images/product_small_img2.jpg" alt="product_small_img2">
-										</a>
-									</div>
-									<div class="item">
-										<a href="#" class="product_gallery_item" data-image="assets/images/product_img1-3.jpg" data-zoom-image="assets/images/product_zoom_img3.jpg">
-											<img src="assets/images/product_small_img3.jpg" alt="product_small_img3">
-										</a>
-									</div>
+									<?php if ($post['galleries']) {
+										foreach ($post['galleries'] as $gallery) { ?>
+											<div class="item">
+												<a href="#" class="product_gallery_item" data-image="<?= base_url(getenv('uploads') . $gallery['products_gallery_image']) ?>" data-zoom-image="<?= base_url(getenv('uploads') . $gallery['products_gallery_image']) ?>">
+													<img src="<?= base_url(getenv('uploads') . $gallery['products_gallery_image']) ?>" alt="product_small_img2">
+												</a>
+											</div>
+									<?php }
+									} ?>
 								</div>
 								<div class="product_img_box">
 									<img id="product_img" src='<?= base_url(getenv('uploads') . $post['posts_cover']) ?>' data-zoom-image="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>" alt="<?= $post['posts_title'] ?>">
@@ -91,24 +70,24 @@
 									<div class="product_price">
 										<span class="price"><?= pPrice($sPrice) ?></span>
 										<?= ($sPrice != $post['products_price']) ? '<del>' . pPrice($post['products_price']) . '</del>' : '' ?>
-										<div class="on_sale">
+										<!-- <div class="on_sale">
 											<span>35% Off</span>
-										</div>
+										</div> -->
 									</div>
 									<div class="rating_wrap">
 										<div class="rating">
 											<div class="product_rate" style="width:80%"></div>
 										</div>
-										<span class="rating_num">(21)</span>
+										<span class="rating_num">(<?= count($post['comments']) ?>)</span>
 									</div>
 									<div class="pr_desc">
 										<p><?= $post['products_short_description'] ?></p>
 									</div>
 									<div class="product_sort_info">
 										<ul>
-											<li><i class="linearicons-shield-check"></i> 1 Year AL Jazeera Brand Warranty</li>
+											<li><i class="linearicons-shield-check"></i> Payment Security</li>
 											<li><i class="linearicons-sync"></i> 30 Day Return Policy</li>
-											<li><i class="linearicons-bag-dollar"></i> Cash on Delivery available</li>
+											<li><i class="linearicons-bag-dollar"></i> Free fast worldwide delivery</li>
 										</ul>
 									</div>
 
@@ -175,16 +154,16 @@
 								</form>
 								<hr>
 								<ul class="product-meta">
-									<li>SKU: <a href="#"><?= $post['products_sku'] ?></a></li>
+									<!-- <li>SKU: <a href="#"><?= $post['products_sku'] ?></a></li> -->
 									<?php if ($post['categories']) {
 										foreach ($post['categories'] as $category) { ?>
 											<li>Category: <a href="<?= site_url('category/' . $category['categories_slug']) ?>"><?= $category['categories_name'] ?></a></li>
 									<?php }
 									} ?>
-									<li>Tags: <a href="#" rel="tag">Cloth</a>, <a href="#" rel="tag">printed</a> </li>
+									<!-- <li>Tags: <a href="#" rel="tag">Cloth</a>, <a href="#" rel="tag">printed</a> </li> -->
 								</ul>
 
-								<div class="product_share">
+								<!-- <div class="product_share">
 									<span>Share:</span>
 									<ul class="social_icons">
 										<li><a href="#"><i class="ion-social-facebook"></i></a></li>
@@ -193,7 +172,7 @@
 										<li><a href="#"><i class="ion-social-youtube-outline"></i></a></li>
 										<li><a href="#"><i class="ion-social-instagram-outline"></i></a></li>
 									</ul>
-								</div>
+								</div> -->
 							</div>
 						</div>
 					</div>
@@ -226,28 +205,6 @@
 										}
 										?>
 									</div>
-									<!-- 
-									<div class="tab-pane fade" id="Additional-info" role="tabpanel" aria-labelledby="Additional-info-tab">
-										<table class="table table-bordered">
-											<tr>
-												<td>Capacity</td>
-												<td>5 Kg</td>
-											</tr>
-											<tr>
-												<td>Color</td>
-												<td>Black, Brown, Red,</td>
-											</tr>
-											<tr>
-												<td>Water Resistant</td>
-												<td>Yes</td>
-											</tr>
-											<tr>
-												<td>Material</td>
-												<td>Artificial Leather</td>
-											</tr>
-										</table>
-									</div>
- -->
 									<div class="tab-pane fade" id="Reviews" role="tabpanel" aria-labelledby="Reviews-tab">
 										<div class="comments pt-4">
 											<h5 class="product_tab_title">(<?= count($post['comments']) ?>) Review For <span><?= $post['posts_title'] ?></span></h5>
@@ -282,37 +239,34 @@
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-12">
-						<div class="small_divider"></div>
-						<div class="divider"></div>
-						<div class="medium_divider"></div>
-					</div>
-				</div>
 
-				<?php if ($post['similars']) { ?>
 					<div class="row">
 						<div class="col-12">
-							<div class="heading_s1">
-								<h3>Releted Products</h3>
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-									<div class="releted_product_slider carousel_slider owl-carousel owl-theme" data-margin="20" data-responsive='{"0":{"items": "1"}, "481":{"items": "2"}, "768":{"items": "3"}, "1199":{"items": "4"}}'>
-										<?php
-										if ($post['similars']) {
-											foreach ($post['similars'] as $similar) {
-												echo '<div class="item">' . product_widget($similar) . '</div>';
-											}
+							<div class="small_divider"></div>
+							<div class="divider"></div>
+							<div class="medium_divider"></div>
+						</div>
+					</div>
+
+					<?php if ($post['similars']) { ?>
+						<div class="row">
+							<div class="col-12">
+								<div class="heading_s1">
+									<h3>Releted Products</h3>
+								</div>
+								<div class="releted_product_slider carousel_slider owl-carousel owl-theme" data-margin="20" data-responsive='{"0":{"items": "1"}, "481":{"items": "2"}, "768":{"items": "3"}, "1199":{"items": "4"}}'>
+									<?php
+									if ($post['similars']) {
+										foreach ($post['similars'] as $similar) {
+											echo '<div class="item">' . product_widget($similar) . '</div>';
 										}
-										?>
-									</div>
+									}
+									?>
 								</div>
 							</div>
 						</div>
-					</div>
-				<?php } ?>
+					<?php } ?>
+				</div>
 			</div>
 		</div>
 		<!-- END SECTION SHOP -->

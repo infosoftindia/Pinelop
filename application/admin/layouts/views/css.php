@@ -13,6 +13,8 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
 <link rel="stylesheet" href="<?= base_url() ?>assets/multiselect/css/multi-select.css">
+<link rel="stylesheet" href="<?= base_url() ?>assets/filer/font/font-fileuploader.css">
+<link rel="stylesheet" href="<?= base_url() ?>assets/filer/jquery.fileuploader.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bs4-summernote@0.8.10/dist/summernote-bs4.css">
 <script>
 	var dailyGraph = [];
@@ -21,6 +23,14 @@
 	var base_url = "<?= base_url() ?>";
 </script>
 <style>
+	.fileuploader {
+		visibility: visible;
+	}
+
+	.cbbcb {
+		visibility: hidden;
+	}
+
 	.hidethis {
 		display: none;
 	}

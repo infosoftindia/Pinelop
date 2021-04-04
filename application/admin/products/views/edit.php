@@ -183,13 +183,19 @@
 				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
 					<div class="card">
 						<div class="card-header">Product Gallery</div>
-						<div class="card-body">
-							<label class="custom-file">
-								<input type="file" id="file2" class="custom-file-input" name="userfiles" onchange="readURLMultiple(this, '#img_gallery')" multiple>
-								<span class="custom-file-control count_image"></span>
-							</label>
-							<div class="row mt-2" id="img_gallery"></div>
+						<div class="card-body cbbcb">
+							<input type="file" id="file2" class="dropify" name="userfiles[]" multiple>
 						</div>
+						<ul class="list-group">
+							<?php if ($product['galleries']) {
+								foreach ($product['galleries'] as $gallery) { ?>
+									<li class="list-group-item d-flex justify-content-between align-items-center">
+										<img src="/<?= getenv('uploads') . $gallery['products_gallery_image'] ?>" height="50">
+										<a href="<?= admin_url('products/delete/image/' . $product['posts_id'] . '?image=' . $gallery['products_gallery_image']) ?>" class="text-right btn btn-sm btn-danger">Delete</a>
+									</li>
+							<?php }
+							} ?>
+						</ul>
 					</div>
 				</div>
 				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">

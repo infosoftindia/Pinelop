@@ -8,6 +8,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 <script src="<?= base_url() ?>assets/js/common.js"></script>
 
+
 <script src="<?= base_url() ?>assets/multiselect/js/jquery.multi-select.js"></script>
 <script src="<?= base_url() ?>assets/multiselect/js/jquery.quicksearch.js"></script>
 <script src="<?= base_url() ?>assets/fselect/fSelect.js"></script>
@@ -21,6 +22,7 @@
 <script src="<?= base_url() ?>assets/vendor/slimscroll/slimscroll.min.js"></script>
 <script src="<?= base_url() ?>assets/vendor/slimscroll/custom-scrollbar.js"></script>
 
+<script src="<?= base_url() ?>assets/filer/jquery.fileuploader.min.js"></script>
 <!-- C3 Graphs -->
 <script src="<?= base_url() ?>assets/vendor/d3/d3.min.js"></script>
 <script src="<?= base_url() ?>assets/vendor/c3/c3.min.js"></script>
@@ -39,6 +41,9 @@
 <script src="<?= base_url() ?>assets/custom.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
+		$('.dropify').fileuploader({
+			addMore: true
+		});
 		$('#data-table-p').DataTable({
 			"ajax": '<?= site_url('products/json') ?>'
 		});

@@ -242,7 +242,7 @@ function pPrice($price, $numonly = FALSE)
 	$curr_val = $prc->session->userdata('set_currency_value');
 	$curr = $prc->session->userdata('set_currency');
 	$price = $price * $curr_val;
-	if($numonly == 1){
+	if ($numonly == 1) {
 		return round($price, 2);
 	}
 	return $curr . ' ' . round($price, 2);

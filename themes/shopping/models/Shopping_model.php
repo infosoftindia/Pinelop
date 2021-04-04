@@ -294,8 +294,8 @@ class Shopping_model extends CI_Model
 
 	public function do_Register_Social($data)
 	{
-		$f_Name = $data['fname'];
-		$l_Name = @$data['lname'];
+		$f_Name = @$data['fname'][0];
+		$l_Name = str_replace($data['fname'][0] . ' ', '', implode(' ', $data['fname']));
 		$email = $data['email'];
 		$password = rand(1111, 9999) . rand(1111, 9999);
 
@@ -303,7 +303,7 @@ class Shopping_model extends CI_Model
 			'users_first_name'		=> $f_Name,
 			'users_last_name'		=> $l_Name,
 			'users_email'			=> $email,
-			'users_mobile'			=> '0000000000',
+			'users_mobile'			=> '',
 			'users_password'		=> password_hash($password, PASSWORD_DEFAULT),
 			'users_role'			=> '1',
 			'users_social'			=> $data['social'],
@@ -456,6 +456,26 @@ class Shopping_model extends CI_Model
 			'user_address_phone' => $this->input->post('phone')
 		]);
 		return $this->db->insert_id();
+	}
+
+	public function save_Edit_Address($id, $address)
+	{
+		$this->db->where('address_id', $address)->update('address', [
+			'address_line1' => $this->input->post('country'),
+			'address_line2' => $this->input->post('state'),
+			'address_line3' => $this->input->post('city'),
+			'address_line4' => $this->input->post('pin'),
+			'address_line5' => $this->input->post('address'),
+			'address_line6' => $this->input->post('additional'),
+		]);
+		$this->db->where('user_address_id', $id)->update('user_address', [
+			'user_address_fname' => $this->input->post('fname'),
+			'user_address_lname' => $this->input->post('lname'),
+			'user_address_company' => $this->input->post('company'),
+			'user_address_email' => $this->input->post('email'),
+			'user_address_phone' => $this->input->post('phone')
+		]);
+		return 1;
 	}
 
 	public function COD_Payment($address)

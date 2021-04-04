@@ -134,10 +134,19 @@ class Products extends MX_Controller
 			$data['page'] = $this->load->view('edit', $data, true);
 			echo modules::run('layouts/layouts/load', $data);
 		} else {
+			// print_r($_FILES);
+			// die;
 			$this->edit_Product($id);
 		}
 	}
 
+	public function edit_Image($id)
+	{
+		$image = $this->input->get('image');
+		$this->db->where('products_gallery_image', $image)->delete('products_gallery');
+		deleteUpload($image);
+		redirect(admin_url('products/edit/' . $id));
+	}
 
 	public function edit_Product($id)
 	{
@@ -151,7 +160,9 @@ class Products extends MX_Controller
 			$image = $this->input->post('old_Picture');
 		}
 		$slug = makeSlug($this->input->post('title'), $id);
-		$this->Products_model->update($id, $image, $slug, $front, $back);
+		$this->Products_model->update($id, $image, $slug);
+		$files = $this->Basic_model->uploadMultipleImage('userfiles');
+		$this->Products_model->multipleImages($id, $files);
 		save_Activity('Product updated');
 		redirect(admin_url() . 'products/edit/' . $id);
 	}
@@ -284,7 +295,28 @@ class Products extends MX_Controller
 		}
 	}
 
+	public function new_Variant($id)
+	{
+		allowUser([2, 121]);
+		$this->load->model('Products_model');
+		if ($_FILES['userfile']['name']) {
+			$image = doUpload();
+		} else {
+			$image = '';
+		}
+		$this->Products_model->new_Variant($id, $image);
+		redirect($_SERVER['HTTP_REFERER']);
+	}
+
 	public function delete_Attributes($id)
+	{
+		allowUser([121]);
+		$this->load->model('Products_model');
+		$this->Products_model->delete_Attributes($id);
+		redirect($_SERVER['HTTP_REFERER']);
+	}
+
+	public function delete_Variant($id)
 	{
 		allowUser([121]);
 		$this->load->model('Products_model');

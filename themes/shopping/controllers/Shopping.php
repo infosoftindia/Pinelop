@@ -598,6 +598,7 @@ class Shopping extends MX_Controller
 			show_404();
 		}
 		$data["title"] = $data['post']['posts_title'];
+		// print_r($data);
 		$data["page"] = $this->load->view("single_product", $data, true);
 		return $data;
 		// die;
@@ -985,6 +986,19 @@ class Shopping extends MX_Controller
 		redirect($_SERVER['HTTP_REFERER']);
 	}
 
+	public function save_edit_address($id, $address)
+	{
+		$this->is_Logged_In();
+		$this->load->model('Shopping_model');
+		$cart = $this->Shopping_model->save_Edit_Address($id, $address);
+		if ($cart) {
+			$this->session->set_flashdata('success', 'New Address saved successfully');
+		} else {
+			$this->session->set_flashdata('danger', 'We detect problem saving new address. Please try again.');
+		}
+		redirect($_SERVER['HTTP_REFERER']);
+	}
+
 	public function cod_payment($address)
 	{
 		$this->is_Logged_In();
@@ -1026,6 +1040,18 @@ class Shopping extends MX_Controller
 				$this->session->set_flashdata('danger', 'We detect problem deleting your address. Please try again.');
 			}
 			redirect($_SERVER['HTTP_REFERER']);
+		}
+	}
+
+	public function edit_address($id)
+	{
+		$this->is_Logged_In();
+		if (!$this->session->userdata('user_id')) {
+			$this->e404();
+		} else {
+			$this->load->model('Shopping_model');
+			$data['address'] = $this->Shopping_model->get_Address_By_ID($id);
+			$this->load->view("partials/edit-address", $data);
 		}
 	}
 
@@ -1472,6 +1498,7 @@ class Shopping extends MX_Controller
 		$this->load->model('Shopping_model');
 
 		$fname = $response['name'];
+		$name = explode(' ', $fname);
 		$email = $response['email'];
 
 		$check_Email = $this->Shopping_model->check_Email($email);
@@ -1499,14 +1526,14 @@ class Shopping extends MX_Controller
 	public function cron_currency()
 	{
 		$this->load->model('Shopping_model');
-		$url = "https://api.exchangeratesapi.io/latest?base=USD";
+		$url = "https://v6.exchangerate-api.com/v6/93ec5be084f3e5b112ddedfe/latest/USD";
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_URL, $url);
 		$result = curl_exec($ch);
 		$array = json_decode($result, true);
-		print_r($array);
-		foreach ($array['rates'] as $key => $value) {
+		// print_r($array);
+		foreach ($array['conversion_rates'] as $key => $value) {
 			$this->Shopping_model->insert_Setting($key, $value);
 		}
 	}
@@ -1523,6 +1550,7 @@ class Shopping extends MX_Controller
 
 	public function cron()
 	{
+		$this->cron_currency();
 		$this->load->model('Shopping_model');
 		$posts = $this->db->where('posts_type', 'product')->where('posts_status', '1')->join('products', 'posts_id = products_post', 'left')->get('posts')->result_array();
 		$this->db->query('TRUNCATE search');
