@@ -53,4 +53,194 @@
 	.my-float {
 		margin-top: 11px;
 	}
+
+	@media only screen and (min-width: 300px) {
+
+		.banner_section:not(.full_screen),
+		.banner_section:not(.full_screen) .carousel-item,
+		.banner_section:not(.full_screen) .banner_content_wrap,
+		.banner_section:not(.full_screen) .banner_content_wrap .carousel-item {
+			height: 100px !important;
+		}
+
+		.btn1 {
+			padding: 5px 15px !important;
+			font-size: 10px !important;
+		}
+
+		.banner_content2 h2 {
+			font-size: 12px;
+		}
+	}
+
+	@media only screen and (min-width: 400px) {
+
+		.banner_section:not(.full_screen),
+		.banner_section:not(.full_screen) .carousel-item,
+		.banner_section:not(.full_screen) .banner_content_wrap,
+		.banner_section:not(.full_screen) .banner_content_wrap .carousel-item {
+			height: 135px !important;
+		}
+
+		.btn1 {
+			padding: 5px 15px !important;
+			font-size: 10px !important;
+		}
+
+		.banner_content2 h2 {
+			font-size: 12px;
+		}
+	}
+
+	@media only screen and (min-width: 500px) {
+
+		.banner_section:not(.full_screen),
+		.banner_section:not(.full_screen) .carousel-item,
+		.banner_section:not(.full_screen) .banner_content_wrap,
+		.banner_section:not(.full_screen) .banner_content_wrap .carousel-item {
+			height: 170px !important;
+		}
+
+		.btn1 {
+			padding: 5px 15px !important;
+			font-size: 10px !important;
+		}
+
+		.banner_content2 h2 {
+			font-size: 12px;
+		}
+	}
+
+	@media only screen and (min-width: 600px) {
+
+		.banner_section:not(.full_screen),
+		.banner_section:not(.full_screen) .carousel-item,
+		.banner_section:not(.full_screen) .banner_content_wrap,
+		.banner_section:not(.full_screen) .banner_content_wrap .carousel-item {
+			height: 200px !important;
+		}
+
+		.btn1 {
+			padding: 5px 15px !important;
+			font-size: 10px !important;
+		}
+
+		.banner_content2 h2 {
+			font-size: 12px;
+		}
+	}
+
+	@media only screen and (min-width: 700px) {
+
+		.banner_section:not(.full_screen),
+		.banner_section:not(.full_screen) .carousel-item,
+		.banner_section:not(.full_screen) .banner_content_wrap,
+		.banner_section:not(.full_screen) .banner_content_wrap .carousel-item {
+			height: 240px !important;
+		}
+
+		.btn1 {
+			padding: 5px 15px !important;
+			font-size: 10px !important;
+		}
+
+		.banner_content2 h2 {
+			font-size: 12px;
+		}
+	}
+
+	@media only screen and (min-width: 800px) {
+
+		.banner_section:not(.full_screen),
+		.banner_section:not(.full_screen) .carousel-item,
+		.banner_section:not(.full_screen) .banner_content_wrap,
+		.banner_section:not(.full_screen) .banner_content_wrap .carousel-item {
+			height: 270px !important;
+		}
+
+		.btn1 {
+			padding: 5px 15px !important;
+			font-size: 10px !important;
+		}
+
+		.banner_content2 h2 {
+			font-size: 40px;
+		}
+	}
+
+	@media only screen and (min-width: 900px) {
+
+		.banner_section:not(.full_screen),
+		.banner_section:not(.full_screen) .carousel-item,
+		.banner_section:not(.full_screen) .banner_content_wrap,
+		.banner_section:not(.full_screen) .banner_content_wrap .carousel-item {
+			height: 300px !important;
+		}
+
+		.btn1 {
+			padding: 12px 35px !important;
+			font-size: 1rem !important;
+		}
+
+		.banner_content2 h2 {
+			font-size: 50px;
+		}
+	}
+
+	@media only screen and (min-width: 1000px) {
+
+		.banner_section:not(.full_screen),
+		.banner_section:not(.full_screen) .carousel-item,
+		.banner_section:not(.full_screen) .banner_content_wrap,
+		.banner_section:not(.full_screen) .banner_content_wrap .carousel-item {
+			height: 400px !important;
+		}
+
+		.btn1 {
+			padding: 12px 35px !important;
+			font-size: 1rem !important;
+		}
+
+		.banner_content2 h2 {
+			font-size: 55px;
+		}
+	}
+
+	@media only screen and (min-width: 1100px) {
+
+		.banner_section:not(.full_screen),
+		.banner_section:not(.full_screen) .carousel-item,
+		.banner_section:not(.full_screen) .banner_content_wrap,
+		.banner_section:not(.full_screen) .banner_content_wrap .carousel-item {
+			height: 500px !important;
+		}
+
+		.btn1 {
+			padding: 12px 35px !important;
+			font-size: 1rem !important;
+		}
+
+		.banner_content2 h2 {
+			font-size: 60px;
+		}
+	}
+
+	@media only screen and (min-width: 1200px) {
+
+		.banner_section:not(.full_screen),
+		.banner_section:not(.full_screen) .carousel-item,
+		.banner_section:not(.full_screen) .banner_content_wrap,
+		.banner_section:not(.full_screen) .banner_content_wrap .carousel-item {
+			height: 650px !important;
+		}
+
+		.btn1 {
+			padding: 12px 35px !important;
+			font-size: 1rem !important;
+		}
+
+		.banner_content2 h2 {
+			font-size: 70px;
+		}
+	}
 </style>

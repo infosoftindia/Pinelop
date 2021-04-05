@@ -4,8 +4,10 @@
         <div class="carousel-inner">
             <?php $index = 1;
             if ($sliders) {
-                foreach ($sliders as $slider) { ?>
-                    <div class="carousel-item <?= ($index++ == 1) ? 'active' : '' ?> background_bg" data-img-src="<?= base_url(getenv('uploads') . $slider['sliders_image']) ?>">
+                foreach ($sliders as $slider) {
+                    // list($width, $height) = getimagesize(base_url(getenv('uploads') . $slider['sliders_image'])); 
+            ?>
+                    <div class="carousel-item <?= ($index++ == 1) ? 'active' : '' ?> background_bg tales sliderImg" data-img-src="<?= base_url(getenv('uploads') . $slider['sliders_image']) ?>">
                         <div class="banner_slide_content banner_content_inner">
                             <div class="container">
                                 <div class="row">
@@ -13,8 +15,8 @@
                                         <div class="banner_content2">
                                             <!--<h6 class="mb-2 mb-sm-3 staggered-animation text-uppercase" data-animation="fadeInDown" data-animation-delay="0.2s">New Tranding</h6>-->
                                             <h2 class="staggered-animation" data-animation="fadeInDown" data-animation-delay="0.3s"><?= $slider['sliders_title'] ?></h2>
-                                            <p class="staggered-animation" data-animation="fadeInUp" data-animation-delay="0.4s"><?= $slider['sliders_description'] ?></p>
-                                            <a class="btn btn-line-fill btn-radius staggered-animation text-uppercase" href="<?= site_url('shop') ?>" data-animation="fadeInUp" data-animation-delay="0.5s">Shop Now</a>
+                                            <!-- <p class="staggered-animation" data-animation="fadeInUp" data-animation-delay="0.4s"><?= $slider['sliders_description'] ?></p> -->
+                                            <a class="btn btn1 btn-line-fill btn-radius staggered-animation text-uppercase" href="<?= site_url('shop') ?>" data-animation="fadeInUp" data-animation-delay="0.5s">Shop Now</a>
                                         </div>
                                     </div>
                                 </div>
