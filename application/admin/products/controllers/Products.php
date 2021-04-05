@@ -107,6 +107,7 @@ class Products extends MX_Controller
 		$galleries = $this->Basic_model->uploadMultipleImage('userfiles');
 		$insert = $this->Products_model->insert($image, $slug, $galleries);
 		save_Activity('New product Added');
+		modules::run('layouts/layouts/cron');
 		redirect(admin_url() . 'products/edit/' . $insert);
 	}
 
@@ -164,6 +165,7 @@ class Products extends MX_Controller
 		$files = $this->Basic_model->uploadMultipleImage('userfiles');
 		$this->Products_model->multipleImages($id, $files);
 		save_Activity('Product updated');
+		modules::run('layouts/layouts/cron');
 		redirect(admin_url() . 'products/edit/' . $id);
 	}
 
@@ -250,6 +252,7 @@ class Products extends MX_Controller
 			echo modules::run('layouts/layouts/load', $data);
 		} else {
 			$this->Products_model->add_Attribute($id);
+			modules::run('layouts/layouts/cron');
 			redirect($_SERVER['HTTP_REFERER']);
 		}
 	}
@@ -267,6 +270,7 @@ class Products extends MX_Controller
 			echo modules::run('layouts/layouts/load', $data);
 		} else {
 			$this->Products_model->update_Attribute($id);
+			modules::run('layouts/layouts/cron');
 			redirect(admin_url() . 'products/edit-attributes/' . $id);
 		}
 	}
@@ -291,6 +295,7 @@ class Products extends MX_Controller
 				$image = $this->input->post('old_Picture');
 			}
 			$this->Products_model->add_Variant($id, $image);
+			modules::run('layouts/layouts/cron');
 			redirect($_SERVER['HTTP_REFERER']);
 		}
 	}
@@ -305,6 +310,7 @@ class Products extends MX_Controller
 			$image = '';
 		}
 		$this->Products_model->new_Variant($id, $image);
+		modules::run('layouts/layouts/cron');
 		redirect($_SERVER['HTTP_REFERER']);
 	}
 
@@ -313,6 +319,7 @@ class Products extends MX_Controller
 		allowUser([121]);
 		$this->load->model('Products_model');
 		$this->Products_model->delete_Attributes($id);
+		modules::run('layouts/layouts/cron');
 		redirect($_SERVER['HTTP_REFERER']);
 	}
 
@@ -321,6 +328,7 @@ class Products extends MX_Controller
 		allowUser([121]);
 		$this->load->model('Products_model');
 		$this->Products_model->delete_Variant($id);
+		modules::run('layouts/layouts/cron');
 		redirect($_SERVER['HTTP_REFERER']);
 	}
 
@@ -332,6 +340,7 @@ class Products extends MX_Controller
 		);
 		$this->db->where('product_variables_id', $id);
 		$this->db->update('product_variables', $data);
+		modules::run('layouts/layouts/cron');
 		redirect($_SERVER['HTTP_REFERER']);
 	}
 

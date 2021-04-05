@@ -1,24 +1,37 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Layouts extends MX_Controller {
+class Layouts extends MX_Controller
+{
 
-	public function css(){
+	public function css()
+	{
 		return $this->load->view('css', false, true);
 	}
 
-	public function js(){
+	public function js()
+	{
 		return $this->load->view('js', false, true);
 	}
 
-	public function load($data){
-		if($this->session->userdata('user_role') != 121 && $this->session->userdata('user_role') != 2){
+	public function cron()
+	{
+		$url = 'https://www.pinelop.com/shopping/cron';
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_exec($ch);
+	}
+
+	public function load($data)
+	{
+		if ($this->session->userdata('user_role') != 121 && $this->session->userdata('user_role') != 2) {
 			redirect('');
 		}
 		allowUser([2, 121]);
 		// if($this->uri->segment(1) != getenv('admin')){
-			// $c = str_replace(site_url(), admin_url(), current_url());
-			// redirect($c);
+		// $c = str_replace(site_url(), admin_url(), current_url());
+		// redirect($c);
 		// }
 		$menus['menus'] = $this->menu->getMenu();
 		$data['css'] = $this->css();
