@@ -40,7 +40,7 @@
 							</div>
 							<div class="form-group  mb-3">
 								<label for="desc">Description</label>
-								<textarea class="form-control" id="desc" rows="6" placeholder="Product Description" value="" name="description"><?= $product['products_description'] ?></textarea>
+								<textarea class="form-control editor" id="desc" rows="6" placeholder="Product Description" value="" name="description"><?= $product['products_description'] ?></textarea>
 								<label class="m-0 text-danger"><?= form_error('description') ?></label>
 							</div>
 						</div>
@@ -74,7 +74,39 @@
 									<label class="m-0 text-danger"><?= form_error('sale_price') ?></label>
 								</div>
 							</div>
-							<button type="submit" class="btn btn-success mt-3">Update Product</button>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+					<div class="card">
+						<div class="card-header">Specification <a href="javascript:;" onclick="duplicateElement('.cloneThis', '.appendHere')" style="float: right;">Add New</a></div>
+						<div class="card-body appendHere">
+							<?php if ($product['specification']) {
+								foreach ($product['specification'] as $specification) { ?>
+									<div class="form-row">
+										<div class="form-group col-md-4">
+											<label for="sku">Title</label>
+											<input type="text" class="form-control" id="" placeholder="Title" value="<?= $specification['product_specification_title'] ?>" name="s_title[]">
+										</div>
+										<div class="form-group col-md-8">
+											<label for="quantity">Value</label>
+											<input type="text" class="form-control" id="" placeholder="Value" value="<?= $specification['product_specification_description'] ?>" name="s_value[]">
+										</div>
+									</div>
+							<?php }
+							} ?>
+							<div class="cloneThis" hidden>
+								<div class="form-row">
+									<div class="form-group col-md-4">
+										<label for="sku">Title <small>(Leave blank to ignore)</small></label>
+										<input type="text" class="form-control" id="" placeholder="Title" value="" name="s_title[]">
+									</div>
+									<div class="form-group col-md-8">
+										<label for="quantity">Value</label>
+										<input type="text" class="form-control" id="" placeholder="Value" value="" name="s_value[]">
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

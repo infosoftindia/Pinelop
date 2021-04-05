@@ -68,6 +68,11 @@
 		});
 	}
 
+	function duplicateElement(clone, paste) {
+		var html = $(clone).html()
+		$(paste).append(html);
+	}
+
 	// $('.catChange').change({
 	// var val = $(this).val();
 	// $.post('', {cat:val}, function(html){

@@ -107,7 +107,7 @@
 		</div>
         <div class="row">
             <div class="col-md-12">
-            	<div class="product_slider carousel_slider owl-carousel owl-theme nav_style1" data-loop="true" data-dots="false" data-nav="true" data-margin="20" data-responsive='{"0":{"items": "1"}, "481":{"items": "2"}, "768":{"items": "3"}, "1199":{"items": "4"}}'>
+            	<div class="product_slider carousel_slider owl-carousel owl-theme nav_style1" data-loop="false" data-dots="false" data-nav="true" data-margin="20" data-responsive='{"0":{"items": "1"}, "481":{"items": "2"}, "768":{"items": "3"}, "1199":{"items": "4"}}'>
 					 <?php //if($parent_cat){
                         // foreach($parent_cat as $category){
                         // echo '<div class="item">'.category_grid($category).'</div>';
@@ -135,7 +135,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="product_slider carousel_slider owl-carousel owl-theme nav_style4" data-loop="true" data-dots="false" data-nav="true" data-margin="30" data-responsive='{"0":{"items": "1"}, "481":{"items": "2"}, "768":{"items": "3"}, "1199":{"items": "4"}}'>
+                    <div class="product_slider carousel_slider owl-carousel owl-theme nav_style4" data-loop="false" data-dots="false" data-nav="true" data-margin="30" data-responsive='{"0":{"items": "1"}, "481":{"items": "2"}, "768":{"items": "3"}, "1199":{"items": "4"}}'>
                         <?php if ($parent_cat) {
                             foreach ($parent_cat as $category) {
                                 echo '<div class="item">' . category_grid($category) . '</div>';
@@ -183,7 +183,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="product_slider carousel_slider owl-carousel owl-theme nav_style4" data-loop="true" data-dots="false" data-nav="true" data-margin="30" data-responsive='{"0":{"items": "1"}, "481":{"items": "2"}, "768":{"items": "3"}, "1199":{"items": "4"}}'>
+                    <div class="product_slider carousel_slider owl-carousel owl-theme nav_style4" data-loop="false" data-dots="false" data-nav="true" data-margin="30" data-responsive='{"0":{"items": "1"}, "481":{"items": "2"}, "768":{"items": "3"}, "1199":{"items": "4"}}'>
                         <?php
                         if ($dailyDeals) {
                             foreach ($dailyDeals as $product) {
@@ -255,7 +255,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12">
-                        <div class="client_logo carousel_slider owl-carousel owl-theme" data-dots="false" data-margin="30" data-loop="true" data-autoplay="true" data-responsive='{"0":{"items": "2"}, "480":{"items": "3"}, "767":{"items": "4"}, "991":{"items": "5"}}'>
+                        <div class="client_logo carousel_slider owl-carousel owl-theme" data-dots="false" data-margin="30" data-loop="false" data-autoplay="true" data-responsive='{"0":{"items": "2"}, "480":{"items": "3"}, "767":{"items": "4"}, "991":{"items": "5"}}'>
                             <?php foreach ($brands as $brand) { ?>
                                 <div class="item">
                                     <div class="cl_logo">

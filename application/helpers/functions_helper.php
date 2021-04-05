@@ -313,8 +313,8 @@ function get_ip()
 
 function save_Activity($title, $user = FALSE)
 {
-	$prc = &get_instance();
-	return $prc->Basic_model->save_Activity($title, $user);
+	// $prc = &get_instance();
+	// return $prc->Basic_model->save_Activity($title, $user);
 }
 
 function pdf($html)

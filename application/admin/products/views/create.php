@@ -40,7 +40,7 @@
 							</div>
 							<div class="form-group  mb-3">
 								<label for="desc">Description</label>
-								<textarea class="form-control" id="desc" rows="4" placeholder="Product Description" name="description"><?= set_value('description') ?></textarea>
+								<textarea class="form-control editor" id="desc" rows="4" placeholder="Product Description" name="description"><?= set_value('description') ?></textarea>
 								<label class="m-0 text-danger"><?= form_error('description') ?></label>
 							</div>
 

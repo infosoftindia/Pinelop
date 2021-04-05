@@ -16,6 +16,9 @@
 					<li>
 						<a href="'.admin_url('products/categories').'">Product Categories</a>
 					</li>
+					<li>
+						<a href="'.admin_url('products/brands').'">Product Brands</a>
+					</li>
 					
 				</ul>
 			</li>';
@@ -23,4 +26,3 @@
 	$menus['menu'] = $menu;
 	$menus['position'] = 3;
 	$menus['role'] = '';
-?>

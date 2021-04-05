@@ -64,6 +64,22 @@ class Products extends MX_Controller
 		$this->db->delete('posts');
 		$this->db->where('products_post', $id);
 		$this->db->delete('products');
+		$this->db->where('products_category_post', $id);
+		$this->db->delete('products_category');
+		$this->db->where('products_daily_deals_post', $id);
+		$this->db->delete('products_daily_deals');
+		$this->db->where('products_gallery_post', $id);
+		$this->db->delete('products_gallery');
+		$this->db->where('product_similars_post', $id);
+		$this->db->delete('product_similars');
+		$this->db->where('product_specification_post', $id);
+		$this->db->delete('product_specification');
+		$this->db->where('best_offer_products_post', $id);
+		$this->db->delete('best_offer_products');
+		$this->db->where('carts_product', $id);
+		$this->db->delete('carts');
+		$this->db->where('comments_post', $id);
+		$this->db->delete('comments');
 		save_Activity('Delete product');
 		redirect('products/manage');
 	}
@@ -72,9 +88,9 @@ class Products extends MX_Controller
 	{
 		allowUser([2, 121]);
 		$this->load->model('Products_model');
-		$this->form_validation->set_rules('title', 'Product Name', 'required|min_length[5]|max_length[100]');
-		$this->form_validation->set_rules('short_desc', 'Short Description', 'required|min_length[10]|max_length[100]');
-		$this->form_validation->set_rules('description', 'Description', 'required|min_length[25]');
+		$this->form_validation->set_rules('title', 'Product Name', 'required|max_length[100]');
+		$this->form_validation->set_rules('short_desc', 'Short Description', 'required');
+		$this->form_validation->set_rules('description', 'Description', 'required');
 		$this->form_validation->set_rules('sku', 'SKU (Store Keeping Unit)', 'required|min_length[1]|max_length[25]');
 		$this->form_validation->set_rules('quantity', 'Quantity', 'required|is_numeric|min_length[1]');
 		$this->form_validation->set_rules('price', 'Regular Price', 'required|is_numeric|min_length[1]');
@@ -115,9 +131,9 @@ class Products extends MX_Controller
 	{
 		allowUser([2, 121]);
 		$this->load->model('Products_model');
-		$this->form_validation->set_rules('title', 'Product Name', 'required|min_length[5]|max_length[100]');
-		$this->form_validation->set_rules('short_desc', 'Short Description', 'required|min_length[10]|max_length[100]');
-		$this->form_validation->set_rules('description', 'Description', 'required|min_length[25]');
+		$this->form_validation->set_rules('title', 'Product Name', 'required|max_length[100]');
+		$this->form_validation->set_rules('short_desc', 'Short Description', 'required');
+		$this->form_validation->set_rules('description', 'Description', 'required');
 		$this->form_validation->set_rules('tags', 'Tags', 'min_length[1]');
 		$this->form_validation->set_rules('sku', 'SKU (Store Keeping Unit)', 'required|min_length[1]|max_length[25]');
 		$this->form_validation->set_rules('quantity', 'Quantity', 'required|is_numeric|min_length[1]');
@@ -361,119 +377,68 @@ class Products extends MX_Controller
 
 
 
-	// public function surface(){
-	// allowUser([121]);
-	// $this->form_validation->set_rules('name', 'Surface Name', 'required|min_length[1]|max_length[100]');
+	public function brands()
+	{
+		allowUser([121]);
+		$this->form_validation->set_rules('name', 'Brand Name', 'required|min_length[1]|max_length[100]');
 
-	// if ($this->form_validation->run() === FALSE){
-	// $this->load->model('Products_model');
-	// $data['categories'] = $this->Products_model->surface();
-	// $data['title'] = 'Product Surface';
-	// $data['page'] = $this->load->view('surface', $data, true);
-	// echo modules::run('layouts/layouts/load', $data);
-	// } else {
-	// $this->save_New_Surface();
-	// }
-	// }
+		if ($this->form_validation->run() === FALSE) {
+			$this->load->model('Products_model');
+			$data["brands"] = $this->Products_model->get_Brands();
+			$data['title'] = 'Product Brands';
+			$data['page'] = $this->load->view('brands', $data, true);
+			echo modules::run('layouts/layouts/load', $data);
+		} else {
+			$this->save_New_Brand();
+		}
+	}
 
-	// public function save_New_Surface(){
-	// allowUser([121]);
-	// $this->load->model('Products_model');
-	// $slug = make_Cat_Slug($this->input->post('name'));
-	// $insert = $this->Products_model->insert_Surface($slug);
-	// save_Activity('New Surface Added');
-	// redirect('products/surface');
-	// }
+	public function save_New_Brand()
+	{
+		allowUser([121]);
+		$this->load->model('Products_model');
+		if ($_FILES['userfile']['name']) {
+			$image = doUpload('userfile');
+		} else {
+			$image = "default.png";
+		}
+		$insert = $this->Products_model->save_Brand($image);
+		save_Activity('New category Added');
+		redirect(admin_url() . 'products/brands');
+	}
 
-	// public function update_Surface($id){
-	// allowUser([2, 121]);
-	// $this->load->model('Products_model');
-	// $this->load->model('Basic_model');
-	// if($_FILES['userfile']['name']){
-	// $image = doUpload();
-	// deleteUpload($this->input->post('old_Picture'));
-	// }else{
-	// $image = $this->input->post('old_Picture');
-	// }
-	// $this->Products_model->update_Category($id, $image);
-	// save_Activity('Surface updated');
-	// redirect('products/surface');
-	// }
+	public function edit_brand($id)
+	{
+		allowUser([121]);
+		$this->load->model('Products_model');
+		$data["brand"] = $this->Products_model->get_Brands($id);
+		$this->load->view('edit_brand', $data);
+	}
 
-	// public function edit_Surface($id){
-	// allowUser([121]);
-	// $this->load->model('Products_model');
-	// $data['category'] = $this->Products_model->surface($id);
-	// $this->load->view('edit_surface', $data);
-	// }
+	public function update_Brand($id)
+	{
+		allowUser([2, 121]);
+		$this->load->model('Products_model');
+		$this->load->model('Basic_model');
+		if ($_FILES['userfile']['name']) {
+			$image = doUpload();
+			deleteUpload($this->input->post('old_Picture'));
+		} else {
+			$image = $this->input->post('old_Picture');
+		}
+		$this->Products_model->update_Brand($id, $image);
+		save_Activity('Brand updated');
+		redirect(admin_url() . 'products/brands');
+	}
 
-	// public function grade(){
-	// allowUser([121]);
-	// $this->form_validation->set_rules('name', 'Grade Title', 'required|min_length[1]|max_length[100]');
-
-	// if ($this->form_validation->run() === FALSE){
-	// $this->load->model('Products_model');
-	// $data['categories'] = $this->Products_model->grade();
-	// $data['title'] = 'Product Grade';
-	// $data['page'] = $this->load->view('grade', $data, true);
-	// echo modules::run('layouts/layouts/load', $data);
-	// } else {
-	// $this->save_New_Grade();
-	// }
-	// }
-
-	// public function save_New_Grade(){
-	// allowUser([121]);
-	// $this->load->model('Products_model');
-	// $slug = make_Cat_Slug($this->input->post('name'));
-	// $insert = $this->Products_model->insert_Grade($slug);
-	// save_Activity('New Grade Added');
-	// redirect('products/grade');
-	// }
-
-	// public function update_Grade($id){
-	// allowUser([2, 121]);
-	// $this->load->model('Products_model');
-	// $this->load->model('Basic_model');
-	// if($_FILES['userfile']['name']){
-	// $image = doUpload();
-	// deleteUpload($this->input->post('old_Picture'));
-	// }else{
-	// $image = $this->input->post('old_Picture');
-	// }
-	// $this->Products_model->update_Category($id, $image);
-	// save_Activity('Grade updated');
-	// redirect('products/grade');
-	// }
-
-
-
-	// public function edit_grade($id){
-	// allowUser([121]);
-	// $this->load->model('Products_model');
-	// $data['category'] = $this->Products_model->grade($id);
-	// $this->load->view('edit_grade', $data);
-	// }
-
-
-
-
-
-
-	// public function returnSurfaceWithCategory($limit = FALSE){
-	// $data = [];
-	// $this->load->model('Products_model');
-	// $surfaces = $this->Products_model->surface();
-	// if($surfaces){
-	// foreach($surfaces as $surface){
-	// $this->db->order_by('categories_id', 'ASC');
-	// $this->db->like('categories_parent', $surface['categories_id']);
-	// $surface['categories'] = $this->db->get('categories')->result_array();
-	// $data[] = $surface;
-	// }
-	// }
-	// return $data;
-	// }
+	public function delete_brand($id)
+	{
+		allowUser([121]);
+		$this->load->model('Products_model');
+		$this->Products_model->delete_Brand($id);
+		save_Activity('Brand Deleted');
+		redirect($_SERVER['HTTP_REFERER']);
+	}
 }
 
 

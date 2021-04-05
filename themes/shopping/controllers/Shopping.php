@@ -1550,7 +1550,7 @@ class Shopping extends MX_Controller
 
 	public function cron()
 	{
-		$this->cron_currency();
+		// $this->cron_currency();
 		$this->load->model('Shopping_model');
 		$posts = $this->db->where('posts_type', 'product')->where('posts_status', '1')->join('products', 'posts_id = products_post', 'left')->get('posts')->result_array();
 		$this->db->query('TRUNCATE search');
@@ -1559,6 +1559,16 @@ class Shopping extends MX_Controller
 			foreach ($posts as $post) {
 				$filter = 1;
 				$data = [];
+				$per = 0;
+				$rates = $this->db->where('comments_post', $post['posts_id'])->get('comments')->result_array();
+				if ($rates) {
+					$totalRate = 0;
+					foreach ($rates as $rate) {
+						$totalRate += $rate['comments_rate'];
+					}
+					$rt = count($rates);
+					$per = $totalRate / $rt;
+				}
 				$price = $post['products_price'];
 				$salePrice = $post['products_sale_price'];
 				if ($salePrice != '0' && $salePrice != '' && $salePrice < $price) {
@@ -1575,7 +1585,9 @@ class Shopping extends MX_Controller
 					'search_sale' => ($post['products_sale_price'] > 0) ? $post['products_sale_price'] : 0,
 					'search_image' => $post['posts_cover'],
 					'search_slug' => $post['posts_slug'],
-					'search_desc' => $post['products_short_description']
+					'search_desc' => $post['products_short_description'],
+					'search_rate' => $per,
+					'search_rate_count' => count($rates),
 				];
 				$this->db->insert('search', $data);
 				$ins_id = $this->db->insert_id();

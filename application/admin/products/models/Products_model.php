@@ -32,6 +32,9 @@ class Products_model extends CI_Model
 			$this->db->where('products_gallery_post', $post['posts_id']);
 			$post['galleries'] = $this->db->get('products_gallery')->result_array();
 
+			$this->db->where('product_specification_post', $post['posts_id']);
+			$post['specification'] = $this->db->get('product_specification')->result_array();
+
 			$this->db->where('product_attributes_post', $post['posts_id']);
 			$attributes = $this->db->get('product_attributes')->result_array();
 			foreach ($attributes as $attribute) {
@@ -101,6 +104,8 @@ class Products_model extends CI_Model
 	{
 		$categories = $this->input->post('category');
 		$similars = $this->input->post('similars');
+		$s_title = $this->input->post('s_title');
+		$s_value = $this->input->post('s_value');
 		$data = array(
 			'posts_title' => $this->input->post('title'),
 			// 'posts_slug' => $slug,
@@ -139,12 +144,26 @@ class Products_model extends CI_Model
 			$this->db->where('product_similars_post', $id);
 			$this->db->delete('product_similars');
 
+			$this->db->where('product_specification_post', $id);
+			$this->db->delete('product_specification');
+
 			foreach ($similars as $similar) {
 				$sim = array(
 					'product_similars_post' => $id,
 					'product_similars_similar' => $similar
 				);
 				$this->db->insert('product_similars', $sim);
+			}
+
+			for ($s = 0; $s < count($s_title); $s++) {
+				if ($s_title[$s] != '') {
+					$sim = array(
+						'product_specification_post' => $id,
+						'product_specification_title' => $s_title[$s],
+						'product_specification_description' => $s_value[$s]
+					);
+					$this->db->insert('product_specification', $sim);
+				}
 			}
 		}
 
@@ -436,5 +455,37 @@ class Products_model extends CI_Model
 				]);
 			}
 		}
+	}
+
+	public function save_Brand($image)
+	{
+		$this->db->insert('brands', [
+			'brands_image' => $image,
+			'brands_url' => $this->input->post('url_link')
+		]);
+	}
+
+	public function update_Brand($id, $image)
+	{
+		$this->db->where('brands_id', $id);
+		$this->db->update('brands', [
+			'brands_image' => $image,
+			'brands_url' => $this->input->post('url_link')
+		]);
+	}
+
+	public function get_Brands($id = false)
+	{
+		if ($id)
+			return $this->db->where('brands_id', $id)->get('brands')->row_array();
+		return $this->db->get('brands')->result_array();
+	}
+
+	public function delete_Brand($image)
+	{
+		if (file_exists(getenv('uploads') . $image)) {
+			unlink(getenv('uploads') . $image);
+		}
+		$this->db->where('brands_image', $image)->delete('brands');
 	}
 }

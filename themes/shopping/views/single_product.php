@@ -8,6 +8,15 @@
 		}
 		$prcP = $sPrice + ((20 / 100) * $sPrice);
 		$perMmPrice = $prcP / 1000;
+		$per = 0;
+		if ($post['comments']) {
+			$totalRate = 0;
+			foreach ($post['comments'] as $rate) {
+				$totalRate += $rate['comments_rate'];
+			}
+			$rt = count($post['comments']);
+			$per = $totalRate / $rt;
+		}
 		?>
 
 
@@ -76,7 +85,7 @@
 									</div>
 									<div class="rating_wrap">
 										<div class="rating">
-											<div class="product_rate" style="width:80%"></div>
+											<div class="product_rate" style="width:<?= $per * 20 ?>%"></div>
 										</div>
 										<span class="rating_num">(<?= count($post['comments']) ?>)</span>
 									</div>
@@ -203,7 +212,23 @@
 										foreach ($descriptionArray as $descArray) {
 											echo '<p style="">' . $descArray . '</p>';
 										}
+										if ($post['specifications']) {
 										?>
+											<div class="row">
+												<div class="col-md-6">
+													<table class="table table-line">
+														<tbody>
+															<?php foreach ($post['specifications'] as $specification) { ?>
+																<tr>
+																	<td><?= $specification['product_specification_title'] ?></td>
+																	<td><?= $specification['product_specification_description'] ?></td>
+																</tr>
+															<?php } ?>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										<?php } ?>
 									</div>
 									<div class="tab-pane fade" id="Reviews" role="tabpanel" aria-labelledby="Reviews-tab">
 										<div class="comments pt-4">
