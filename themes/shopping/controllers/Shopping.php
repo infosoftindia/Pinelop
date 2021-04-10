@@ -76,7 +76,8 @@ class Shopping extends MX_Controller
 		$data["sliders"] = $this->Shopping_model->get_Sliders();
 		$data["parent_cat"] = $this->Shopping_model->parent_cat();
 		$data["featuredCategories"] = $this->Shopping_model->get_Featured_Categories(2);
-		$data["products"] = $this->Shopping_model->get_Products(20);
+		$data["products"] = $this->Shopping_model->get_Exclusive_Products(20);
+		$data["newCollection"] = $this->Shopping_model->get_New_Collection(10);
 		$data["bestOffers"] = $this->Shopping_model->get_Best_Offers(3);
 
 		// $data["firstOffers"] = $this->Shopping_model->get_Home_Offers(3, 'first');
@@ -1582,6 +1583,7 @@ class Shopping extends MX_Controller
 					'search_slug' => $post['posts_slug'],
 					'search_desc' => $post['products_short_description'],
 					'search_rate' => $per,
+					'search_exclusive' => $post['products_featured'],
 					'search_rate_count' => count($rates),
 				];
 				$this->db->insert('search', $data);

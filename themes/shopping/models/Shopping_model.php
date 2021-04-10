@@ -621,6 +621,44 @@ class Shopping_model extends CI_Model
 		return $prc;
 	}
 
+	public function get_Exclusive_Products($limit = FALSE, $offset = FALSE)
+	{
+		if ($limit) {
+			$this->db->limit($limit, $offset);
+		}
+		$this->db->order_by('search_id', 'DESC');
+		$this->db->group_by('search_title');
+		$this->db->where('search_exclusive', '1');
+		$prc = [];
+		$datas = $this->db->get('search')->result_array();
+		if ($datas) {
+			foreach ($datas as $data) {
+				$data['wishlist'] = $this->db->where('wishlists_user', $this->session->userdata('user_id'))->where('wishlists_post', $data['search_product'])->get('wishlists')->num_rows();
+				$prc[] = $data;
+			}
+		}
+		return $prc;
+	}
+
+	public function get_New_Collection($limit)
+	{
+		if ($limit) {
+			$this->db->limit($limit);
+		}
+		$this->db->order_by('search_id', 'DESC');
+		$this->db->group_by('search_title');
+		// return $this->db->get('search')->result_array();
+		$prc = [];
+		$datas = $this->db->get('search')->result_array();
+		if ($datas) {
+			foreach ($datas as $data) {
+				$data['wishlist'] = $this->db->where('wishlists_user', $this->session->userdata('user_id'))->where('wishlists_post', $data['search_product'])->get('wishlists')->num_rows();
+				$prc[] = $data;
+			}
+		}
+		return $prc;
+	}
+
 	public function get_Product($limit = FALSE, $offset = FALSE)
 	{
 		$this->db->where('posts_status', '1');
