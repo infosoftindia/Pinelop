@@ -16,7 +16,7 @@
                                             <!--<h6 class="mb-2 mb-sm-3 staggered-animation text-uppercase" data-animation="fadeInDown" data-animation-delay="0.2s">New Tranding</h6>-->
                                             <h2 class="staggered-animation" data-animation="fadeInDown" data-animation-delay="0.3s"><?= $slider['sliders_title'] ?></h2>
                                             <!-- <p class="staggered-animation" data-animation="fadeInUp" data-animation-delay="0.4s"><?= $slider['sliders_description'] ?></p> -->
-                                            <a class="btn btn1 btn-line-fill btn-radius staggered-animation text-uppercase" href="<?= site_url('shop') ?>" data-animation="fadeInUp" data-animation-delay="0.5s">Shop Now</a>
+                                            <a class="btn btn1 btn-line-fill btn-radius staggered-animation text-uppercase" href="<?= $slider['categories_slug'] == '' ? site_url('shop') : site_url('category/' . $slider['categories_slug']) ?>" data-animation="fadeInUp" data-animation-delay="0.5s">Shop Now</a>
                                         </div>
                                     </div>
                                 </div>
@@ -251,25 +251,33 @@
     </div>
     <!-- END SECTION SHOP -->
 
-    <!-- START SECTION CLIENT LOGO -->
-    <?php if ($brands) { ?>
-        <div class="section small_pt">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="client_logo carousel_slider owl-carousel owl-theme" data-dots="false" data-margin="30" data-loop="false" data-autoplay="true" data-responsive='{"0":{"items": "2"}, "480":{"items": "3"}, "767":{"items": "4"}, "991":{"items": "5"}}'>
-                            <?php foreach ($brands as $brand) { ?>
-                                <div class="item">
-                                    <div class="cl_logo">
-                                        <a href="<?= $brand['brands_url'] ?>" target="_new"><img src="<?= base_url(getenv('uploads') . ($brand['brands_image'])) ?>" alt="cl_logo"></a>
-                                    </div>
-                                </div>
-                            <?php } ?>
-                        </div>
+    <!-- START SECTION SHOP -->
+    <div class="section small_pt pb_20">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="heading_s3 text-center">
+                        <h2>Daily Deals</h2>
+                    </div>
+                    <div class="small_divider clearfix"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="product_slider carousel_slider owl-carousel owl-theme nav_style4" data-loop="false" data-dots="false" data-nav="true" data-margin="30" data-responsive='{"0":{"items": "1"}, "481":{"items": "2"}, "768":{"items": "3"}, "1199":{"items": "4"}}'>
+                        <?php
+                        if ($dailyDeals) {
+                            foreach ($dailyDeals as $product) {
+                                echo '<div class="item">' . product_widget($product) . '</div>';
+                            }
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- END SECTION CLIENT LOGO -->
-    <?php } ?>
+    </div>
+    <!-- END SECTION SHOP -->
+
+
 </div>

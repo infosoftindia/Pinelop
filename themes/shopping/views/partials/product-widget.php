@@ -16,7 +16,7 @@ if ($salePrice != '0' && $salePrice != '' && $salePrice < $price) {
 			<ul class="list_none pr_action_btn">
 				<li><a href="<?= site_url('quick-view/' . $product['search_slug']) ?>" class="popup-ajax"><i class="icon-magnifier-add"></i></a></li>
 				<li>
-					<a href="javascript:;" data-href="<?= site_url('shopping/add_to_wishlist/' . $product['search_product']) ?>" title="Add to Wishlist" class="add_To_Wishlist"><i class="lni lni-heart"></i></a>
+					<a href="javascript:;" data-href="<?= site_url('shopping/add_to_wishlist/' . $product['search_product']) ?>" title="Add to Wishlist" class="add_To_Wishlist"><i class="<?= ($product['wishlist'] < 1) ? 'icon-heart' : 'lni lni-heart-filled text-danger' ?>"></i></a>
 				</li>
 			</ul>
 		</div>

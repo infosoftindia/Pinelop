@@ -27,8 +27,11 @@ if ($post['comments']) {
 				?>
 				<div id="pr_item_gallery" class="product_gallery_item slick_slider" data-slides-to-show="4" data-slides-to-scroll="1" data-infinite="false">
 					<div class="item">
-						<a href="#" class="product_gallery_item active" data-image="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>" data-zoom-image="<?= site_url('themes/shopping/assets/') ?>images/product_zoom_img1.jpg">
+						<!-- <a href="#" class="product_gallery_item active" data-image="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>" data-zoom-image="<?= site_url('themes/shopping/assets/') ?>images/product_zoom_img1.jpg">
 							<img src="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>" alt="product_small_img1" />
+						</a> -->
+						<a href="#" class="product_gallery_item" data-image="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>" data-zoom-image="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>">
+							<img src="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>" alt="product_small_img2">
 						</a>
 					</div>
 					<?php if ($post['galleries']) {

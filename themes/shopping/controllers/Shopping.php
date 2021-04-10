@@ -32,14 +32,6 @@ class Shopping extends MX_Controller
 		$data['css'] = $this->___css();
 		$data['js'] = $this->___js();
 		$data['carts'] = $this->Shopping_model->get_Cart();
-
-		// $data['menus'] = modules::run('widgets/widgets/list_menus');
-		// $data['surfaces'] = modules::run('products/products/returnSurfaceWithCategory');
-		// $data["parent_cat"] = $this->Shopping_model->parent_cat();
-		// print_r($data['currencies']);
-		// $data["categories"] = $this->Shopping_model->get_Categories();
-		// $data['main_category'] = $this->load->view("inc/category", $data, true);
-
 		$data["categories"] = $this->Shopping_model->get_Categories();
 		$data['currencies'] = $this->Shopping_model->get_Setting();
 		$data['cart'] = $this->load->view("partials/cart", $data, true);
@@ -95,6 +87,7 @@ class Shopping extends MX_Controller
 		$data["featuredProducts"] = $this->Shopping_model->get_Featured_Products(10);
 		$data["brands"] = $this->New_model->get_Brands();
 		$data["histories"] = $this->New_model->get_Recent_History(4);
+		print_r($data["sliders"]);
 		$data["page"] = $this->load->view("home", $data, true);
 		return $data;
 	}
@@ -944,7 +937,7 @@ class Shopping extends MX_Controller
 		} else {
 			$this->session->set_flashdata('error', 'We detect problem removing product from cart.');
 		}
-		// redirect($_SERVER['HTTP_REFERER']);
+		redirect($_SERVER['HTTP_REFERER']);
 	}
 
 	public function update_cart()

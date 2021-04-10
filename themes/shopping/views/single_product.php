@@ -89,7 +89,7 @@
 										</div>
 										<span class="rating_num">(<?= count($post['comments']) ?>)</span>
 									</div>
-									<div class="pr_desc">
+									<div class="pr_desc w-100">
 										<p><?= $post['products_short_description'] ?></p>
 									</div>
 									<div class="product_sort_info">
@@ -120,7 +120,7 @@
 													<div class="product_size_switch">
 														<?php if ($attribute['variables']) {
 															foreach ($attribute['variables'] as $variable) { ?>
-																<span onclick="addValue('<?= $variable['product_variables_value'] ?>', '#<?= $attribute['product_attributes_name'] ?>', '<?= $variable['product_variables_image'] ?>')"><?= $variable['product_variables_value'] ?></span>
+																<span style="height: 50px; min-width: 50px;" onclick="addValue('<?= $variable['product_variables_value'] ?>', '#<?= $attribute['product_attributes_name'] ?>', '<?= $variable['product_variables_image'] != '' ? $variable['product_variables_image'] : $post['posts_cover'] ?>')"><?= ($variable['product_variables_image'] != '') ? '<img src="' . base_url(getenv('uploads') . $variable['product_variables_image']) . '" style="width: 50px; max-height: 46px">' : $variable['product_variables_value'] ?></span>
 														<?php }
 														} ?>
 													</div>
@@ -150,7 +150,7 @@
 											<?php if ($this->session->userdata('user_id') > 0) { ?>
 												<button class="btn btn-fill-out btn-addtocart" type="submit"><i class="icon-basket-loaded"></i> Add to cart</button>
 
-												<a href="javascript:;" data-href="<?= site_url('shopping/add_to_wishlist/' . $post['posts_id']) ?>" title="Add to Wishlist" class="add_To_Wishlist add_wishlist"><i class="lni lni-heart"></i></a>
+												<a href="javascript:;" data-href="<?= site_url('shopping/add_to_wishlist/' . $post['posts_id']) ?>" title="Add to Wishlist" class="add_To_Wishlist add_wishlist"><i class="<?= ($post['wishlist'] < 1) ? 'icon-heart' : 'lni lni-heart-filled text-danger' ?>"></i></a>
 
 											<?php } else { ?>
 

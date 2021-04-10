@@ -85,7 +85,7 @@
 								</div>
 							</div>
 
-							<?php if ($colours) { ?>
+							<?php /* if ($colours) { ?>
 								<div class="widget">
 									<h5 class="widget_title">Color</h5>
 									<div class="product_color_switch">
@@ -96,7 +96,6 @@
 										?>
 									</div>
 									<input type="hidden" name="color" value="<?= $this->input->get('color') ?>" id="color">
-									<input type="hidden" name="sort" value="<?= $this->input->get('sort') ?>" id="sorting_val">
 								</div>
 							<?php } ?>
 
@@ -115,7 +114,9 @@
 										<?php } ?>
 									</ul>
 								</div>
-							<?php } ?>
+										<?php } */ ?>
+							<input type="hidden" name="sort" value="<?= $this->input->get('sort') ?>" id="sorting_val">
+
 							<div class="widget">
 								<button type="submit" class="btn btn-fill-out btn-sm text-uppercase">Apply Filter</button>
 							</div>

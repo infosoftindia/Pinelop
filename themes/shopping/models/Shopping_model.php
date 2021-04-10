@@ -96,7 +96,16 @@ class Shopping_model extends CI_Model
 
 		$this->db->where('products_category_category', $category['categories_id']);
 		$this->db->join('search', 'products_category_post = search_product', 'left');
-		return $this->db->get('products_category')->result_array();
+		// return $this->db->get('')->result_array();
+		$prc = [];
+		$datas = $this->db->get('products_category')->result_array();
+		if ($datas) {
+			foreach ($datas as $data) {
+				$data['wishlist'] = $this->db->where('wishlists_user', $this->session->userdata('user_id'))->where('wishlists_post', $data['search_product'])->get('wishlists')->num_rows();
+				$prc[] = $data;
+			}
+		}
+		return $prc;
 	}
 
 	public function getColours()
@@ -153,7 +162,16 @@ class Shopping_model extends CI_Model
 				$this->db->order_by('search_price', 'desc');
 			}
 		}
-		return $this->db->get('search')->result_array();
+		$prc = [];
+		$datas = $this->db->get('search')->result_array();
+		if ($datas) {
+			foreach ($datas as $data) {
+				$data['wishlist'] = $this->db->where('wishlists_user', $this->session->userdata('user_id'))->where('wishlists_post', $data['search_product'])->get('wishlists')->num_rows();
+				$prc[] = $data;
+			}
+		}
+		return $prc;
+		// print_r($prc);
 		// echo $this->db->last_query();
 		// die;
 	}
@@ -212,10 +230,20 @@ class Shopping_model extends CI_Model
 
 		$this->db->where('product_similars_post', $post['posts_id']);
 		$this->db->join('search', 'search_product = product_similars_similar', 'left');
-		$post['similars'] = $this->db->get('product_similars')->result_array();
+		$similarss = $this->db->get('product_similars')->result_array();
+		$similars = [];
+		if ($similarss) {
+			foreach ($similarss as $data) {
+				$data['wishlist'] = $this->db->where('wishlists_user', $this->session->userdata('user_id'))->where('wishlists_post', $data['search_product'])->get('wishlists')->num_rows();
+				$similars[] = $data;
+			}
+		}
+		$post['similars'] = $similars;
 
 		$this->db->where('product_specification_post', $post['posts_id']);
 		$post['specifications'] = $this->db->get('product_specification')->result_array();
+
+		$post['wishlist'] = $this->db->where('wishlists_user', $this->session->userdata('user_id'))->where('wishlists_post', $post['posts_id'])->get('wishlists')->num_rows();
 
 		$this->db->where('product_attributes_post', $post['posts_id']);
 		$attributes = $this->db->get('product_attributes')->result_array();
@@ -549,7 +577,15 @@ class Shopping_model extends CI_Model
 			$this->db->limit($limit, $offset);
 		}
 		$this->db->join('search', 'products_daily_deals_post = search_product', 'left');
-		return $this->db->get('products_daily_deals')->result_array();
+		$prc = [];
+		$datas = $this->db->get('products_daily_deals')->result_array();
+		if ($datas) {
+			foreach ($datas as $data) {
+				$data['wishlist'] = $this->db->where('wishlists_user', $this->session->userdata('user_id'))->where('wishlists_post', $data['search_product'])->get('wishlists')->num_rows();
+				$prc[] = $data;
+			}
+		}
+		return $prc;
 	}
 
 	public function get_Featured_Product($limit = FALSE)
@@ -573,7 +609,16 @@ class Shopping_model extends CI_Model
 		}
 		$this->db->order_by('search_id', 'DESC');
 		$this->db->group_by('search_title');
-		return $this->db->get('search')->result_array();
+		// return $this->db->get('search')->result_array();
+		$prc = [];
+		$datas = $this->db->get('search')->result_array();
+		if ($datas) {
+			foreach ($datas as $data) {
+				$data['wishlist'] = $this->db->where('wishlists_user', $this->session->userdata('user_id'))->where('wishlists_post', $data['search_product'])->get('wishlists')->num_rows();
+				$prc[] = $data;
+			}
+		}
+		return $prc;
 	}
 
 	public function get_Product($limit = FALSE, $offset = FALSE)
@@ -650,7 +695,16 @@ class Shopping_model extends CI_Model
 		}
 		$this->db->join('products_best_offers', 'products_best_offers_id = best_offer_products_offer', 'left');
 		$this->db->join('search', 'best_offer_products_post = search_product', 'left');
-		return $this->db->get('best_offer_products')->result_array();
+		// return $this->db->get('best_offer_products')->result_array();
+		$prc = [];
+		$datas = $this->db->get('best_offer_products')->result_array();
+		if ($datas) {
+			foreach ($datas as $data) {
+				$data['wishlist'] = $this->db->where('wishlists_user', $this->session->userdata('user_id'))->where('wishlists_post', $data['search_product'])->get('wishlists')->num_rows();
+				$prc[] = $data;
+			}
+		}
+		return $prc;
 	}
 
 	public function get_Sliders()
