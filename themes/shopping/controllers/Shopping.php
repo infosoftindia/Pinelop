@@ -72,22 +72,24 @@ class Shopping extends MX_Controller
 	{
 		// echo json_encode(['keyword'=>'Prashant']);
 		$data["title"] = "Welcome to " . getenv('title');
-		$data["firstOffers"] = $this->Shopping_model->get_Home_Offers(3, 'first');
-		$data["secondOffers"] = $this->Shopping_model->get_Home_Offers(2, 'second');
-		$data["bestOffers"] = $this->Shopping_model->get_Best_Offers(3);
 		$data["dailyDeals"] = $this->Shopping_model->get_Daily_Deals(10);
 		$data["sliders"] = $this->Shopping_model->get_Sliders();
-		$data["testimonials"] = $this->Shopping_model->get_Testimonials();
-		$data["featured"] = $this->Shopping_model->get_Featured_Product();
 		$data["parent_cat"] = $this->Shopping_model->parent_cat();
 		$data["featuredCategories"] = $this->Shopping_model->get_Featured_Categories(2);
-		$data["categories"] = $this->Shopping_model->get_Categories();
 		$data["products"] = $this->Shopping_model->get_Products(20);
-		$data["blogs"] = $this->Shopping_model->get_Blogs(4);
-		$data["featuredProducts"] = $this->Shopping_model->get_Featured_Products(10);
-		$data["brands"] = $this->New_model->get_Brands();
-		$data["histories"] = $this->New_model->get_Recent_History(4);
-		print_r($data["sliders"]);
+		$data["bestOffers"] = $this->Shopping_model->get_Best_Offers(3);
+
+		// $data["firstOffers"] = $this->Shopping_model->get_Home_Offers(3, 'first');
+		// $data["secondOffers"] = $this->Shopping_model->get_Home_Offers(2, 'second');
+		// $data["testimonials"] = $this->Shopping_model->get_Testimonials();
+		// $data["featured"] = $this->Shopping_model->get_Featured_Product();
+		// $data["categories"] = $this->Shopping_model->get_Categories();
+		// $data["blogs"] = $this->Shopping_model->get_Blogs(4);
+		// $data["featuredProducts"] = $this->Shopping_model->get_Featured_Products(10);
+		// $data["brands"] = $this->New_model->get_Brands();
+		// $data["histories"] = $this->New_model->get_Recent_History(4);
+		// print_r($data["sliders"]);
+
 		$data["page"] = $this->load->view("home", $data, true);
 		return $data;
 	}

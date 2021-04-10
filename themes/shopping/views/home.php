@@ -257,7 +257,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-6">
                     <div class="heading_s3 text-center">
-                        <h2>Daily Deals</h2>
+                        <h2>New Collection</h2>
                     </div>
                     <div class="small_divider clearfix"></div>
                 </div>
