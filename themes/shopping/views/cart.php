@@ -228,7 +228,7 @@
 												</p>
 												<div class="btn-group">
 													<a href="javascript:;" onclick="show_Modal('<?= site_url('shopping/edit_address/' . $address['user_address_id']) ?>', '#tracking_Result', 'Edit Address')" data-toggle="modal" data-target="#tracking_Result_Modal" class="card-link btn btn-dark btn-sm">Edit</a>
-													<a href="<?= site_url('select-payment/' . $address['user_address_id']) ?>" class="card-link btn btn-info btn-sm">Select</a>
+													<a href="<?= site_url('place-order?mode=paypal&address=' . $address['user_address_id']) ?>" class="card-link btn btn-info btn-sm">Select</a>
 													<a href="<?= site_url('shopping/delete_address/' . $address['user_address_id']) ?>" class="card-link btn btn-danger btn-sm">Remove</a>
 												</div>
 											</div>
