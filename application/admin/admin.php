@@ -54,6 +54,11 @@ $route[$admin . 'products/attributes/delete-variant-image/(:num)'] = 'products/d
 
 $route[$admin . 'orders/pendings'] = 'orders/pendings';
 $route[$admin . 'orders/manage'] = 'orders/manage';
+$route[$admin . 'orders/return'] = 'orders/return';
+$route[$admin . 'orders/return/view/(:num)'] = 'orders/return_View/$1';
+$route[$admin . 'orders/return/approve/(:num)'] = 'orders/return_Approve/$1';
+$route[$admin . 'orders/return/decline/(:num)'] = 'orders/return_Decline/$1';
+$route[$admin . 'orders/return/processing/(:num)'] = 'orders/return_Processing/$1';
 $route[$admin . 'orders/view/(:num)'] = 'orders/view/$1';
 $route[$admin . 'orders/reject-order/(:num)'] = 'orders/reject_order/$1';
 $route[$admin . 'orders/save-return-thread/(:num)'] = 'orders/save_return_thread/$1';

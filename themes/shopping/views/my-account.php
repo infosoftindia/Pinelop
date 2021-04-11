@@ -104,6 +104,7 @@
 																		<div class="col-md-9">
 																			<a href="<?= site_url('product/' . $product['posts_slug']) ?>"><?= $product['posts_title'] ?></a>
 																			<?php
+																			$status = 0;
 																			if ($product['return']) {
 																				$status = $product['return']['return_orders_status'];
 																				if ($status == '0') {
@@ -122,10 +123,12 @@
 																			<br>
 																			<!-- Sold by: <?= $product['users_first_name'] . ' ' . $product['users_last_name'] ?><br> -->
 																			<?= pPrice($product['order_products_price']) ?>
-																			<?php if ($product['review'] == 0) { ?>
-																				<br>
-																				<a href="#" onclick="show_Modal('<?= site_url('shopping/rate_product/' . $product['posts_id']) ?>', '#tracking_Result', 'Rate <?= $product['posts_title'] ?>')" data-toggle="modal" data-target="#tracking_Result_Modal" class="label label-info p-1 px-3" style="background-color: #ff324d75; border-radius: 3px">Rate this product</a>
-																			<?php } ?>
+																			<?php if ($status == '0') {
+																				if ($product['review'] == 0) { ?>
+																					<br>
+																					<a href="#" onclick="show_Modal('<?= site_url('shopping/rate_product/' . $product['posts_id']) ?>', '#tracking_Result', 'Rate <?= $product['posts_title'] ?>')" data-toggle="modal" data-target="#tracking_Result_Modal" class="label label-info p-1 px-3" style="background-color: #ff324d75; border-radius: 3px">Rate this product</a>
+																			<?php }
+																			} ?>
 																		</div>
 																	</div>
 																	<hr>

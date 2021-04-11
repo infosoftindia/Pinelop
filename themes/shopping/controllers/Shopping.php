@@ -1227,7 +1227,7 @@ class Shopping extends MX_Controller
 			// print_r($data['order']);
 			// echo $bill = $this->load->view('receipt/invoice', $data, true);
 			$bill = $this->load->view('receipt/invoice', $data, true);
-			pdf($bill);
+			// pdf($bill);
 		}
 	}
 
