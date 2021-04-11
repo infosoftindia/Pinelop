@@ -557,19 +557,19 @@ class Shopping extends MX_Controller
 		// $config['attributes'] = ['class' => 'page-link'];
 		$config['first_link'] = false;
 		$config['last_link'] = false;
-		$config['first_tag_open'] = '<li>';
+		$config['first_tag_open'] = '<li class="page-item">';
 		$config['first_tag_close'] = "</li>\n";
-		$config['prev_link'] = '&laquo';
-		$config['prev_tag_open'] = '<li>';
+		$config['prev_link'] = '&#10094;';
+		$config['prev_tag_open'] = '<li class="page-item">';
 		$config['prev_tag_close'] = "</li>\n";
-		$config['next_link'] = '&raquo';
-		$config['next_tag_open'] = '<li>';
+		$config['next_link'] = '&#10095';
+		$config['next_tag_open'] = '<li class="page-item">';
 		$config['next_tag_close'] = "</li>\n";
-		$config['last_tag_open'] = '<li>';
+		$config['last_tag_open'] = '<li class="page-item">';
 		$config['last_tag_close'] = "</li>\n";
-		$config['cur_tag_open'] = '<li class="current"><span>';
-		$config['cur_tag_close'] = "</span></li>\n";
-		$config['num_tag_open'] = '<li>';
+		$config['cur_tag_open'] = '<li class="page-item active"><a class="page-link">';
+		$config['cur_tag_close'] = "</a></li>\n";
+		$config['num_tag_open'] = '<li class="page-item">';
 		$config['num_tag_close'] = "</li>\n";
 		$this->pagination->initialize($config);
 
