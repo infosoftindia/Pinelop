@@ -265,7 +265,11 @@ class Shopping_model extends CI_Model
 			$user = '0';
 		}
 
-		$this->db->where('carts_token', $user_ses);
+		if ($user == 0) {
+			$this->db->where('carts_token', $user_ses);
+		} else {
+			$this->db->where('carts_user', $user);
+		}
 		$this->db->where('carts_product', $product);
 		$result = $this->db->get('carts');
 		if ($result->num_rows() > 0) {
@@ -276,7 +280,11 @@ class Shopping_model extends CI_Model
 				'carts_product' => $product,
 				'carts_quantity' => $qty
 			);
-			$this->db->where('carts_token', $user_ses);
+			if ($user == 0) {
+				$this->db->where('carts_token', $user_ses);
+			} else {
+				$this->db->where('carts_user', $user);
+			}
 			$this->db->where('carts_product', $product);
 			$this->db->update('carts', $data);
 		} else {
@@ -883,7 +891,11 @@ class Shopping_model extends CI_Model
 			$user = '0';
 		}
 
-		$this->db->where('carts_token', $user_ses);
+		if ($user == 0) {
+			$this->db->where('carts_token', $user_ses);
+		} else {
+			$this->db->where('carts_user', $user);
+		}
 		$this->db->where('carts_product', $product);
 		$result = $this->db->get('carts');
 		if ($result->num_rows() > 0) {
@@ -894,7 +906,11 @@ class Shopping_model extends CI_Model
 				'carts_product' => $product,
 				'carts_quantity' => $qty
 			);
-			$this->db->where('carts_token', $user_ses);
+			if ($user == 0) {
+				$this->db->where('carts_token', $user_ses);
+			} else {
+				$this->db->where('carts_user', $user);
+			}
 			$this->db->where('carts_product', $product);
 			$this->db->update('carts', $data);
 		} else {
@@ -908,6 +924,7 @@ class Shopping_model extends CI_Model
 			$this->db->insert('carts', $data);
 		}
 		$this->remove_Wishlist($id);
+		return 1;
 	}
 
 
