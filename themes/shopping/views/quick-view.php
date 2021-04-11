@@ -103,7 +103,7 @@ if ($post['comments']) {
 						<input type="hidden" name="post" value="<?= $post['posts_id'] ?>">
 						<div class="cart_btn">
 							<button class="btn btn-fill-out btn-addtocart" type="submit"><i class="icon-basket-loaded"></i> Add to cart</button>
-							<a href="javascript:;" data-href="<?= site_url('shopping/add_to_wishlist/' . $post['posts_id']) ?>" title="Add to Wishlist" class="add_To_Wishlist add_wishlist"><i class="lni lni-heart"></i></a>
+							<a href="javascript:;" data-href="<?= site_url('shopping/add_to_wishlist/' . $post['posts_id']) ?>" title="Add to Wishlist" class="add_To_Wishlist add_wishlist"><i class="<?= ($post['wishlist'] < 1) ? 'icon-heart' : 'lni lni-heart-filled text-danger' ?>"></i></a>
 						</div>
 					</div>
 				</form>
