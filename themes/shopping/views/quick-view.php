@@ -61,7 +61,7 @@ if ($post['comments']) {
 							</div>
 							<span class="rating_num">(<?= count($post['comments']) ?>)</span>
 						</div>
-						<div class="pr_desc">
+						<div class="pr_desc w-100">
 							<p><?= $post['products_short_description'] ?></p>
 						</div>
 						<div class="product_sort_info">
