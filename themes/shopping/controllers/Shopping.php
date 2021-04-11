@@ -552,7 +552,7 @@ class Shopping extends MX_Controller
 		$config['page_query_string'] = true;
 		$data['total_rows'] = $config['total_rows'] = count($this->Shopping_model->get_Products_By_Categories_Slug($slug));
 		$config['per_page'] = $limit;
-		$config['full_tag_open'] = '<ul>';
+		$config['full_tag_open'] = '<ul class="pagination mt-3 justify-content-center pagination_style1">';
 		$config['full_tag_close'] = '</ul>';
 		// $config['attributes'] = ['class' => 'page-link'];
 		$config['first_link'] = false;
