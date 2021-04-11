@@ -52,6 +52,9 @@ class New_model extends CI_Model
 		if ($this->input->get('brands')) {
 			$this->db->where_in('search_brand', $this->input->get('brands'));
 		}
+		if ($this->input->get('q')) {
+			$this->db->where_in('search_title', $this->input->get('q'));
+		}
 		if ($this->input->get('sort')) {
 			$sort = $this->input->get('sort');
 			// order, date, price, price-desc

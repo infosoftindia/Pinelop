@@ -120,7 +120,7 @@
 													<div class="product_size_switch">
 														<?php if ($attribute['variables']) {
 															foreach ($attribute['variables'] as $variable) { ?>
-																<span style="height: 50px; min-width: 50px;" onclick="addValue('<?= $variable['product_variables_value'] ?>', '#<?= $attribute['product_attributes_name'] ?>', '<?= $variable['product_variables_image'] != '' ? $variable['product_variables_image'] : $post['posts_cover'] ?>')"><?= ($variable['product_variables_image'] != '') ? '<img src="' . base_url(getenv('uploads') . $variable['product_variables_image']) . '" style="width: 50px; max-height: 46px">' : $variable['product_variables_value'] ?></span>
+																<span style="height: 50px; min-width: 50px;" onclick="addValue('<?= $variable['product_variables_value'] ?>', '#<?= $attribute['product_attributes_name'] ?>', '<?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? $variable['product_variables_image'] : $post['posts_cover'] ?>')"><?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? '<img src="' . base_url(getenv('uploads') . $variable['product_variables_image']) . '" style="width: 50px; max-height: 46px">' : $variable['product_variables_value'] ?></span>
 														<?php }
 														} ?>
 													</div>

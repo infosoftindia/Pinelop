@@ -116,6 +116,7 @@
 								</div>
 										<?php } */ ?>
 							<input type="hidden" name="sort" value="<?= $this->input->get('sort') ?>" id="sorting_val">
+							<input type="hidden" name="q" value="<?= $this->input->get('q') ?>">
 
 							<div class="widget">
 								<button type="submit" class="btn btn-fill-out btn-sm text-uppercase">Apply Filter</button>
