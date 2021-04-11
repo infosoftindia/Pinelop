@@ -457,12 +457,9 @@ class Shopping extends MX_Controller
 		$this->pagination->initialize($config);
 
 		$data["categories"] = $this->Shopping_model->get_Categories();
-		$data['category'] = false;
-		$data["grades"] = $this->Shopping_model->get_Grades();
 		$data['posts'] = $this->New_model->search_Result($limit, $offset);
 		$data["colours"] = $this->Shopping_model->getColours();
 		$data["brands"] = $this->Shopping_model->getBrands();
-		$data['total_rows'] = count($data["posts"]);
 		$data["title"] = "Search Result";
 		$data["page"] = $this->load->view("shop", $data, true);
 		return $data;
@@ -1202,8 +1199,8 @@ class Shopping extends MX_Controller
 
 		echo '<center><h1>Please do not refresh this page...</h1></center>';
 		$data1["CALLBACK_URL"] = base_url('paypal-success') . '?amount=' . $priceTotal . '&txnid=';
-		$data1["order"] = '1';
-		$data1["price"] = '1';
+		$data1["order"] = rand() . rand();
+		$data1["price"] = $priceTotal;
 
 		$this->load->view("paypal", $data1);
 	}

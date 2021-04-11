@@ -27,131 +27,52 @@ class New_model extends CI_Model
 
 	public function search_Result($limit = FALSE, $offset = FALSE)
 	{
-		$id = [0];
-		$words = [];
-		$keyword = trim($this->input->get('q'));
-
-		$min = trim($this->input->get('min'));
-		$max = trim($this->input->get('max'));
-		$length = trim($this->input->get('length'));
-		$base_width = trim($this->input->get('base_width'));
-		$leg_width = trim($this->input->get('leg_width'));
-		$width = trim($this->input->get('width'));
-		$height = trim($this->input->get('height'));
-		$diameter = trim($this->input->get('diameter'));
-		$external_diameter = trim($this->input->get('external_diameter'));
-		$height = trim($this->input->get('leg_height'));
-		$thickness = trim($this->input->get('thickness'));
-		$size = trim($this->input->get('size'));
-		$grade = trim($this->input->get('grade'));
-		$surface = trim($this->input->get('surface_treatment'));
-		$category = trim($this->input->get('category'));
-
-		$keywords = explode(' ', $keyword);
-
-
-		$this->db->where('posts_type', 'product');
-		$this->db->where('posts_status', '1');
-		$posts = $this->db->get('posts')->result_array();
-
-		if ($category) {
-			$posts = $this->search_Category($category);
-			// var_dump($posts);
-		}
-
-		foreach ($posts as $post) {
-			$id[] = $post['posts_id'];
-		}
-		// print_r($id);
-
-		if ($keywords) {
-			foreach ($keywords as $key) {
-				if (!empty($key)) {
-					$this->db->like('posts_title', $key);
-					$this->db->where('posts_type', 'product');
-					$this->db->where('posts_status', '1');
-					$posts = $this->db->get('posts')->result_array();
-					foreach ($posts as $post) {
-						if (!in_array($post['posts_id'], $id)) {
-							$id[] = $post['posts_id'];
-						}
-					}
-					$count = strlen($key);
-					if ($count > 3) {
-						for ($i = 3; $i <= $count; $i++) {
-							$words[] = substr($key, 0, $i);
-						}
-					}
+		$fltr = [];
+		if ($this->input->get('color')) {
+			$this->db->where('(`search_filter_key` = "color" OR `search_filter_key` = "colour" OR `search_filter_key` = "Colour" OR `search_filter_key` = "Color")');
+			$this->db->where('search_filter_value', $this->input->get('color'));
+			$results = $this->db->get('search_filter')->result_array();
+			if ($results) {
+				foreach ($results as $res) {
+					$fltr[] = $res['search_filter_search'];
 				}
 			}
-
-			foreach ($words as $key) {
-				if (!empty($key)) {
-					$this->db->like('posts_title', $key);
-					$this->db->where('posts_type', 'product');
-					$this->db->where('posts_status', '1');
-					$posts = $this->db->get('posts')->result_array();
-					foreach ($posts as $post) {
-						if (!in_array($post['posts_id'], $id)) {
-							$id[] = $post['posts_id'];
-						}
-					}
-				}
+			if (count($fltr) > 0) {
+				$this->db->where_in('search_id', $fltr);
+			} else {
+				return $this->db->where('search_id', '0')->get('search')->result_array();
 			}
 		}
-		// print_r($id);
-		$this->db->where_in('posts_id', $id);
-
-
-		if ($min || $max) {
-			$this->db->where("(products_price BETWEEN '{$min}' AND '{$max}')");
-		}
-
-		if ($length) {
-			$this->db->where('products_length', $length);
-		}
-		if ($base_width) {
-			$this->db->where('products_base_width', $base_width);
-		}
-		if ($leg_width) {
-			$this->db->where('products_leg_width', $leg_width);
-		}
-		if ($width) {
-			$this->db->where('products_width', $width);
-		}
-		if ($diameter) {
-			$this->db->where('products_diameter', $diameter);
-		}
-		if ($size) {
-			$this->db->where('products_size', $size);
-		}
-		if ($external_diameter) {
-			$this->db->where('products_external_diameter', $external_diameter);
-		}
-		if ($height) {
-			$this->db->where('products_leg_height', $height);
-		}
-		if ($thickness) {
-			$this->db->where('products_thickness', $thickness);
-		}
-		if ($grade) {
-			$this->db->where('products_grade', $grade);
-		}
-		if ($surface) {
-			$this->db->where('products_surface', $surface);
-		}
-		// if($category){
-		// $this->db->where('products_category', $category);
-		// }
 		if ($limit) {
 			$this->db->limit($limit, $offset);
 		}
-		if ($keyword) {
-			$this->db->like('posts_title', $keyword);
+		if ($this->input->get('min') && $this->input->get('max')) {
+			$this->db->where('(search_price BETWEEN ' . $this->input->get('min') . ' AND ' . $this->input->get('max') . ')');
 		}
-		$this->db->join('products', 'products_post = posts_id', 'left');
-		return $this->db->get('posts')->result_array();
-		echo $this->db->last_query();
+		if ($this->input->get('brands')) {
+			$this->db->where_in('search_brand', $this->input->get('brands'));
+		}
+		if ($this->input->get('sort')) {
+			$sort = $this->input->get('sort');
+			// order, date, price, price-desc
+			if ($sort == 'order') {
+			} elseif ($sort == 'date') {
+				$this->db->order_by('search_id', 'desc');
+			} elseif ($sort == 'price') {
+				$this->db->order_by('search_price', 'asc');
+			} elseif ($sort == 'price-desc') {
+				$this->db->order_by('search_price', 'desc');
+			}
+		}
+		$prc = [];
+		$datas = $this->db->get('search')->result_array();
+		if ($datas) {
+			foreach ($datas as $data) {
+				$data['wishlist'] = $this->db->where('wishlists_user', $this->session->userdata('user_id'))->where('wishlists_post', $data['search_product'])->get('wishlists')->num_rows();
+				$prc[] = $data;
+			}
+		}
+		return $prc;
 	}
 
 	public function save_Orders($carts, $order)
