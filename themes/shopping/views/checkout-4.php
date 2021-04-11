@@ -5,7 +5,8 @@
 
 	a.payment_method {
 		font-size: 20px;
-		color: blue font-weight: 500;
+		color: blue;
+		font-weight: 500;
 	}
 
 	.bg-custom {

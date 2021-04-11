@@ -426,6 +426,7 @@ class Shopping extends MX_Controller
 	public function load_Search()
 	{
 		$this->load->model('New_model');
+		$this->load->model('Shopping_model');
 
 		$limit = getenv('PostPerPage');
 		$offset = ($this->input->get('per_page')) ? $this->input->get('per_page') - 1 : 0;
@@ -433,7 +434,7 @@ class Shopping extends MX_Controller
 		$config['enable_query_strings'] = true;
 		$config['use_page_numbers'] = true;
 		$config['page_query_string'] = true;
-		$data['total_rows'] = $config['total_rows'] = count($this->Shopping_model->get_All_Products());
+		$data['total_rows'] = $config['total_rows'] = count($this->New_model->search_Result());
 		$config['per_page'] = $limit;
 		$config['full_tag_open'] = '<ul class="pagination mt-3 justify-content-center pagination_style1">';
 		$config['full_tag_close'] = '</ul>';
