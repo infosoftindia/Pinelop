@@ -76,7 +76,7 @@
 									$min = ($this->input->get('min') > -1) ? $this->input->get('min') : 50;
 									$max = ($this->input->get('max') > -1) ? $this->input->get('max') : 12000;
 									?>
-									<div id="price_filter" data-min="0" data-max="<?= pPrice(25000, 1) ?>" data-min-value="<?= pPrice($min, 1) ?>" data-max-value="<?= pPrice($max, 1) ?>" data-price-sign="<?= $this->session->userdata('set_currency') ?> "></div>
+									<div id="price_filter" data-min="1" data-max="<?= pPrice(25000, 1) ?>" data-min-value="<?= pPrice($min, 1) ?>" data-max-value="<?= pPrice($max, 1) ?>" data-price-sign="<?= $this->session->userdata('set_currency') ?> "></div>
 									<div class="price_range">
 										<span>Price: <span id="flt_price"></span></span>
 										<input type="hidden" id="price_first" name="min" value="<?= $min ?>">
@@ -136,7 +136,7 @@
 
 
 
-							<div class="widget pt-4">
+							<!-- <div class="widget pt-4">
 								<div class="shop_banner">
 									<div class="banner_img overlay_bg_20">
 										<img src="<?= site_url('themes/shopping/assets/') ?>images/sidebar_banner_img.jpg" alt="sidebar_banner_img">
@@ -147,7 +147,7 @@
 										<a href="#" class="btn btn-white rounded-0 btn-sm text-uppercase">Shop Now</a>
 									</div>
 								</div>
-							</div>
+							</div> -->
 						</div>
 					</form>
 				</div>
