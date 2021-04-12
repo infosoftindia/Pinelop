@@ -12,11 +12,11 @@
 							</div>
 							<div class="widget">
 								<ul class="social_icons social_white">
-									<?php if(getenv('facebook')) { ?><li><a href="<?=getenv('facebook')?>"><i class="ion-social-facebook"></i></a></li><?php } ?>
-									<?php if(getenv('instagram')) { ?><li><a href="<?=getenv('instagram')?>"><i class="ion-social-instagram-outline"></i></a></li><?php } ?>
-									<?php if(getenv('twitter')) { ?><li><a href="<?=getenv('twitter')?>"><i class="ion-social-twitter"></i></a></li><?php } ?>
-									<?php if(getenv('mobile')) { ?><li><a href="https://api.whatsapp.com/send?phone=<?=getenv('mobile')?>"><i class="fab fa-whatsapp"></i></a></li><?php } ?>
-									<?php if(getenv('youtube')) { ?><li><a href="<?=getenv('youtube')?>"><i class="ion-social-youtube-outline"></i></a></li><?php } ?>
+									<?php if (getenv('facebook')) { ?><li><a href="<?= getenv('facebook') ?>" target="_blank"><i class="ion-social-facebook"></i></a></li><?php } ?>
+									<?php if (getenv('instagram')) { ?><li><a href="<?= getenv('instagram') ?>" target="_blank"><i class="ion-social-instagram-outline"></i></a></li><?php } ?>
+									<?php if (getenv('twitter')) { ?><li><a href="<?= getenv('twitter') ?>" target="_blank"><i class="ion-social-twitter"></i></a></li><?php } ?>
+									<?php if (getenv('mobile')) { ?><li><a href="https://api.whatsapp.com/send?phone=<?= getenv('mobile') ?>" target="_blank"><i class="fab fa-whatsapp"></i></a></li><?php } ?>
+									<?php if (getenv('youtube')) { ?><li><a href="<?= getenv('youtube') ?>" target="_blank"><i class="ion-social-youtube-outline"></i></a></li><?php } ?>
 								</ul>
 							</div>
 						</div>
@@ -50,16 +50,16 @@
 								<h6 class="widget_title">My Account</h6>
 								<ul class="widget_links">
 									<?php if (!$this->session->userdata('user_id')) { ?>
-									<li><a href="<?=site_url('login')?>">Login</a></li>
-									<li><a href="<?=site_url('register')?>">Register</a></li>
-									<?php }else{ ?>
-									<li><a href="<?=site_url('account')?>">My Account</a></li>
-									<li><a href="<?=site_url('account?page=orders')?>">Orders</a></li>
-									<li><a href="<?=site_url('account?page=address')?>">My Address</a></li>
-									<li><a href="<?=site_url('account?page=account-detail')?>">Account Detail</a></li>
-									<li><a href="<?=site_url('account?page=password-detail')?>">Change Password</a></li>
+										<li><a href="<?= site_url('login') ?>">Login</a></li>
+										<li><a href="<?= site_url('register') ?>">Register</a></li>
+									<?php } else { ?>
+										<li><a href="<?= site_url('account') ?>">My Account</a></li>
+										<li><a href="<?= site_url('account?page=orders') ?>">Orders</a></li>
+										<li><a href="<?= site_url('account?page=address') ?>">My Address</a></li>
+										<li><a href="<?= site_url('account?page=account-detail') ?>">Account Detail</a></li>
+										<li><a href="<?= site_url('account?page=password-detail') ?>">Change Password</a></li>
 									<?php } ?>
-									
+
 								</ul>
 							</div>
 						</div>
@@ -73,14 +73,14 @@
 									</li>
 									<li>
 										<i class="ti-email"></i>
-										<a href="mailto:<?=getenv('email')?>"><?=getenv('email')?></a>
+										<a href="mailto:<?= getenv('email') ?>"><?= getenv('email') ?></a>
 									</li>
 									<li>
 										<i class="ti-mobile"></i>
-										<p><a href="tel:<?=getenv('mobile')?>"><?=getenv('mobile')?></a></p>
+										<p><a href="tel:<?= getenv('mobile') ?>"><?= getenv('mobile') ?></a></p>
 									</li>
 									<li>
-										 
+
 										<p>Regd No. 102885392 </p>
 									</li>
 								</ul>
@@ -111,8 +111,8 @@
 		<!-- END FOOTER -->
 
 		<a href="#" class="scrollup" style="display: none;"><i class="ion-ios-arrow-up"></i></a>
-		<a href="https://api.whatsapp.com/send?phone=<?=getenv('mobile')?>" class="float" target="_blank">
-		<i class="fab fa-whatsapp my-float"></i>
+		<a href="https://api.whatsapp.com/send?phone=<?= getenv('mobile') ?>" class="float" target="_blank">
+			<i class="fab fa-whatsapp my-float"></i>
 		</a>
 
 		<?= $js ?>
