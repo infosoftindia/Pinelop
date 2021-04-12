@@ -93,7 +93,18 @@ class Shopping_model extends CI_Model
 		if ($limit) {
 			$this->db->limit($limit, $offset);
 		}
-
+		if ($this->input->get('sort')) {
+			$sort = $this->input->get('sort');
+			// order, date, price, price-desc
+			if ($sort == 'order') {
+			} elseif ($sort == 'date') {
+				$this->db->order_by('search_id', 'desc');
+			} elseif ($sort == 'price') {
+				$this->db->order_by('search_price', 'asc');
+			} elseif ($sort == 'price-desc') {
+				$this->db->order_by('search_price', 'desc');
+			}
+		}
 		$this->db->where('products_category_category', $category['categories_id']);
 		$this->db->join('search', 'products_category_post = search_product', 'left');
 		// return $this->db->get('')->result_array();

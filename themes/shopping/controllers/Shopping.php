@@ -134,7 +134,7 @@ class Shopping extends MX_Controller
 		$config['num_tag_close'] = "</li>\n";
 		$this->pagination->initialize($config);
 
-		$data["posts"] = $this->Shopping_model->get_All_Products($limit, $offset);
+		$data["posts"] = $this->Shopping_model->get_All_Products($limit, $offset * $limit);
 		$data["colours"] = $this->Shopping_model->getColours();
 		$data["brands"] = $this->Shopping_model->getBrands();
 		$data["categories"] = $this->Shopping_model->get_Categories();
@@ -223,7 +223,7 @@ class Shopping extends MX_Controller
 		$config['num_tag_close'] = "</li>\n";
 		$this->pagination->initialize($config);
 
-		$data["posts"] = $this->Shopping_model->get_Cat_Products($id, $limit, $offset);
+		$data["posts"] = $this->Shopping_model->get_Cat_Products($id, $limit, $offset * $limit);
 		$data["grades"] = $this->Shopping_model->get_Grades();
 		$data["categories"] = $this->Shopping_model->get_Categories();
 		$data['total_rows'] = count($data["posts"]);
@@ -458,7 +458,7 @@ class Shopping extends MX_Controller
 		$this->pagination->initialize($config);
 
 		$data["categories"] = $this->Shopping_model->get_Categories();
-		$data['posts'] = $this->New_model->search_Result($limit, $offset);
+		$data['posts'] = $this->New_model->search_Result($limit, $offset * $limit);
 		$data["colours"] = $this->Shopping_model->getColours();
 		$data["brands"] = $this->Shopping_model->getBrands();
 		$data["title"] = "Search Result";
@@ -504,7 +504,7 @@ class Shopping extends MX_Controller
 		$data["categories"] = $this->Shopping_model->get_Categories();
 		$data["grades"] = $this->Shopping_model->get_Grades();
 		$data["brands"] = $this->Shopping_model->getBrands();
-		$data["posts"] = $this->New_model->search_Result($limit, $offset);
+		$data["posts"] = $this->New_model->search_Result($limit, $offset * $limit);
 		$data['total_rows'] = count($data["posts"]);
 		$data["title"] = "Search Result";
 		echo $this->load->view("filter", $data, true);
@@ -575,7 +575,7 @@ class Shopping extends MX_Controller
 		// print_r($data);
 		$data["colours"] = $this->Shopping_model->getColours();
 		$data["brands"] = $this->Shopping_model->getBrands();
-		$data['posts'] = $this->Shopping_model->get_Products_By_Categories_Slug($slug, $limit, $offset);
+		$data['posts'] = $this->Shopping_model->get_Products_By_Categories_Slug($slug, $limit, $offset * $limit);
 		$data["title"] = $data['category']['categories_name'];
 		$data["page"] = $this->load->view("shop", $data, true);
 		return $data;
