@@ -138,8 +138,8 @@
 											<input type="hidden" name="<?= $attribute['product_attributes_name'] ?>" id="<?= $attribute['product_attributes_name'] ?>" value="">
 									<?php }
 									} ?>
-									<input type="hidden " name="price" id="dPrice" value="">
-									<input type="hidden " name="image" id="dImage" value="<?= $post['posts_cover'] ?>">
+									<input type="hidden" name="price" id="dPrice" value="">
+									<input type="hidden" name="image" id="dImage" value="<?= $post['posts_cover'] ?>">
 									<div class="cart_extra">
 										<div class="cart-product-quantity">
 											<div class="quantity">
