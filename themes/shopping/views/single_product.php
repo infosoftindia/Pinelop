@@ -77,7 +77,7 @@
 								<div class="product_description">
 									<h4 class="product_title"><a href="#"><?= $post['posts_title'] ?></a></h4>
 									<div class="product_price">
-										<span class="price"><?= pPrice($sPrice) ?></span>
+										<span class="price pPrice"><?= pPrice($sPrice) ?></span>
 										<?= ($sPrice != $post['products_price']) ? '<del>' . pPrice($post['products_price']) . '</del>' : '' ?>
 										<!-- <div class="on_sale">
 											<span>35% Off</span>
@@ -120,7 +120,7 @@
 													<div class="product_size_switch">
 														<?php if ($attribute['variables']) {
 															foreach ($attribute['variables'] as $variable) { ?>
-																<span style="height: 50px; min-width: 50px;" onclick="addValue('<?= $variable['product_variables_value'] ?>', '#<?= $attribute['product_attributes_name'] ?>', '<?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? $variable['product_variables_image'] : $post['posts_cover'] ?>')"><?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? '<img src="' . base_url(getenv('uploads') . $variable['product_variables_image']) . '" style="width: 50px; max-height: 46px">' : $variable['product_variables_value'] ?></span>
+																<span style="height: 50px; min-width: 50px;" onclick="addValue('<?= $variable['product_variables_value'] ?>', '#<?= $attribute['product_attributes_name'] ?>', '<?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? $variable['product_variables_image'] : $post['posts_cover'] ?>', '<?= $variable['product_variables_price'] ?>', '<?= pPrice($variable['product_variables_price']) ?>')"><?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? '<img src="' . base_url(getenv('uploads') . $variable['product_variables_image']) . '" style="width: 50px; max-height: 46px">' : $variable['product_variables_value'] ?></span>
 														<?php }
 														} ?>
 													</div>
@@ -137,11 +137,13 @@
 											<input type="hidden" name="<?= $attribute['product_attributes_name'] ?>" id="<?= $attribute['product_attributes_name'] ?>" value="">
 									<?php }
 									} ?>
+									<input type="hidden " name="price" id="dPrice" value="">
+									<input type="hidden " name="image" id="dImage" value="<?= $post['posts_cover'] ?>">
 									<div class="cart_extra">
 										<div class="cart-product-quantity">
 											<div class="quantity">
 												<input type="button" value="-" class="minus">
-												<input type="texy" name="quantity" value="1" min="1" title="Qty" class="qty" size="4" autocomplete="off">
+												<input type="text" name="quantity" value="1" min="1" title="Qty" class="qty" size="4" autocomplete="off">
 												<input type="button" value="+" class="plus">
 											</div>
 										</div>

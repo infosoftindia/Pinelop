@@ -298,15 +298,32 @@ class Shopping_model extends CI_Model
 			}
 			$this->db->where('carts_product', $product);
 			$this->db->update('carts', $data);
+			$cart_id = $result->row()->carts_id;
 		} else {
 			$data = array(
 				'carts_user' => $user,
 				'carts_token' => $user_ses,
 				'carts_product' => $product,
 				'carts_quantity' => $quantity,
+				'carts_image' => $this->input->post('image'),
 				'carts_created' => now()
 			);
 			$this->db->insert('carts', $data);
+			$cart_id = $this->db->insert_id();
+		}
+		$this->db->where('cart_variables_cart', $cart_id);
+		$this->db->delete('cart_variables');
+		foreach ($_POST as $key => $value) {
+			if ($key != 'quantity' && $key != 'post' && $key != 'price' && $key != 'image') {
+				// echo $key . ' => ' . $value;
+				$this->db->insert('cart_variables', [
+					'cart_variables_cart' => $cart_id,
+					'cart_variables_key' => $key,
+					'cart_variables_value' => $value,
+					'cart_variables_price' => $this->input->post('price'),
+					'cart_variables_image' => $this->input->post('image'),
+				]);
+			}
 		}
 		return 1;
 	}
@@ -402,9 +419,17 @@ class Shopping_model extends CI_Model
 			$this->db->where('carts_token', $user_ses);
 		}
 		$this->db->join('posts', 'posts_id = carts_product', 'left');
+		// $this->db->join('cart_variables', 'carts_id = cart_variables_cart', 'left');
 		$this->db->join('products', 'posts_id = products_post', 'left');
-		$result = $this->db->get();
-		return $result->result_array();
+		$result = $this->db->get()->result_array();
+		$prc = [];
+		if ($result) {
+			foreach ($result as $cart) {
+				$cart['variable'] = $this->db->where('cart_variables_cart', $cart['carts_id'])->order_by('cart_variables_id', 'DESC')->get('cart_variables')->row_array();
+				$prc[] = $cart;
+			}
+		}
+		return $prc;
 	}
 
 	public function remove_Cart($id)

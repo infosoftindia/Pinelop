@@ -52,13 +52,12 @@
 													} else {
 														$sPrice = $price;
 													}
-													$prcP = $sPrice + ((20 / 100) * $sPrice);
-													$perMmPrice = $prcP / 1000;
+													$sPrice = $cart['variable']['cart_variables_price'];
 													?>
 													<input value="<?= $cart['carts_id'] ?>" type="hidden" name="cart[]">
 
 													<tr>
-														<td class="product-thumbnail"><a href="#"><img src="<?= base_url(getenv('uploads') . $cart['posts_cover']) ?>" alt="product1" style="height: 80px; object-fit: contain;"></a></td>
+														<td class="product-thumbnail"><a href="#"><img src="<?= base_url(getenv('uploads') . $cart['carts_image']) ?>" alt="product1" style="height: 80px; object-fit: contain;"></a></td>
 														<td class="product-name" data-title="Product"><a href="#"><?= $cart['posts_title'] ?></a></td>
 														<td class="product-price" data-title="Price"><?= pPrice($sPrice) ?></td>
 														<td class="product-quantity" data-title="Quantity">

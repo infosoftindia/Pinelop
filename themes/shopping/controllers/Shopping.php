@@ -696,28 +696,36 @@ class Shopping extends MX_Controller
 
 	public function load_PaypalSuccess()
 	{
-		$trans = [
-			'transactions_user' => $this->session->userdata('user_id'),
-			'transactions_gateway' => 'PayTm',
-			'transactions_order_id' => $this->input->post('ORDERID'),
-			'transactions_mid' => $this->input->post('MID'),
-			'transactions_txnid' => $this->input->post('TXNID'),
-			'transactions_amount' => $this->input->post('TXNAMOUNT'),
-			'transactions_mode' => $this->input->post('PAYMENTMODE'),
-			'transactions_currency' => $this->input->post('CURRENCY'),
-			'transactions_txndate' => $this->input->post('TXNDATE'),
-			'transactions_status' => $this->input->post('STATUS'),
-			'transactions_response_code' => $this->input->post('RESPCODE'),
-			'transactions_message' => $this->input->post('RESPMSG'),
-			'transactions_created' => now()
-		];
-		$this->Basic_model->save_Transaction_PayTm($trans);
+		$paypalInfo = $this->input->get();
 
-		if ($this->input->post('RESPCODE') == '01' || $this->input->post('RESPCODE') == '400' || $this->input->post('RESPCODE') == '402') {
-			$this->session->set_userdata('n_method', 'PayTm');
+		if (!empty($paypalInfo['item_number']) && !empty($paypalInfo['tx']) && !empty($paypalInfo['amt']) && !empty($paypalInfo['cc']) && !empty($paypalInfo['st'])) {
 			$this->complete_payment();
 		} else {
-			redirect('order-failed');
+			$this->complete_payment('X');
+		}
+	}
+	public function load_PaypalFailed()
+	{
+		$this->complete_payment('Y');
+	}
+	public function load_PaypalIpn()
+	{
+		$paypalInfo = $this->input->post();
+		$trans = [
+			'transactions_user' => $paypalInfo['custom'],
+			'transactions_gateway' => 'Paypal',
+			'transactions_order_id' => $paypalInfo['item_number'],
+			'transactions_gross' => $paypalInfo['mc_gross'],
+			'transactions_txnid' => $paypalInfo["txn_id"],
+			'transactions_email' => $paypalInfo["payer_email"],
+			'transactions_currency' => $paypalInfo["mc_currency"],
+			'transactions_status' => $paypalInfo["payment_status"],
+			'transactions_created' => now()
+		];
+		$paypalURL = $this->paypal_lib->paypal_url;
+		$result    = $this->paypal_lib->curlPost($paypalURL, $paypalInfo);
+		if (preg_match("/VERIFIED/i", $result)) {
+			$this->Basic_model->save_Transaction_PayTm($trans);
 		}
 	}
 
@@ -1083,8 +1091,14 @@ class Shopping extends MX_Controller
 		}
 	}
 
-	public function complete_payment()
+	public function complete_payment($error = '')
 	{
+		if ($error == 'X') {
+			die('Something went wrong. We will fix and let you know');
+		}
+		if ($error == 'Y') {
+			die('Payment Failed');
+		}
 		if (!$this->session->userdata('user_id')) {
 			$this->e404();
 		} else {
@@ -1202,8 +1216,23 @@ class Shopping extends MX_Controller
 		$data1["CALLBACK_URL"] = base_url('paypal-success') . '?amount=' . $priceTotal . '&txnid=';
 		$data1["order"] = rand() . rand();
 		$data1["price"] = $priceTotal;
-
-		$this->load->view("paypal", $data1);
+		$this->load->library('Paypal_lib');
+		$returnURL = base_url('paypal-success');
+		$failURL = base_url('paypal-failed');
+		$notifyURL = base_url('paypal-ipn');
+		//get particular product data
+		// $product = $this->product->getProducts($id);
+		$userID = $this->session->userdata('user_id');
+		$logo = base_url('themes/shopping/assets/') . 'images/logo_dark.png';
+		$this->paypal_lib->add_field('return', $returnURL);
+		$this->paypal_lib->add_field('fail_return', $failURL);
+		$this->paypal_lib->add_field('notify_url', $notifyURL);
+		$this->paypal_lib->add_field('item_name', 'Pinelop Purchase');
+		$this->paypal_lib->add_field('custom', $userID);
+		$this->paypal_lib->add_field('item_number',  rand());
+		$this->paypal_lib->add_field('amount',  $priceTotal);
+		$this->paypal_lib->image($logo);
+		$this->paypal_lib->paypal_auto_form();
 	}
 
 	public function complete_cod_order()
