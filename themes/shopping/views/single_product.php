@@ -107,8 +107,9 @@
 													<span class="switch_lable"><?= $attribute['product_attributes_name'] ?></span>
 													<div class="product_color_switch">
 														<?php if ($attribute['variables']) {
-															foreach ($attribute['variables'] as $variable) { ?>
-																<span data-color="<?= $variable['product_variables_value'] ?>" onclick="addValue('<?= $variable['product_variables_value'] ?>', '#<?= $attribute['product_attributes_name'] ?>', '<?= $variable['product_variables_image'] ?>')"></span>
+															foreach ($attribute['variables'] as $variable) {
+																$ppp = (($variable['product_variables_price'] > 0) ? $variable['product_variables_price'] : $sPrice); ?>
+																<span data-color="<?= $variable['product_variables_value'] ?>" onclick="addValue('<?= $variable['product_variables_value'] ?>', '#<?= $attribute['product_attributes_name'] ?>', '<?= $variable['product_variables_image'] ?>', '<?= $ppp ?>', '<?= pPrice($ppp) ?>')"></span>
 														<?php }
 														} ?>
 													</div>
