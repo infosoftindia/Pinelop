@@ -109,7 +109,7 @@
 														<?php if ($attribute['variables']) {
 															foreach ($attribute['variables'] as $variable) {
 																$ppp = (($variable['product_variables_price'] > 0) ? $variable['product_variables_price'] : $sPrice); ?>
-																<span data-color="<?= $variable['product_variables_value'] ?>" onclick="addValue('<?= $variable['product_variables_value'] ?>', '#<?= $attribute['product_attributes_name'] ?>', '<?= $variable['product_variables_image'] ?>', '<?= $ppp ?>', '<?= pPrice($ppp) ?>')"></span>
+																<span data-color="<?= $variable['product_variables_value'] ?>" onclick="addValue('<?= $variable['product_variables_value'] ?>', '#<?= $attribute['product_attributes_name'] ?>', '<?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? $variable['product_variables_image'] : $post['posts_cover'] ?>', '<?= $ppp ?>', '<?= pPrice($ppp) ?>')"></span>
 														<?php }
 														} ?>
 													</div>
