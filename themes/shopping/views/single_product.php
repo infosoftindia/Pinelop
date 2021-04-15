@@ -357,6 +357,13 @@
 								type: "green",
 								content: "' . $post['posts_title'] . ' has been added to cart successfully!",
 							});
+						}else if(data == 2){
+							$.alert({
+								title: "Warning",
+								closeIcon: true,
+								type: "orange",
+								content: "Please choose the Option before adding to cart",
+							});
 						}else{
 							$.alert({
 								title: "Ohh No!",

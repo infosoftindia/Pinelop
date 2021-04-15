@@ -276,6 +276,14 @@ class Shopping_model extends CI_Model
 			$user = '0';
 		}
 
+		foreach ($_POST as $key => $value) {
+			if ($key != 'quantity' && $key != 'post' && $key != 'price' && $key != 'image') {
+				if ($value == '') {
+					die("2");
+				}
+			}
+		}
+
 		if ($user == 0) {
 			$this->db->where('carts_token', $user_ses);
 		} else {
