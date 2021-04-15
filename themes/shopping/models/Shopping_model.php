@@ -880,41 +880,6 @@ class Shopping_model extends CI_Model
 		return $result->result_array();
 	}
 
-	// public function add_To_Cart_Wishlist_old($product, $id){
-	// $user = $this->session->userdata('user_id');
-	// $quantity = $this->input->post('quantity');
-	// $user_ses = get_cookie('users_local_session');
-	// if (is_null($user)) {
-	// $user = '0';
-	// }
-
-	// $this->db->where('carts_token', $user_ses);
-	// $this->db->where('carts_product', $product);
-	// $result = $this->db->get('carts');
-	// if($result->num_rows() > 0){
-	// $qty = ($result->row(0)->carts_quantity)+$quantity;
-	// $data = array(
-	// 'carts_user' => $user,
-	// 'carts_token' => $user_ses,
-	// 'carts_product' => $product,
-	// 'carts_quantity' => $qty
-	// );
-	// $this->db->where('carts_token', $user_ses);
-	// $this->db->where('carts_product', $product);
-	// $this->db->update('carts', $data);
-	// }else{
-	// $data = array(
-	// 'carts_user' => $user,
-	// 'carts_token' => $user_ses,
-	// 'carts_product' => $product,
-	// 'carts_quantity' => $quantity,
-	// 'carts_created' => now()
-	// );
-	// $this->db->insert('carts', $data);
-	// }
-	// $this->remove_Wishlist($id);
-	// }
-
 	public function add_To_Cart_Wishlist($product, $id)
 	{
 		$user = $this->session->userdata('user_id');
@@ -1064,68 +1029,6 @@ class Shopping_model extends CI_Model
 		}
 
 		return $categories;
-	}
-
-	public function add_To_Cart_Cut($id)
-	{
-		$user = $this->session->userdata('user_id');
-		$quantity = 1;
-		$user_ses = get_cookie('users_local_session');
-		if (is_null($user)) {
-			$user = '0';
-		}
-
-		$this->db->where('carts_token', $user_ses);
-		$this->db->where('carts_product', $id);
-		$cart = $this->db->get('carts')->row_array();
-		$this->db->where('carts_id', $cart['carts_id']);
-		$this->db->delete('carts');
-		$this->db->where('cart_variables_cart', $cart['carts_id']);
-		$this->db->delete('cart_variables');
-		$data = array(
-			'carts_user' => $user,
-			'carts_token' => $user_ses,
-			'carts_product' => $id,
-			'carts_quantity' => $quantity,
-			'carts_created' => now()
-		);
-		$this->db->insert('carts', $data);
-		$cart = $this->db->insert_id();
-
-		$length = $this->input->post('length');
-		$qty = $this->input->post('qty');
-		$perMM = $this->input->post('permm');
-		$remaining = $this->input->post('remaining');
-		$data = array(
-			'cart_variables_cart' => $cart,
-			'cart_variables_length' => $length,
-			'cart_variables_measure' => $remaining,
-			'cart_variables_price' => $perMM,
-			'cart_variables_quantity' => $qty
-		);
-		$this->db->insert('cart_variables', $data);
-
-
-		return 1;
-	}
-
-	public function add_To_Cart_Custom($product)
-	{
-		$user = $this->session->userdata('user_id');
-		$user_ses = get_cookie('users_local_session');
-		if (is_null($user)) {
-			$user = '0';
-		}
-
-		$data = array(
-			'carts_user' => $user,
-			'carts_token' => $user_ses,
-			'carts_product' => $product,
-			'carts_quantity' => $this->input->post('quantity'),
-			'carts_created' => now()
-		);
-		$this->db->insert('carts', $data);
-		return 1;
 	}
 
 	public function insert_Setting($key, $value)

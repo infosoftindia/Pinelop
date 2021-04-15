@@ -860,56 +860,6 @@ class Shopping extends MX_Controller
 		}
 	}
 
-	public function add_to_cart_old($product)
-	{
-		$user = false;
-		$this->load->model('Shopping_model');
-		$q1 = $this->input->post('quantity_1');
-		$q2 = $this->input->post('quantity_2');
-		$q3 = $this->input->post('quantity_3');
-		$q4 = $this->input->post('quantity_4');
-		$q5 = $this->input->post('quantity_5');
-		$q6 = $this->input->post('quantity_6');
-		$custom = $this->input->post('custom');
-		$length = $this->input->post('length');
-		$measure = $this->input->post('measure');
-
-		if ($q1 > 0) {
-			$user = $this->Shopping_model->add_To_Cart_Custom($product, $q1, '1000');
-		}
-		if ($q2 > 0) {
-			$user = $this->Shopping_model->add_To_Cart_Custom($product, $q2, '2000');
-		}
-		if ($q3 > 0) {
-			$user = $this->Shopping_model->add_To_Cart_Custom($product, $q3, '3000');
-		}
-		if ($q4 > 0) {
-			$user = $this->Shopping_model->add_To_Cart_Custom($product, $q4, '4000');
-		}
-		if ($q5 > 0) {
-			$user = $this->Shopping_model->add_To_Cart_Custom($product, $q5, '5000');
-		}
-		if ($q6 > 0) {
-			$user = $this->Shopping_model->add_To_Cart_Custom($product, $q6, '6000');
-		}
-		if (count($custom) > 0 && count($length) > 0) {
-			for ($i = 0; $i < count($custom); $i++) {
-				if ($measure[$i] != 'mm') {
-					$length[$i] = $length[$i] * 1000;
-				}
-				if ($length[$i] > 0 && $custom[$i] > 0) {
-					$user = $this->Shopping_model->add_To_Cart_Custom($product, $custom[$i], $length[$i]);
-				}
-			}
-		}
-		if ($user) {
-			echo '1';
-		} else {
-			echo '0';
-		}
-	}
-
-
 	public function add_to_cart($product)
 	{
 		$user = false;
@@ -1443,13 +1393,6 @@ class Shopping extends MX_Controller
 		redirect($_SERVER['HTTP_REFERER']);
 	}
 
-	public function add_cut_cart($id)
-	{
-		$this->load->model('Shopping_model');
-		$user = $this->Shopping_model->add_To_Cart_Cut($id);
-		redirect('cart');
-	}
-
 	public function loginWithGoogleHandle()
 	{
 		$client = $this->loginWithGoogleSetup();
@@ -1525,13 +1468,13 @@ class Shopping extends MX_Controller
 		$email = $response['email'];
 
 		$check_Email = $this->Shopping_model->check_Email($email);
-		if ($check_Email) {
+		if ($check_Email > 0) {
 			$this->session->set_flashdata('error', 'This email is already registered Please login with Password.');
 			redirect('login');
 			// die('2');
 		}
 		$data = [
-			'fname' => $fname,
+			'fname' => $name,
 			'email' => $email,
 			'social' => 'google',
 			'token' => $response['id'],

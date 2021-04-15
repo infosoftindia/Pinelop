@@ -73,8 +73,8 @@
 								<h5 class="widget_title">Filter</h5>
 								<div class="filter_price">
 									<?php
-									$min = ($this->input->get('min') > -1) ? $this->input->get('min') : 50;
-									$max = ($this->input->get('max') > -1) ? $this->input->get('max') : 12000;
+									$min = ($this->input->get('min') > -1) ? $this->input->get('min') : 1;
+									$max = ($this->input->get('max') > -1) ? $this->input->get('max') : 25000;
 									?>
 									<div id="price_filter" data-min="1" data-max="<?= pPrice(25000, 1) ?>" data-min-value="<?= pPrice($min, 1) ?>" data-max-value="<?= pPrice($max, 1) ?>" data-price-sign="<?= $this->session->userdata('set_currency') ?> "></div>
 									<div class="price_range">
