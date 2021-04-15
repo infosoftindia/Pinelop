@@ -17,6 +17,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 <script src="<?= site_url('themes/shopping/assets/') ?>toast/toast.min.js"></script>
 <script src="<?= base_url('themes/shopping/assets/') ?>js/shop.js"></script>
+<script src="<?= base_url('themes/shopping/assets/') ?>lazy.js"></script>
 <script>
 	$('.formSubmit').change(function() {
 		var frm = $(this).data('form');

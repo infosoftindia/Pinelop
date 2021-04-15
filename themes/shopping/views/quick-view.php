@@ -21,7 +21,7 @@ if ($post['comments']) {
 		<div class="col-lg-6 col-md-6 mb-4 mb-md-0">
 			<div class="product-image">
 				<div class="product_img_box">
-					<img id="product_img" src='<?= base_url(getenv('uploads') . $post['posts_cover']) ?>' data-zoom-image="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>" alt="product_img1" />
+					<img src="<?= site_url('themes/shopping') ?>/assets/load.gif" class="lazy" id="product_img" data-src='<?= base_url(getenv('uploads') . $post['posts_cover']) ?>' data-zoom-image="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>" alt="product_img1" />
 				</div>
 				<?php  //print_r($post)
 				?>
@@ -31,14 +31,14 @@ if ($post['comments']) {
 							<img src="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>" alt="product_small_img1" />
 						</a> -->
 						<a href="#" class="product_gallery_item" data-image="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>" data-zoom-image="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>">
-							<img src="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>" alt="product_small_img2">
+							<img src="<?= site_url('themes/shopping') ?>/assets/load.gif" class="lazy" data-src="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>" alt="product_small_img2">
 						</a>
 					</div>
 					<?php if ($post['galleries']) {
 						foreach ($post['galleries'] as $gallery) { ?>
 							<div class="item">
 								<a href="#" class="product_gallery_item" data-image="<?= base_url(getenv('uploads') . $gallery['products_gallery_image']) ?>" data-zoom-image="<?= base_url(getenv('uploads') . $gallery['products_gallery_image']) ?>">
-									<img src="<?= base_url(getenv('uploads') . $gallery['products_gallery_image']) ?>" alt="product_small_img2">
+									<img src="<?= site_url('themes/shopping') ?>/assets/load.gif" class="lazy" data-src="<?= base_url(getenv('uploads') . $gallery['products_gallery_image']) ?>" alt="product_small_img2">
 								</a>
 							</div>
 					<?php }
@@ -93,7 +93,7 @@ if ($post['comments']) {
 											<?php if ($attribute['variables']) {
 												foreach ($attribute['variables'] as $variable) {
 													$ppp = (($variable['product_variables_price'] > 0) ? $variable['product_variables_price'] : $sPrice); ?>
-													<span style="height: 50px; min-width: 50px;" onclick="addValue('<?= $variable['product_variables_value'] ?>', '#<?= $attribute['product_attributes_name'] ?>', '<?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? $variable['product_variables_image'] : $post['posts_cover'] ?>', '<?= $ppp ?>', '<?= pPrice($ppp) ?>')"><?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? '<img src="' . base_url(getenv('uploads') . $variable['product_variables_image']) . '" style="width: 50px; max-height: 46px">' : '<label style="margin-top: 9px;">' . $variable['product_variables_value'] . '</label style="margin-top: 9px;">' ?></span>
+													<span style="height: 50px; min-width: 50px;" onclick="addValue('<?= $variable['product_variables_value'] ?>', '#<?= $attribute['product_attributes_name'] ?>', '<?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? $variable['product_variables_image'] : $post['posts_cover'] ?>', '<?= $ppp ?>', '<?= pPrice($ppp) ?>')"><?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? '<src="' . site_url('themes/shopping') . '/assets/load.gif" class="lazy" data-src="' . base_url(getenv('uploads') . $variable['product_variables_image']) . '" style="width: 50px; max-height: 46px">' : '<label style="margin-top: 9px;">' . $variable['product_variables_value'] . '</label style="margin-top: 9px;">' ?></span>
 											<?php }
 											} ?>
 										</div>
@@ -105,7 +105,7 @@ if ($post['comments']) {
 					<hr />
 					<?php if ($post['attributes']) {
 						foreach ($post['attributes'] as $attribute) { ?>
-							<input type="hidden" name="<?= $attribute['product_attributes_name'] ?>" id="<?= $attribute['product_attributes_name'] ?>" value="">
+							<input type="hidden" name="<?= str_replace(' ', '---', $attribute['product_attributes_name']) ?>" id="<?= $attribute['product_attributes_name'] ?>" value="">
 					<?php }
 					} ?>
 					<input type="hidden" name="price" id="dPrice" value="">

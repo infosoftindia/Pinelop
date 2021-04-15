@@ -41,7 +41,7 @@
 									<li><a href="<?= site_url('return-policy') ?>">Return Policy</a></li>
 									<li><a href="<?= site_url('order-tracking') ?>">Order Tracking</a></li>
 									<li><a href="<?= site_url('shipping-cost-and-policy') ?>">Shipping Cost & Policy</a></li>
-									<li><a href="<?= site_url('faq') ?>">FAQ</a></li>
+									<!-- <li><a href="<?= site_url('faq') ?>">FAQ</a></li> -->
 								</ul>
 							</div>
 						</div>

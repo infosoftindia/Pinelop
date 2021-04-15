@@ -55,21 +55,21 @@
 								<div id="pr_item_gallery" class="product_gallery_item slick_slider" data-vertical="true" data-vertical-swiping="true" data-slides-to-show="5" data-slides-to-scroll="1" data-infinite="false">
 									<div class="item">
 										<a href="#" class="product_gallery_item active" data-image="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>" data-zoom-image="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>">
-											<img src="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>" alt="product_small_img1">
+											<img src="<?= site_url('themes/shopping') ?>/assets/load.gif" data-src="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>" alt="product_small_img1" class="lazy">
 										</a>
 									</div>
 									<?php if ($post['galleries']) {
 										foreach ($post['galleries'] as $gallery) { ?>
 											<div class="item">
 												<a href="#" class="product_gallery_item" data-image="<?= base_url(getenv('uploads') . $gallery['products_gallery_image']) ?>" data-zoom-image="<?= base_url(getenv('uploads') . $gallery['products_gallery_image']) ?>">
-													<img src="<?= base_url(getenv('uploads') . $gallery['products_gallery_image']) ?>" alt="product_small_img2">
+													<img src="<?= site_url('themes/shopping') ?>/assets/load.gif" data-src="<?= base_url(getenv('uploads') . $gallery['products_gallery_image']) ?>" alt="product_small_img2" class="lazy">
 												</a>
 											</div>
 									<?php }
 									} ?>
 								</div>
 								<div class="product_img_box">
-									<img id="product_img" src='<?= base_url(getenv('uploads') . $post['posts_cover']) ?>' data-zoom-image="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>" alt="<?= $post['posts_title'] ?>">
+									<img src="<?= site_url('themes/shopping') ?>/assets/load.gif" id="product_img" data-src='<?= base_url(getenv('uploads') . $post['posts_cover']) ?>' data-zoom-image="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>" class="lazy" alt="<?= $post['posts_title'] ?>">
 									<a href="#" class="product_img_zoom" title="Zoom">
 										<span class="linearicons-zoom-in"></span>
 									</a>
@@ -126,7 +126,7 @@
 														<?php if ($attribute['variables']) {
 															foreach ($attribute['variables'] as $variable) {
 																$ppp = (($variable['product_variables_price'] > 0) ? $variable['product_variables_price'] : $sPrice); ?>
-																<span style="height: 50px; min-width: 50px;" onclick="addValue('<?= $variable['product_variables_value'] ?>', '#<?= $attribute['product_attributes_name'] ?>', '<?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? $variable['product_variables_image'] : $post['posts_cover'] ?>', '<?= $ppp ?>', '<?= pPrice($ppp) ?>')"><?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? '<img src="' . base_url(getenv('uploads') . $variable['product_variables_image']) . '" style="width: 50px; max-height: 46px">' : '<label style="margin-top: 9px;">' . $variable['product_variables_value'] . '</label style="margin-top: 9px;">' ?></span>
+																<span style="height: 50px; min-width: 50px;" onclick="addValue('<?= $variable['product_variables_value'] ?>', '#<?= $attribute['product_attributes_name'] ?>', '<?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? $variable['product_variables_image'] : $post['posts_cover'] ?>', '<?= $ppp ?>', '<?= pPrice($ppp) ?>')"><?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? '<img class="lazy" data-src="' . base_url(getenv('uploads') . $variable['product_variables_image']) . '" style="width: 50px; max-height: 46px">' : '<label style="margin-top: 9px;">' . $variable['product_variables_value'] . '</label style="margin-top: 9px;">' ?></span>
 														<?php }
 														} ?>
 													</div>
@@ -140,7 +140,7 @@
 								<form method="post" action="<?= site_url('shopping/add_to_cart/' . $post['posts_id']) ?>" class="add_To_Cart">
 									<?php if ($post['attributes']) {
 										foreach ($post['attributes'] as $attribute) { ?>
-											<input type="hidden" name="<?= $attribute['product_attributes_name'] ?>" id="<?= $attribute['product_attributes_name'] ?>" value="">
+											<input type="hidden" name="<?= str_replace(' ', '---', $attribute['product_attributes_name']) ?>" id="<?= $attribute['product_attributes_name'] ?>" value="">
 									<?php }
 									} ?>
 									<input type="hidden" name="price" id="dPrice" value="">
@@ -208,7 +208,7 @@
 									<!-- <li class="nav-item">
 										<a class="nav-link" id="Additional-info-tab" data-toggle="tab" href="#Additional-info" role="tab" aria-controls="Additional-info" aria-selected="false">Additional info</a>
 									</li> -->
-									<li class="nav-item">
+									<li class="nav-item" style="<?= (count($post['comments']) == 0) ? 'display: none' : '' ?>">
 										<a class="nav-link" id="Reviews-tab" data-toggle="tab" href="#Reviews" role="tab" aria-controls="Reviews" aria-selected="false">Reviews (<?= count($post['comments']) ?>)</a>
 									</li>
 								</ul>
@@ -246,7 +246,7 @@
 													foreach ($post['comments'] as $comment) { ?>
 														<li>
 															<div class="comment_img">
-																<img src="<?= site_url('themes/shopping') ?>/assets/images/user1.jpg" alt="user1">
+																<img src="<?= site_url('themes/shopping') ?>/assets/load.gif" data-src="<?= site_url('themes/shopping') ?>/assets/images/user1.jpg" alt="user1" class="lazy">
 															</div>
 															<div class="comment_block">
 																<div class="rating_wrap">

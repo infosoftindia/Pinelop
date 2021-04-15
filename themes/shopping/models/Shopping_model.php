@@ -326,7 +326,7 @@ class Shopping_model extends CI_Model
 				// echo $key . ' => ' . $value;
 				$this->db->insert('cart_variables', [
 					'cart_variables_cart' => $cart_id,
-					'cart_variables_key' => $key,
+					'cart_variables_key' => str_replace('---', ' ', $key),
 					'cart_variables_value' => $value,
 					'cart_variables_price' => $this->input->post('price'),
 					'cart_variables_image' => $this->input->post('image'),

@@ -10,7 +10,7 @@ if ($salePrice != '0' && $salePrice != '' && $salePrice < $price) {
 <div class="product_box text-center">
 	<div class="product_img">
 		<a href="<?= site_url('product/' . $product['search_slug']) ?>">
-			<img src="<?= base_url(getenv('uploads') . $product['search_image']) ?>" alt="<?= $product['search_title'] ?>" style="height: 280px; object-fit: cover;">
+			<img src="<?= site_url('themes/shopping') ?>/assets/load.gif" class="lazy" data-src="<?= base_url(getenv('uploads') . $product['search_image']) ?>" alt="<?= $product['search_title'] ?>" style="height: 280px; object-fit: cover;">
 		</a>
 		<div class="product_action_box">
 			<ul class="list_none pr_action_btn">

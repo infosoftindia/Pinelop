@@ -160,7 +160,7 @@
                         <div class="col-md-4">
                             <div class="sale_banner">
                                 <a class="hover_effect1" href="<?= base_url('best-offers/' . $bestOffer['products_best_offers_id']) ?>">
-                                    <img src="<?= base_url(getenv('uploads') . $bestOffer['products_best_offers_image']) ?>" alt="<?= $bestOffer['products_best_offers_title'] ?>">
+                                    <img src="<?= site_url('themes/shopping') ?>/assets/load.gif" class="lazy" data-src="<?= base_url(getenv('uploads') . $bestOffer['products_best_offers_image']) ?>" alt="<?= $bestOffer['products_best_offers_title'] ?>">
                                     <h6 class="product_title text-center pt-3"><a href="<?= base_url('best-offers/' . $bestOffer['products_best_offers_id']) ?>"><?= $bestOffer['products_best_offers_title'] ?></a></h6>
                                 </a>
                             </div>
@@ -209,7 +209,7 @@
                     <?php foreach ($featuredCategories as $featuredCat) { ?>
                         <div class="col-md-6">
                             <div class="single_banner">
-                                <img src="<?= base_url(getenv('uploads') . ($featuredCat['categories_icon'])) ?>" alt="furniture_banner1" style="height: 300px; object-fit: cover;">
+                                <img src="<?= site_url('themes/shopping') ?>/assets/load.gif" class="lazy" data-src="<?= base_url(getenv('uploads') . ($featuredCat['categories_icon'])) ?>" alt="furniture_banner1" style="height: 300px; object-fit: cover;">
                                 <div class="fb_info">
                                     <h5 class="single_bn_title1">Featured</h5>
                                     <h3 class="single_bn_title"><?= $category['categories_name'] ?></h3>
