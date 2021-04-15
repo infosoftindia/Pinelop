@@ -80,7 +80,7 @@ if ($post['comments']) {
 											<?php if ($attribute['variables']) {
 												foreach ($attribute['variables'] as $variable) {
 													$ppp = (($variable['product_variables_price'] > 0) ? $variable['product_variables_price'] : $sPrice); ?>
-													<span data-color="<?= $variable['product_variables_value'] ?>" onclick="addValue('<?= $variable['product_variables_value'] ?>', '#<?= $attribute['product_attributes_name'] ?>', '<?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? $variable['product_variables_image'] : $post['posts_cover'] ?>', '<?= $ppp ?>', '<?= pPrice($ppp) ?>')"></span>
+													<span data-color="<?= $variable['product_variables_value'] ?>" onclick="addValue('<?= $variable['product_variables_value'] ?>', '#<?= str_replace(' ', '---', $attribute['product_attributes_name']) ?>', '<?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? $variable['product_variables_image'] : $post['posts_cover'] ?>', '<?= $ppp ?>', '<?= pPrice($ppp) ?>')"></span>
 											<?php }
 											} ?>
 										</div>
@@ -93,7 +93,7 @@ if ($post['comments']) {
 											<?php if ($attribute['variables']) {
 												foreach ($attribute['variables'] as $variable) {
 													$ppp = (($variable['product_variables_price'] > 0) ? $variable['product_variables_price'] : $sPrice); ?>
-													<span style="height: 50px; min-width: 50px;" onclick="addValue('<?= $variable['product_variables_value'] ?>', '#<?= $attribute['product_attributes_name'] ?>', '<?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? $variable['product_variables_image'] : $post['posts_cover'] ?>', '<?= $ppp ?>', '<?= pPrice($ppp) ?>')"><?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? '<src="' . site_url('themes/shopping') . '/assets/load.gif" class="lazy" data-src="' . base_url(getenv('uploads') . $variable['product_variables_image']) . '" style="width: 50px; max-height: 46px">' : '<label style="margin-top: 9px;">' . $variable['product_variables_value'] . '</label style="margin-top: 9px;">' ?></span>
+													<span style="height: 50px; min-width: 50px;" onclick="addValue('<?= $variable['product_variables_value'] ?>', '#<?= str_replace(' ', '---', $attribute['product_attributes_name']) ?>', '<?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? $variable['product_variables_image'] : $post['posts_cover'] ?>', '<?= $ppp ?>', '<?= pPrice($ppp) ?>')"><?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? '<src="' . site_url('themes/shopping') . '/assets/load.gif" class="lazy" data-src="' . base_url(getenv('uploads') . $variable['product_variables_image']) . '" style="width: 50px; max-height: 46px">' : '<label style="margin-top: 9px;">' . $variable['product_variables_value'] . '</label style="margin-top: 9px;">' ?></span>
 											<?php }
 											} ?>
 										</div>
@@ -105,7 +105,7 @@ if ($post['comments']) {
 					<hr />
 					<?php if ($post['attributes']) {
 						foreach ($post['attributes'] as $attribute) { ?>
-							<input type="hidden" name="<?= str_replace(' ', '---', $attribute['product_attributes_name']) ?>" id="<?= $attribute['product_attributes_name'] ?>" value="">
+							<input type="hidden" name="<?= str_replace(' ', '---', $attribute['product_attributes_name']) ?>" id="<?= str_replace(' ', '---', $attribute['product_attributes_name']) ?>" value="">
 					<?php }
 					} ?>
 					<input type="hidden" name="price" id="dPrice" value="">
