@@ -55,7 +55,7 @@ if ($post['comments']) {
 							<span class="price"><?= pPrice($sPrice) ?></span>
 							<?= ($sPrice != $post['products_price']) ? '<del>' . pPrice($post['products_price'], 1) . '</del>' : '' ?>
 						</div>
-						<div class="rating_wrap">
+						<div class="rating_wrap" style="<?= (count($post['comments']) == 0) ? 'display: none' : '' ?>">
 							<div class="rating">
 								<div class="product_rate" style="width:<?= $per * 20 ?>%"></div>
 							</div>

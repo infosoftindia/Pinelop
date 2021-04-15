@@ -83,7 +83,7 @@
 											<span>35% Off</span>
 										</div> -->
 									</div>
-									<div class="rating_wrap">
+									<div class="rating_wrap" style="<?= (count($post['comments']) == 0) ? 'display: none' : '' ?>">
 										<div class="rating">
 											<div class="product_rate" style="width:<?= $per * 20 ?>%"></div>
 										</div>
@@ -122,7 +122,7 @@
 														<?php if ($attribute['variables']) {
 															foreach ($attribute['variables'] as $variable) {
 																$ppp = (($variable['product_variables_price'] > 0) ? $variable['product_variables_price'] : $sPrice); ?>
-																<span style="height: 50px; min-width: 50px;" onclick="addValue('<?= $variable['product_variables_value'] ?>', '#<?= $attribute['product_attributes_name'] ?>', '<?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? $variable['product_variables_image'] : $post['posts_cover'] ?>', '<?= $ppp ?>', '<?= pPrice($ppp) ?>')"><?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? '<img src="' . base_url(getenv('uploads') . $variable['product_variables_image']) . '" style="width: 50px; max-height: 46px">' : $variable['product_variables_value'] ?></span>
+																<span style="height: 50px; min-width: 50px;" onclick="addValue('<?= $variable['product_variables_value'] ?>', '#<?= $attribute['product_attributes_name'] ?>', '<?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? $variable['product_variables_image'] : $post['posts_cover'] ?>', '<?= $ppp ?>', '<?= pPrice($ppp) ?>')"><?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? '<img src="' . base_url(getenv('uploads') . $variable['product_variables_image']) . '" style="width: 50px; max-height: 46px">' : '<label style="margin-top: 9px;">' . $variable['product_variables_value'] . '</label style="margin-top: 9px;">' ?></span>
 														<?php }
 														} ?>
 													</div>

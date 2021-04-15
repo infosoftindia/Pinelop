@@ -31,7 +31,7 @@ if ($salePrice != '0' && $salePrice != '' && $salePrice < $price) {
 								<span>25% Off</span>
 							</div> -->
 		</div>
-		<div class="rating_wrap">
+		<div class="rating_wrap" style="<?= ($product['search_rate_count'] == 0) ? 'display: none' : '' ?>">
 			<div class="rating">
 				<div class="product_rate" style="width:<?= $product['search_rate'] * 20 ?>%"></div>
 			</div>
