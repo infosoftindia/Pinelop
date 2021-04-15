@@ -362,7 +362,7 @@
 								title: "Warning",
 								closeIcon: true,
 								type: "orange",
-								content: "Please choose the Option before adding to cart",
+								content: "Please choose the varient before adding to cart",
 							});
 						}else{
 							$.alert({
