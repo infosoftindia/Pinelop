@@ -159,6 +159,7 @@ if ($post['comments']) {
 
 <script src="<?= site_url('themes/shopping/assets/') ?>js/scripts.js"></script>
 <script src="<?= site_url('themes/shopping/assets/') ?>js/shop.js"></script>
+<script src="<?= base_url('themes/shopping/assets/') ?>lazy.js"></script>
 <script>
 	$(".add_To_Cart").submit(function(e) {
 		e.preventDefault();
