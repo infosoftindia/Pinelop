@@ -19,7 +19,11 @@
 		}
 		?>
 
-
+		<style>
+			span.active>label {
+				color: white;
+			}
+		</style>
 		<!-- START SECTION BREADCRUMB -->
 		<div class="breadcrumb_section bg_gray page-title-mini">
 			<div class="container">
