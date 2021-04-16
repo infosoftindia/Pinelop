@@ -1327,12 +1327,10 @@ class Shopping extends MX_Controller
 			'email_address' => $email,
 			'status'        => 'subscribed',
 		]);
-		// print_r($result);
-		// die;
 		if ($result) {
-			$this->session->set_flashdata('info', 'Thank you for subscribing to our newsletter.');
+			$this->session->set_flashdata('success', 'Thank you for subscribing to our newsletter.');
 		} else {
-			$this->session->set_flashdata('error', 'You have already subscribed to our newsletter');
+			$this->session->set_flashdata('error', 'Unable to subscribe to our newsletter');
 		}
 		redirect($_SERVER['HTTP_REFERER']);
 	}
