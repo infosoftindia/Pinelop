@@ -1,5 +1,7 @@
 <?php
 
+use \DrewM\MailChimp\MailChimp;
+
 class Shopping extends MX_Controller
 {
 
@@ -1319,36 +1321,18 @@ class Shopping extends MX_Controller
 	public function subscribe_newsletter()
 	{
 		$email = $this->input->post('email');
-		$curl = curl_init();
-		curl_setopt_array($curl, array(
-			CURLOPT_URL => "https://api.sendinblue.com/v3/contacts",
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_ENCODING => "",
-			CURLOPT_MAXREDIRS => 10,
-			CURLOPT_SSL_VERIFYHOST, 0,
-			CURLOPT_SSL_VERIFYPEER, 0,
-			CURLOPT_TIMEOUT => 30,
-			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-			CURLOPT_CUSTOMREQUEST => "POST",
-			CURLOPT_POSTFIELDS => "{\"email\":\"{$email}\",\"listIds\":[2],\"updateEnabled\":true}",
-			CURLOPT_HTTPHEADER => array(
-				"accept: application/json",
-				"api-key: " . getenv('SENDINBLUE'),
-				"content-type: application/json"
-			),
-		));
-		$response = curl_exec($curl);
-		$err = curl_error($curl);
-		curl_close($curl);
-		if ($err) {
-			// echo "cURL Error #:" . $err;
-			$this->session->set_flashdata('error', 'Unable to subscribe to newsletter. Please try again');
+		$MailChimp = new MailChimp('1b4f9940d3558f8c10ffe35561dc6ddd-us1');
+		$list_id = '34b9f54538';
+		$result = $MailChimp->post("lists/$list_id/members", [
+			'email_address' => $email,
+			'status'        => 'subscribed',
+		]);
+		// print_r($result);
+		// die;
+		if ($result) {
+			$this->session->set_flashdata('info', 'Thank you for subscribing to our newsletter.');
 		} else {
-			if ($response) {
-				$this->session->set_flashdata('info', 'Thank you for subscribing to our newsletter.');
-			} else {
-				$this->session->set_flashdata('error', 'You have already subscribed to our newsletter');
-			}
+			$this->session->set_flashdata('error', 'You have already subscribed to our newsletter');
 		}
 		redirect($_SERVER['HTTP_REFERER']);
 	}
