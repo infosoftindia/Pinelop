@@ -52,7 +52,7 @@
                         </div>
                         <div class="icon_box_content">
                             <h6>Fast Delivery</h6>
-                            <p>Worldwide</p>
+                            <p>Free-Worldwide</p>
                         </div>
                     </div>
                 </div>

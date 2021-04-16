@@ -8,7 +8,7 @@
 								<div class="footer_logo">
 									<a href="#"><img src="<?= site_url('themes/shopping/assets/') ?>images/logo_light.png" alt="logo"></a>
 								</div>
-								<p>If you are going to use of Lorem Ipsum need to be sure there isn't hidden of text</p>
+								<!-- <p>If you are going to use of Lorem Ipsum need to be sure there isn't hidden of text</p> -->
 							</div>
 							<div class="widget">
 								<ul class="social_icons social_white">
@@ -67,22 +67,21 @@
 							<div class="widget">
 								<h6 class="widget_title">Contact Info</h6>
 								<ul class="contact_info contact_info_light">
-									<li>
+									<!-- <li>
 										<i class="ti-location-pin"></i>
 										<p><?= getenv('address') ?></p>
-									</li>
+									</li> -->
 									<li>
 										<i class="ti-email"></i>
 										<a href="mailto:<?= getenv('email') ?>"><?= getenv('email') ?></a>
 									</li>
-									<li>
+									<!-- <li>
 										<i class="ti-mobile"></i>
 										<p><a href="tel:<?= getenv('mobile') ?>"><?= getenv('mobile') ?></a></p>
-									</li>
-									<li>
-
+									</li> -->
+									<!-- <li>
 										<p>Regd No. 102885392 </p>
-									</li>
+									</li> -->
 								</ul>
 							</div>
 						</div>
@@ -110,10 +109,10 @@
 		</footer>
 		<!-- END FOOTER -->
 
-		<a href="#" class="scrollup" style="display: none;"><i class="ion-ios-arrow-up"></i></a>
+		<!-- <!-- <a href="#" class="scrollup" style="display: none;"><i class="ion-ios-arrow-up"></i></a> -->
 		<a href="https://api.whatsapp.com/send?phone=<?= getenv('mobile') ?>" class="float" target="_blank">
 			<i class="fab fa-whatsapp my-float"></i>
-		</a>
+		</a> -->
 
 		<?= $js ?>
 
