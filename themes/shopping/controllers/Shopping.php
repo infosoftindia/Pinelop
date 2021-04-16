@@ -1321,8 +1321,8 @@ class Shopping extends MX_Controller
 	public function subscribe_newsletter()
 	{
 		$email = $this->input->post('email');
-		$MailChimp = new MailChimp('1b4f9940d3558f8c10ffe35561dc6ddd-us1');
-		$list_id = '34b9f54538';
+		$MailChimp = new MailChimp(getenv('MAILCHIMP_APIKEY'));
+		$list_id = getenv('MAILCHIMP_LIST_ID');
 		$result = $MailChimp->post("lists/$list_id/members", [
 			'email_address' => $email,
 			'status'        => 'subscribed',
