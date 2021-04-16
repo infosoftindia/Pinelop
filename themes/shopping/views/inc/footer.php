@@ -109,8 +109,8 @@
 		</footer>
 		<!-- END FOOTER -->
 
-		<!-- <!-- <a href="#" class="scrollup" style="display: none;"><i class="ion-ios-arrow-up"></i></a> -->
-		<a href="https://api.whatsapp.com/send?phone=<?= getenv('mobile') ?>" class="float" target="_blank">
+		<a href="#" class="scrollup" style="display: none;"><i class="ion-ios-arrow-up"></i></a>
+		<!-- <a href="https://api.whatsapp.com/send?phone=<?= getenv('mobile') ?>" class="float" target="_blank">
 			<i class="fab fa-whatsapp my-float"></i>
 		</a> -->
 
