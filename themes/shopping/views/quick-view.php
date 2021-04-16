@@ -226,5 +226,11 @@ if ($post['comments']) {
 			$('.zoomWindow').css('background-image', 'url(<?= base_url('uploads/') ?>' + image + ')');
 		}
 	}
+	$(document).ready(function() {
+		$('img.lazy').each(function() {
+			var a = $(this).data('src');
+			$(this).attr('src', a);
+		});
+	});
 </script>
 ?>
