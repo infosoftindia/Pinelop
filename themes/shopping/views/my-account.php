@@ -188,7 +188,7 @@
 											<h3>Account Details</h3>
 										</div>
 										<div class="card-body">
-											<p>Already have an account? <a href="#">Log in instead!</a></p>
+											<!-- <p>Already have an account? <a href="#">Log in instead!</a></p> -->
 											<form action="<?= site_url('shopping/change_profile') ?>" method="POST">
 												<div class="row">
 													<div class="form-group col-md-6">
