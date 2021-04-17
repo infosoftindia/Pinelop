@@ -4,7 +4,7 @@ use \DrewM\MailChimp\MailChimp;
 
 class Shopping extends MX_Controller
 {
-
+	public $_api_context;
 	public function ___css()
 	{
 		return $this->load->view('inc/css', false, true);
@@ -699,7 +699,41 @@ class Shopping extends MX_Controller
 	public function load_PaypalSuccess()
 	{
 		$paypalInfo = $this->input->get();
+		/** Get the payment ID before session clear * */
+		$payment_id = $this->session->userdata('paypal_payment_id');
+		$order_id = $this->session->userdata('order_id');
+		// $orderData = $order->getOrder($order_id);
+		//dd($orderData);
 
+		/** clear the session payment ID * */
+		// Session::forget('paypal_payment_id');
+		if (empty($this->input->get('token'))) {
+			die('Error');
+		}
+		$payment = \PayPal\Api\Payment::get($payment_id, $this->_api_context);
+		/** PaymentExecution object includes information necessary * */
+		/** to execute a PayPal account payment. * */
+		/** The payer_id is added to the request query parameters * */
+		/** when the user is redirected from paypal back to your site * */
+		$execution = new \PayPal\Api\PaymentExecution();
+		$execution->setPayerId($this->input->get('PayerID'));
+		/*         * Execute the payment * */
+		$result = $payment->execute($execution, $this->_api_context);
+
+		print_r($result);
+		exit;
+		/** DEBUG RESULT, remove it later * */
+
+		//make new payment entry
+		// $paymentDataArr['order_id'] = $order_id;
+		// $paymentDataArr['token_count'] = $orderData->requested_tokens;
+		// $paymentDataArr['total_amount'] = $orderData->total_amount;
+		// $paymentDataArr['vat'] = $orderData->vat_amount;
+		// $paymentDataArr['total_discount'] = 0; //to be calculated later
+		// $paymentDataArr['payment_date'] = date('Y-m-d H:i:s');
+		// $paymentDataArr['payment_type'] = 'online';
+		// $paymentDataArr['invoice_txn_id'] = $payment_id;
+		// $paymentDataArr['payment_status'] = $result->getState();
 		if (!empty($paypalInfo['item_number']) && !empty($paypalInfo['tx']) && !empty($paypalInfo['amt']) && !empty($paypalInfo['cc']) && !empty($paypalInfo['st'])) {
 			$this->complete_payment();
 		} else {
@@ -1141,10 +1175,34 @@ class Shopping extends MX_Controller
 
 	public function make_payment()
 	{
+		// use PayPal\Rest\ApiContext;
+		// use PayPal\Auth\OAuthTokenCredential;
+		// use PayPal\Api\Amount;
+		// use PayPal\Api\Details;
+		// use PayPal\Api\Item;
+		// use PayPal\Api\ItemList;
+		// use PayPal\Api\Payer;
+		// use PayPal\Api\Payment as PPPayment;
+		// use PayPal\Api\RedirectUrls;
+		// use PayPal\Api\ExecutePayment;
+		// use PayPal\Api\PaymentExecution;
+		// use PayPal\Api\Transaction;
 		$this->is_Logged_In();
 		$this->load->model('Shopping_model');
+		$settings = array(
+			'mode' => getenv('PAYPAL_MODE'),
+			'http.ConnectionTimeOut' => 1000,
+			'log.LogEnabled' => false,
+			'log.FileName' => '/logs/paypal.log',
+			'log.LogLevel' => 'FINE'
+		);
+		$payer = new \PayPal\Api\Payer();
+		$payer->setPaymentMethod('paypal');
+		$this->_api_context = new \PayPal\Rest\ApiContext(new \PayPal\Auth\OAuthTokenCredential(getenv('PAYPAL_CLIENT_ID'), getenv('PAYPAL_SECRET')));
+		$this->_api_context->setConfig($settings);
 		$carts = $this->Shopping_model->get_Cart();
 		$priceTotal = 0;
+		$items = [];
 		foreach ($carts as $cart) {
 			$price = $cart['products_price'];
 			$salePrice = $cart['products_sale_price'];
@@ -1153,7 +1211,17 @@ class Shopping extends MX_Controller
 			} else {
 				$sPrice = $price;
 			}
+			if ($cart['variable']['cart_variables_price'] > 0) {
+				$sPrice = $cart['variable']['cart_variables_price'];
+			}
 			$priceTotal += $sPrice * $cart['carts_quantity'];
+			$item = new \PayPal\Api\Item();
+			$item->setName($cart['posts_title'])
+				/** item name * */
+				->setCurrency('USD')
+				->setQuantity($cart['carts_quantity'])
+				->setPrice($sPrice);
+			$items[] = $item;
 		}
 
 		// Check Coupon
@@ -1176,15 +1244,53 @@ class Shopping extends MX_Controller
 		// $product = $this->product->getProducts($id);
 		$userID = $this->session->userdata('user_id');
 		$logo = base_url('themes/shopping/assets/') . 'images/logo_dark.png';
-		$this->paypal_lib->add_field('return', $returnURL);
-		$this->paypal_lib->add_field('fail_return', $failURL);
-		$this->paypal_lib->add_field('notify_url', $notifyURL);
-		$this->paypal_lib->add_field('item_name', 'Pinelop Purchase');
-		$this->paypal_lib->add_field('custom', $userID);
-		$this->paypal_lib->add_field('item_number',  rand());
-		$this->paypal_lib->add_field('amount',  $priceTotal);
-		$this->paypal_lib->image($logo);
-		$this->paypal_lib->paypal_auto_form();
+		$item_list = new \PayPal\Api\ItemList();
+		$item_list->setItems($items);
+
+		$amount = new \PayPal\Api\Amount();
+		$amount->setCurrency('USD')
+			->setTotal($priceTotal);
+
+		$transaction = new \PayPal\Api\Transaction();
+		$transaction->setAmount($amount)
+			->setItemList($item_list)
+			->setDescription('Item Purchase');
+		//dd($transaction);
+		// print_r($transaction);
+		// die;
+		$redirect_urls = new \PayPal\Api\RedirectUrls();
+		$redirect_urls->setReturnUrl($returnURL)
+			->setCancelUrl($failURL);
+
+		$payment = new \PayPal\Api\Payment();
+		$payment->setIntent('Sale')
+			->setPayer($payer)
+			->setRedirectUrls($redirect_urls)
+			->setTransactions(array($transaction));
+
+		// try {
+		$payment->create($this->_api_context);
+		// } catch (\PayPal\Exception\PPConnectionException $ex) {
+		// 	die('ERROR');
+		// }
+
+		foreach ($payment->getLinks() as $link) {
+			if ($link->getRel() == 'approval_url') {
+				$redirect_url = $link->getHref();
+				break;
+			}
+		}
+
+		/** add order ID to session * */
+		$this->session->set_userdata('order_id', rand());
+
+		/** add payment ID to session * */
+		$this->session->set_userdata('paypal_payment_id', $payment->getId());
+
+		if (isset($redirect_url)) {
+			/** redirect to paypal * */
+			redirect($redirect_url);
+		}
 	}
 
 	public function complete_cod_order()
