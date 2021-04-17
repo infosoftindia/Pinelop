@@ -698,6 +698,18 @@ class Shopping extends MX_Controller
 
 	public function load_PaypalSuccess()
 	{
+		$settings = array(
+			'mode' => getenv('PAYPAL_MODE'),
+			'http.ConnectionTimeOut' => 1000,
+			'log.LogEnabled' => false,
+			'log.FileName' => '/logs/paypal.log',
+			'log.LogLevel' => 'FINE'
+		);
+		$payer = new \PayPal\Api\Payer();
+		$payer->setPaymentMethod('paypal');
+		$this->_api_context = new \PayPal\Rest\ApiContext(new \PayPal\Auth\OAuthTokenCredential(getenv('PAYPAL_CLIENT_ID'), getenv('PAYPAL_SECRET')));
+		$this->_api_context->setConfig($settings);
+		// https://www.pinelop.com/paypal-success?paymentId=PAYID-MB5SAZA7J5102451L970664G&token=EC-8Y401294HK8661541&PayerID=EF8KHUXTBYKYA
 		$paypalInfo = $this->input->get();
 		/** Get the payment ID before session clear * */
 		$payment_id = $this->session->userdata('paypal_payment_id');
@@ -720,21 +732,21 @@ class Shopping extends MX_Controller
 		/*         * Execute the payment * */
 		$result = $payment->execute($execution, $this->_api_context);
 
-		print_r($result);
-		exit;
-		/** DEBUG RESULT, remove it later * */
-
-		//make new payment entry
-		// $paymentDataArr['order_id'] = $order_id;
-		// $paymentDataArr['token_count'] = $orderData->requested_tokens;
-		// $paymentDataArr['total_amount'] = $orderData->total_amount;
-		// $paymentDataArr['vat'] = $orderData->vat_amount;
-		// $paymentDataArr['total_discount'] = 0; //to be calculated later
-		// $paymentDataArr['payment_date'] = date('Y-m-d H:i:s');
-		// $paymentDataArr['payment_type'] = 'online';
-		// $paymentDataArr['invoice_txn_id'] = $payment_id;
-		// $paymentDataArr['payment_status'] = $result->getState();
-		if (!empty($paypalInfo['item_number']) && !empty($paypalInfo['tx']) && !empty($paypalInfo['amt']) && !empty($paypalInfo['cc']) && !empty($paypalInfo['st'])) {
+		// print_r($result);
+		// exit;
+		$trans = [
+			'transactions_user' => $this->session->userdata('user_id'),
+			'transactions_gateway' => 'Paypal',
+			'transactions_order_id' => $result->id,
+			'transactions_gross' => $result->transactions[0]->amount->total,
+			'transactions_txnid' => $result->cart,
+			'transactions_email' => $result->payer->payer_info->email,
+			'transactions_currency' => $result->transactions[0]->amount->currency,
+			'transactions_status' => $result->state,
+			'transactions_created' => now()
+		];
+		if ($result->state == 'approved') {
+			$this->Basic_model->save_Transaction_PayTm($trans);
 			$this->complete_payment();
 		} else {
 			$this->complete_payment('X');
