@@ -25,7 +25,7 @@
 			<?php } ?>
 		</ul>
 		<div class="cart_footer">
-			<p class="cart_total"><strong>Subtotal:</strong> <span class="cart_price"> </span><?= pPrice($totalCart) ?></p>
+			<!-- <p class="cart_total"><strong>Subtotal:</strong> <span class="cart_price"> </span><?= pPrice($totalCart) ?></p> -->
 			<p class="cart_buttons"><a href="<?= site_url('cart') ?>" class="btn btn-fill-line btn-radius view-cart">View Cart</a>
 				<a href="<?= site_url('checkout') ?>" class="btn btn-fill-out btn-radius checkout">Checkout</a>
 			</p>
