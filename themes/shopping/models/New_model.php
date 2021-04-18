@@ -116,7 +116,7 @@ class New_model extends CI_Model
 						$this->db->insert('order_products', [
 							'order_products_order' => $order_id,
 							'order_products_post' => $cart['carts_product'],
-							'order_products_text' => $cart['variable']['cart_variables_key'] . ': ' . $cart['variable']['cart_variables_key'],
+							'order_products_text' => $cart['variable']['cart_variables_key'] . ': ' . $cart['variable']['cart_variables_value'],
 							'order_products_quantity' => $cart['carts_quantity'],
 							'order_products_price' => $cart['products_price'],
 							'order_products_total' => $cart['products_price'] * $cart['carts_quantity'],
