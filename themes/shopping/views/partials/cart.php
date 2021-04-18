@@ -12,8 +12,10 @@
 				} else {
 					$sPrice = $price;
 				}
+				if ($cart['variable']['cart_variables_price'] > 0) {
+					$sPrice = $cart['variable']['cart_variables_price'];
+				}
 				$totalCart += $sPrice * $cart['carts_quantity'];
-				$sPrice = $sPrice = $cart['variable']['cart_variables_price'];
 				?>
 				<li>
 					<a data-href="<?= base_url('shopping/remove_cart/' . $cart['carts_id']) ?>" class="item_remove remove_Cart"><i class="ion-close"></i></a>

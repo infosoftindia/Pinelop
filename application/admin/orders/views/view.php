@@ -123,6 +123,7 @@
 												&nbsp;<small> - <?= $attribute['product_attributes_name'] ?>: <?= $attribute['order_attributes_value'] ?></small>
 										<?php }
 										} ?>
+										<?= (strlen($product['order_products_text']) > 2) ? '&nbsp;<small> - ' . $product['order_products_text'] . '</small>' : '' ?>
 									</td>
 									<td class="text-right"><?= $product['order_products_quantity'] ?></td>
 									<td class="text-right"><?= pPrice($product['order_products_price']) ?></td>
