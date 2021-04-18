@@ -19,7 +19,11 @@
 				?>
 				<li>
 					<a data-href="<?= base_url('shopping/remove_cart/' . $cart['carts_id']) ?>" class="item_remove remove_Cart"><i class="ion-close"></i></a>
-					<a href="<?= site_url('product/' . $cart['posts_slug']) ?>"><img src="<?= base_url(getenv('uploads') . $cart['carts_image']) ?>" alt="cart_thumb1"><?= $cart['posts_title'] ?></a>
+					<a href="<?= site_url('product/' . $cart['posts_slug']) ?>">
+						<img src="<?= base_url(getenv('uploads') . $cart['carts_image']) ?>" alt="cart_thumb1">
+						<?= $cart['posts_title'] ?>
+						<small><?= ($cart['variable']) ? '- ' . $cart['variable']['cart_variables_key'] . ': ' . $cart['variable']['cart_variables_value'] : '' ?></small>
+					</a>
 					<span class="cart_quantity"> <?= $cart['carts_quantity'] ?> x <span class="cart_amount"> </span><?= pPrice($sPrice) ?></span>
 				</li>
 			<?php } ?>
