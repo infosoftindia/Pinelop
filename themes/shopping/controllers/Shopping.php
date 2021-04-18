@@ -1134,7 +1134,7 @@ class Shopping extends MX_Controller
 				'orders_shipping_amount' => 0,
 				'orders_final_amount' => $total_amount,
 				'orders_payment_status' => 1,
-				'orders_payment_method' => $this->session->userdata('n_method'),
+				'orders_payment_method' => 'PayPal',
 				'orders_type' => 'Standard',
 			);
 			$this->New_model->save_Orders($carts, $order);
