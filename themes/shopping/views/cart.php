@@ -52,7 +52,9 @@
 													} else {
 														$sPrice = $price;
 													}
-													$sPrice = $cart['variable']['cart_variables_price'];
+													if ($cart['variable']['cart_variables_price'] > 0) {
+														$sPrice = $cart['variable']['cart_variables_price'];
+													}
 													?>
 													<input value="<?= $cart['carts_id'] ?>" type="hidden" name="cart[]">
 

@@ -1,7 +1,5 @@
 <?php
 
-use \DrewM\MailChimp\MailChimp;
-
 class Shopping extends MX_Controller
 {
 	public $_api_context;
@@ -661,6 +659,7 @@ class Shopping extends MX_Controller
 		$this->is_Logged_In();
 		$data["title"] = "Place Order";
 		$address = $this->input->get('address');
+		$this->session->set_userdata('address', $address);
 		$card = $this->session->userdata('card');
 		$data["address"] = $this->Shopping_model->get_Address_By_ID($address);
 		$data["card"] = $this->Shopping_model->get_Card_By_ID($card);
@@ -1439,7 +1438,7 @@ class Shopping extends MX_Controller
 	public function subscribe_newsletter()
 	{
 		$email = $this->input->post('email');
-		$MailChimp = new MailChimp(getenv('MAILCHIMP_APIKEY'));
+		$MailChimp = new \DrewM\MailChimp\MailChimp(getenv('MAILCHIMP_APIKEY'));
 		$list_id = getenv('MAILCHIMP_LIST_ID');
 		$result = $MailChimp->post("lists/$list_id/members", [
 			'email_address' => $email,

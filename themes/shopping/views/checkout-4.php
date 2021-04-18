@@ -120,7 +120,9 @@
 													} else {
 														$sPrice = $price;
 													}
-													$sPrice = $cart['variable']['cart_variables_price'];
+													if ($cart['variable']['cart_variables_price'] > 0) {
+														$sPrice = $cart['variable']['cart_variables_price'];
+													}
 													$priceTotal += $sPrice * $cart['carts_quantity'];
 													?>
 
