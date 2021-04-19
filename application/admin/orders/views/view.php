@@ -80,13 +80,13 @@
 								<?= $order['address_line1'] ?>
 							</td>
 							<td class="text-left">
-								<?= $order['orders_address_fname'] . ' ' . $order['orders_address_lname'] ?><br>
+								<?= $order['users_first_name'] . ' ' . $order['users_last_name'] ?><br>
 								<?= (!empty($order['orders_address_company'])) ? $order['orders_address_company'] . '<br>' : '' ?>
-								<?= $order['orders_address_add1'] ?><br>
-								<?= (!empty($order['orders_address_add2'])) ? $order['orders_address_add2'] . '<br>' : '' ?>
-								<?= $order['orders_address_city'] . ((!empty($order['orders_address_pin'])) ? ' - ' . $order['orders_address_pin'] : '') ?><br>
-								<?= $order['orders_address_state'] ?><br>
-								<?= $order['orders_address_country'] ?>
+								<?= $order['address_line4'] ?><br>
+								<?= (!empty($order['address_line5'])) ? $order['address_line5'] . '<br>' : '' ?>
+								<?= $order['address_line3'] . ((!empty($order['address_line6'])) ? ' - ' . $order['address_line6'] : '') ?><br>
+								<?= $order['address_line2'] ?><br>
+								<?= $order['address_line1'] ?>
 							</td>
 						</tr>
 					</tbody>

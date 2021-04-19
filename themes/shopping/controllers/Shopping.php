@@ -1344,6 +1344,21 @@ class Shopping extends MX_Controller
 		}
 	}
 
+	public function cancel_form($id)
+	{
+		$this->is_Logged_In();
+		$this->load->model('New_model');
+		$id = ($id + 5) / 5683;
+		$user = $this->session->userdata('user_id');
+
+		$valid = $this->New_model->validate_Order($id, $user);
+		if ($valid) {
+			$this->load->module('orders/orders');
+			// $data = $this->orders->return_single_order($id);
+			$this->orders->open_cancel_thread($id);
+		}
+	}
+
 	public function order_feedback($id)
 	{
 		$this->is_Logged_In();

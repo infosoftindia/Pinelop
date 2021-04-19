@@ -80,12 +80,26 @@ class Orders extends MX_Controller
 		$this->load->view('return-form', $data);
 	}
 
+	public function open_cancel_thread($id)
+	{
+		$this->load->model('Orders_model');
+		$data['order'] = $this->Orders_model->view_Orders($id);
+		$this->load->view('cancel-form', $data);
+	}
+
 	public function save_return_thread($id)
 	{
 		$this->load->model('Orders_model');
 		$order = $this->Orders_model->view_Orders($id);
 		$this->Orders_model->open_Return_Thread($id, $order);
-		redirect('account');
+		redirect('account?page=orders');
+	}
+
+	public function save_cancel_thread($id)
+	{
+		$this->load->model('Orders_model');
+		$this->Orders_model->open_Cancel_Thread($id);
+		redirect('account?page=orders');
 	}
 
 	public function return_View($id)

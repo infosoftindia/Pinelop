@@ -4,14 +4,11 @@
 					<span class="has-icon">
 						<i class="icon-tabs-outline"></i>
 					</span>
-					<span class="nav-title">Payment</span>
+					<span class="nav-title">Transaction</span>
 				</a>
 				<ul aria-expanded="false" class="greenBg">
 					<li>
-						<a href="'.admin_url('payment/pending').'">Pending Payment</a>
-					</li>
-					<li>
-						<a href="'.admin_url('payment/completed').'">Completed Payment</a>
+						<a href="'.admin_url('payment/history').'">Transaction History</a>
 					</li>
 				</ul>
 			</li>';

@@ -119,6 +119,14 @@ class Orders_model extends CI_Model
 		}
 	}
 
+	public function open_Cancel_Thread($id)
+	{
+		$reason = $this->input->post('reason');
+		$this->db->where('orders_id', $id);
+		$this->db->where('orders_user', $this->session->userdata('user_id'));
+		return $this->db->update('orders', ['orders_status' => '99', 'orders_reason' => $reason]);
+	}
+
 	public function return_Orders()
 	{
 		$this->db->where('return_orders_status', '0');

@@ -87,7 +87,7 @@
 														</div>
 														<div class="col-md-3 text-right">
 															<b>Order #<?= $order['orders_id'] ?></b><br>
-															<a href="" class="mr-3">Details</a> <a href="<?= site_url('shopping/invoice/' . ((($order['orders_id']) * 5683) - 5)) ?>">Invoice</a>
+															<?= ($order['orders_status'] == 1) ? '<a href="' . site_url('shopping/invoice/' . ((($order['orders_id']) * 5683) - 5)) . '">Invoice</a>' : '' ?>
 														</div>
 													</div>
 												</div>
@@ -123,11 +123,13 @@
 																			<br>
 																			<!-- Sold by: <?= $product['users_first_name'] . ' ' . $product['users_last_name'] ?><br> -->
 																			<?= pPrice($product['order_products_price']) ?>
-																			<?php if ($status == '0') {
-																				if ($product['review'] == 0) { ?>
-																					<br>
-																					<a href="#" onclick="show_Modal('<?= site_url('shopping/rate_product/' . $product['posts_id']) ?>', '#tracking_Result', 'Rate <?= $product['posts_title'] ?>')" data-toggle="modal" data-target="#tracking_Result_Modal" class="label label-info p-1 px-3" style="background-color: #ff324d75; border-radius: 3px">Rate this product</a>
+																			<?php if ($order['orders_status'] == '1') { ?>
+																				<?php if ($status == '0') {
+																					if ($product['review'] == 0) { ?>
+																						<br>
+																						<a href="#" onclick="show_Modal('<?= site_url('shopping/rate_product/' . $product['posts_id']) ?>', '#tracking_Result', 'Rate <?= $product['posts_title'] ?>')" data-toggle="modal" data-target="#tracking_Result_Modal" class="label label-info p-1 px-3" style="background-color: #ff324d75; border-radius: 3px">Rate this product</a>
 																			<?php }
+																				}
 																			} ?>
 																		</div>
 																	</div>
@@ -136,11 +138,17 @@
 															} ?>
 														</div>
 														<div class="col-md-4 text-right">
-															<!-- <a href="javascript:;" class="btn btn-block btn-primary btn-sm mb-3" onclick="tracking_Package('<?= ((($order['orders_id']) * 5683) - 5) ?>')" data-toggle="modal" data-target="#tracking_Result_Modal">Track Package</a> -->
-															<a href="javascript:;" class="btn btn-fill-line mb-2 btn-sm" onclick="show_Modal('<?= site_url('shopping/return_form/' . ((($order['orders_id']) * 5683) - 5)) ?>', '#tracking_Result', 'Return Product')" data-toggle="modal" data-target="#tracking_Result_Modal">Request Return</a>
+															<?php if ($order['orders_status'] != '99') { ?>
+																<?php if ($order['orders_status'] == '0') { ?>
+																	<a href="javascript:;" class="btn btn-fill-line mb-2 btn-sm" onclick="show_Modal('<?= site_url('shopping/cancel_form/' . ((($order['orders_id']) * 5683) - 5)) ?>', '#tracking_Result', 'Cancel Order')" data-toggle="modal" data-target="#tracking_Result_Modal">Cancel Order</a>
+																<?php } else { ?>
+																	<!-- <a href="javascript:;" class="btn btn-block btn-primary btn-sm mb-3" onclick="tracking_Package('<?= ((($order['orders_id']) * 5683) - 5) ?>')" data-toggle="modal" data-target="#tracking_Result_Modal">Track Package</a> -->
+																	<a href="javascript:;" class="btn btn-fill-line mb-2 btn-sm" onclick="show_Modal('<?= site_url('shopping/return_form/' . ((($order['orders_id']) * 5683) - 5)) ?>', '#tracking_Result', 'Return Product')" data-toggle="modal" data-target="#tracking_Result_Modal">Request Return</a>
 
-															<a href="javascript:;" class="btn btn-fill-out btn-sm" onclick="show_Modal('<?= site_url('shopping/order_feedback/' . ((($order['orders_id']) * 5683) - 5)) ?>', '#tracking_Result', 'Feedback')" data-toggle="modal" data-target="#tracking_Result_Modal">Give Feedback&nbsp;</a>
-															<!-- <a href="javascript:;" class="btn btn-block btn-secondary btn-sm mb-1 mt-0">Write Review</a> -->
+																	<a href="javascript:;" class="btn btn-fill-out btn-sm" onclick="show_Modal('<?= site_url('shopping/order_feedback/' . ((($order['orders_id']) * 5683) - 5)) ?>', '#tracking_Result', 'Feedback')" data-toggle="modal" data-target="#tracking_Result_Modal">Give Feedback&nbsp;</a>
+																	<!-- <a href="javascript:;" class="btn btn-block btn-secondary btn-sm mb-1 mt-0">Write Review</a> -->
+																<?php }  ?>
+															<?php }  ?>
 														</div>
 													</div>
 												</div>

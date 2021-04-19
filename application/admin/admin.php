@@ -62,6 +62,7 @@ $route[$admin . 'orders/return/processing/(:num)'] = 'orders/return_Processing/$
 $route[$admin . 'orders/view/(:num)'] = 'orders/view/$1';
 $route[$admin . 'orders/reject-order/(:num)'] = 'orders/reject_order/$1';
 $route[$admin . 'orders/save-return-thread/(:num)'] = 'orders/save_return_thread/$1';
+$route[$admin . 'orders/save-cancel-thread/(:num)'] = 'orders/save_cancel_thread/$1';
 
 
 $route[$admin . 'coupons/manage'] = 'coupons/manage';
@@ -70,6 +71,7 @@ $route[$admin . 'coupons/delete-coupon/(:num)'] = 'coupons/delete_coupon/$1';
 $route[$admin . 'coupons/update-coupon/(:num)'] = 'coupons/update_Coupon/$1';
 
 $route[$admin . 'payment/pending'] = 'payment/pending';
+$route[$admin . 'payment/history'] = 'payment/history';
 $route[$admin . 'payment/completed'] = 'payment/completed';
 $route[$admin . 'payment/completed-edit/(:num)'] = 'payment/completed_edit/$1';
 $route[$admin . 'payment/update-payment/(:num)'] = 'payment/update_Payment/$1';

@@ -69,6 +69,7 @@
 				<div class="col-lg-3 order-lg-first mt-4 pt-2 mt-lg-0 pt-lg-0">
 					<form method="get" action="" id="sortingform">
 						<div class="sidebar">
+							<!--
 							<div class="widget">
 								<h5 class="widget_title">Filter</h5>
 								<div class="filter_price">
@@ -83,7 +84,7 @@
 										<input type="hidden" id="price_second" name="max" value="<?= $max ?>">
 									</div>
 								</div>
-							</div>
+							</div>-->
 
 							<?php /* if ($colours) { ?>
 								<div class="widget">
@@ -118,7 +119,7 @@
 							<input type="hidden" name="sort" value="<?= $this->input->get('sort') ?>" id="sorting_val">
 							<input type="hidden" name="q" value="<?= $this->input->get('q') ?>">
 
-							<div class="widget">
+							<div class="widget" style="display: none;">
 								<button type="submit" class="btn btn-fill-out btn-sm text-uppercase">Apply Filter</button>
 							</div>
 
