@@ -59,9 +59,9 @@
 													<input value="<?= $cart['carts_id'] ?>" type="hidden" name="cart[]">
 
 													<tr>
-														<td class="product-thumbnail"><a href="#"><img src="<?= site_url('themes/shopping') ?>/assets/load.gif" class="lazy" data-src="<?= base_url(getenv('uploads') . $cart['carts_image']) ?>" alt="product1" style="height: 80px; object-fit: contain;"></a></td>
+														<td class="product-thumbnail"><a href="<?= site_url('product/' . $cart['posts_slug']) ?>"><img src="<?= site_url('themes/shopping') ?>/assets/load.gif" class="lazy" data-src="<?= base_url(getenv('uploads') . $cart['carts_image']) ?>" alt="product1" style="height: 80px; object-fit: contain;"></a></td>
 														<td class="product-name" data-title="Product">
-															<a href="#"><?= $cart['posts_title'] ?></a><br>
+															<a href="<?= site_url('product/' . $cart['posts_slug']) ?>"><?= $cart['posts_title'] ?></a><br>
 															<small><?= ($cart['variable']) ? $cart['variable']['cart_variables_key'] . ': ' . $cart['variable']['cart_variables_value'] : '' ?></small>
 														</td>
 														<td class="product-price" data-title="Price"><?= pPrice($sPrice) ?></td>
@@ -106,13 +106,13 @@
 						</div>
 						<div class="row">
 							<div class="col-lg-6 col-md-6 mb-3 mb-md-0">
-								<div class="coupon field_form input-group">
+								<!-- <div class="coupon field_form input-group">
 									<input type="text" class="form-control form-control-sm" id="coupon-code" placeholder="Enter Coupon Code.." value="<?= get_cookie('my_coupon') ?>">
 									<div class="input-group-append">
 										<button class="btn btn-fill-out btn-sm" type="button" id="apply-coupon">Apply Coupon</button>
 									</div>
 								</div>
-								<p id="coupon_message" class="text-danger"></p>
+								<p id="coupon_message" class="text-danger"></p> -->
 								<!-- <div class="heading_s1 mb-3 pt-4">
 							<h6>Calculate Shipping</h6>
 						</div>

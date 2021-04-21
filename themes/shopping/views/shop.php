@@ -130,10 +130,15 @@
 									<ul class="widget_categories">
 										<?php foreach ($categories as $category) { ?>
 											<li>
-												<a href="<?= site_url('category/' . $category['categories_slug']) ?>"><span class="categories_name active"><?= $category['categories_name'] ?></span>
-													<!--<span class="categories_num">()</span>-->
-												</a>
+												<a href="<?= site_url('category/' . $category['categories_slug']) ?>"><span class="categories_name active"><?= $category['categories_name'] ?></span></a>
 											</li>
+											<?php if ($category['children']) {
+												foreach ($category['children'] as $cat) { ?>
+													<li>
+														<a href="<?= site_url('category/' . $cat['categories_slug']) ?>"><span class="categories_name active"><?= $cat['categories_name'] ?></span></a>
+													</li>
+											<?php }
+											} ?>
 										<?php } ?>
 									</ul>
 								</div>

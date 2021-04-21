@@ -708,31 +708,14 @@ class Shopping extends MX_Controller
 		$payer->setPaymentMethod('paypal');
 		$this->_api_context = new \PayPal\Rest\ApiContext(new \PayPal\Auth\OAuthTokenCredential(getenv('PAYPAL_CLIENT_ID'), getenv('PAYPAL_SECRET')));
 		$this->_api_context->setConfig($settings);
-		// https://www.pinelop.com/paypal-success?paymentId=PAYID-MB5SAZA7J5102451L970664G&token=EC-8Y401294HK8661541&PayerID=EF8KHUXTBYKYA
-		$paypalInfo = $this->input->get();
-		/** Get the payment ID before session clear * */
 		$payment_id = $this->session->userdata('paypal_payment_id');
-		$order_id = $this->session->userdata('order_id');
-		// $orderData = $order->getOrder($order_id);
-		//dd($orderData);
-
-		/** clear the session payment ID * */
-		// Session::forget('paypal_payment_id');
 		if (empty($this->input->get('token'))) {
 			redirect('payment-failed');
 		}
 		$payment = \PayPal\Api\Payment::get($payment_id, $this->_api_context);
-		/** PaymentExecution object includes information necessary * */
-		/** to execute a PayPal account payment. * */
-		/** The payer_id is added to the request query parameters * */
-		/** when the user is redirected from paypal back to your site * */
 		$execution = new \PayPal\Api\PaymentExecution();
 		$execution->setPayerId($this->input->get('PayerID'));
-		/*         * Execute the payment * */
 		$result = $payment->execute($execution, $this->_api_context);
-
-		// print_r($result);
-		// exit;
 		$trans = [
 			'transactions_user' => $this->session->userdata('user_id'),
 			'transactions_gateway' => 'Paypal',
@@ -745,14 +728,26 @@ class Shopping extends MX_Controller
 			'transactions_created' => now()
 		];
 		if ($result->state == 'approved') {
+			$data['message'] = 'Your payment of ' . pPrice($result->transactions[0]->amount->total) . ' (' . $result->transactions[0]->amount->currency . ' ' . $result->transactions[0]->amount->total . ') has been success and your order has been successfully placed. You will received order update on mail.';
+			$data['button'] = ['link' => 'https://www.pinelop.com', 'text' => 'Visit our store'];
+			$body = $this->load->view('email/mail', $data, true);
+			addMailQueue($this->session->userdata('user_email'), 'Your Order has been placed', $body);
 			$this->Basic_model->save_Transaction_PayTm($trans);
 			$this->complete_payment();
 		} else {
+			$data['message'] = 'Your payment of ' . pPrice($result->transactions[0]->amount->total) . ' (' . $result->transactions[0]->amount->currency . ' ' . $result->transactions[0]->amount->total . ') has failed and your order has not been cancelled. You can try again.';
+			$data['button'] = ['link' => 'https://www.pinelop.com', 'text' => 'Visit our store'];
+			$body = $this->load->view('email/mail', $data, true);
+			addMailQueue($this->session->userdata('user_email'), 'Your Order failed', $body);
 			$this->complete_payment('X');
 		}
 	}
 	public function load_PaypalFailed()
 	{
+		$data['message'] = 'Your order is not confirmed. Please try again';
+		$data['button'] = ['link' => 'https://www.pinelop.com', 'text' => 'Visit our store'];
+		$body = $this->load->view('email/mail', $data, true);
+		addMailQueue($this->session->userdata('user_email'), 'Your Order failed', $body);
 		$this->complete_payment('Y');
 	}
 	public function load_PaypalIpn()

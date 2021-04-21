@@ -384,6 +384,16 @@ class Shopping_model extends CI_Model
 			'users_created'			=> now()
 		]);
 		$id = $this->db->insert_id();
+		$MailChimp = new \DrewM\MailChimp\MailChimp(getenv('MAILCHIMP_APIKEY'));
+		$list_id = getenv('MAILCHIMP_LIST_ID');
+		$result = $MailChimp->post("lists/$list_id/members", [
+			'email_address' => $email,
+			'status'        => 'subscribed',
+		]);
+		$data['message'] = 'You&#39;ve activated your customer account. Next time you shop with us, log in for faster checkout.';
+		$data['button'] = ['link' => 'https://www.pinelop.com', 'text' => 'Visit our store'];
+		$body = $this->load->view('email/mail', $data, true);
+		addMailQueue($email, 'Welcome to Pinelop', $body);
 		$this->db->where('users_id', $id);
 		return $this->db->get('users')->row();
 	}
@@ -406,6 +416,18 @@ class Shopping_model extends CI_Model
 			'users_status'			=> '1',
 			'users_created'			=> now()
 		]);
+		if ($this->input->post('newsletter') == 1) {
+			$MailChimp = new \DrewM\MailChimp\MailChimp(getenv('MAILCHIMP_APIKEY'));
+			$list_id = getenv('MAILCHIMP_LIST_ID');
+			$result = $MailChimp->post("lists/$list_id/members", [
+				'email_address' => $email,
+				'status'        => 'subscribed',
+			]);
+		}
+		$data['message'] = 'You&#39;ve activated your customer account. Next time you shop with us, log in for faster checkout.';
+		$data['button'] = ['link' => 'https://www.pinelop.com', 'text' => 'Visit our store'];
+		$body = $this->load->view('email/mail', $data, true);
+		addMailQueue($email, 'Welcome to Pinelop', $body);
 		return $this->db->insert_id();
 	}
 
@@ -985,15 +1007,27 @@ class Shopping_model extends CI_Model
 
 	public function get_Categories($id = FALSE)
 	{
+		$prc = [];
 		$this->db->where('categories_type', 'product');
 		$this->db->where('categories_status', '1');
-		// $this->db->where('categories_parent<>', '0');
+		$this->db->where('categories_parent', '0');
 		if ($id) {
 			$this->db->where('categories_id', $id);
 			return $this->db->get('categories')->row_array();
 		} else {
-			$this->db->order_by('categories_id', 'ASC');
-			return $this->db->get('categories')->result_array();
+			$this->db->order_by('categories_name', 'ASC');
+			$categories = $this->db->get('categories')->result_array();
+			if ($categories) {
+				foreach ($categories as $category) {
+					$this->db->where('categories_type', 'product');
+					$this->db->where('categories_status', '1');
+					$this->db->where('categories_parent', $category['categories_id']);
+					$this->db->order_by('categories_name', 'ASC');
+					$category['children'] = $this->db->get('categories')->result_array();
+					$prc[] = $category;
+				}
+			}
+			return $prc;
 		}
 	}
 

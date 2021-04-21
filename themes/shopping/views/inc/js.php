@@ -44,8 +44,9 @@
 		$(output).val(val);
 	}
 
-	function addValue(val, output, image, price, pPrice) {
+	function addValue(val, output, image, price, pPrice, text) {
 		$(output).val(val);
+		$(text).html(val);
 		// alert(image)
 		if (image != '' && image != 'default.png') {
 			$('#product_img').attr('src', '<?= base_url('uploads/') ?>' + image);

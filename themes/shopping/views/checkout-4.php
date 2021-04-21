@@ -127,8 +127,8 @@
 													?>
 
 													<tr>
-														<td class="product-thumbnail"><a href="#"><img src="<?= base_url(getenv('uploads') . $cart['carts_image']) ?>" alt="product1" style="height: 80px; object-fit: contain;"></a></td>
-														<td class="product-name" data-title="Product"><a href="#"><?= $cart['posts_title'] ?> (<?= $cart['carts_quantity'] ?>)</a></td>
+														<td class="product-thumbnail"><a href="<?= site_url('product/' . $cart['posts_slug']) ?>"><img src="<?= base_url(getenv('uploads') . $cart['carts_image']) ?>" alt="product1" style="height: 80px; object-fit: contain;"></a></td>
+														<td class="product-name" data-title="Product"><a href="<?= site_url('product/' . $cart['posts_slug']) ?>"><?= $cart['posts_title'] ?> (<?= $cart['carts_quantity'] ?>)</a></td>
 														<td class="product-price" data-title="Price"><?= pPrice($sPrice) ?></td>
 														<td class="product-subtotal" data-title="Total"><?= pPrice($sPrice * $cart['carts_quantity']) ?></td>
 														<?php

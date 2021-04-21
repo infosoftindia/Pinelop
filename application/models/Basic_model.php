@@ -61,7 +61,7 @@ class Basic_model extends CI_Model
 		$query = $this->db->get('images');
 		if ($query->num_rows() > 0) {
 			foreach ($query->result_array() as $img) {
-				unlink(MyUploads . $img['images_image']);
+				unlink(getenv('uploads') . $img['images_image']);
 				$this->db->where('images_id', $img['images_id']);
 				$query = $this->db->delete('images');
 			}
@@ -93,7 +93,7 @@ class Basic_model extends CI_Model
 			$query = $this->db->get('categories');
 			$array = $query->result_array();
 			foreach ($array as $arr) {
-				unlink(MyUploads . $arr['categories_icon']);
+				unlink(getenv('uploads') . $arr['categories_icon']);
 				$this->db->where('categories_id', $arr['categories_id']);
 				$query = $this->db->delete('categories');
 				$this->db->where('meta_category', $arr['categories_id']);
@@ -396,8 +396,8 @@ class Basic_model extends CI_Model
 		// 'mail_queue_created' => now()
 		// ]);
 		$result = $this->email
-			->from('prashant@pearlorganisation.com')
-			->reply_to('prashant@pearlorganisation.com')    // Optional, an account where a human being reads.
+			->from('support@pinelop.com')
+			->reply_to('support@pinelop.com')    // Optional, an account where a human being reads.
 			->to($to)
 			->subject($subject)
 			->message($body)
@@ -406,16 +406,16 @@ class Basic_model extends CI_Model
 
 	public function save_Activity($title, $user = FALSE)
 	{
-		$ip = get_ip();
-		$user_id = $this->session->userdata('user_id');
-		if ($user) {
-			$user_id = $user;
-		}
-		$this->db->insert('activities', [
-			'activities_user' => $user_id,
-			'activities_title' => $title,
-			'activities_ip' => $ip
-		]);
+		// $ip = get_ip();
+		// $user_id = $this->session->userdata('user_id');
+		// if ($user) {
+		// 	$user_id = $user;
+		// }
+		// $this->db->insert('activities', [
+		// 	'activities_user' => $user_id,
+		// 	'activities_title' => $title,
+		// 	'activities_ip' => $ip
+		// ]);
 	}
 
 	public function set_User_Cookie($user_id, $session)
