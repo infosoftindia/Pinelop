@@ -5,13 +5,13 @@
         <div class="row align-items-center">
             <div class="col-md-6">
                 <div class="page-title">
-                    <h1>Order Completed</h1>
+                    <h1>Payment Failed</h1>
                 </div>
             </div>
             <div class="col-md-6">
                 <ol class="breadcrumb justify-content-md-end">
                     <li class="breadcrumb-item"><a href="<?= site_url() ?>">home</a></li>
-                    <li class="breadcrumb-item active">Thank You</li>
+                    <li class="breadcrumb-item active">PaymentFailed</li>
                 </ol>
             </div>
         </div>
@@ -28,13 +28,13 @@
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="text-center order_complete">
-                        <i class="fas fa-check-circle"></i>
+                        <i class="fas fa-times-circle"></i>
                         <div class="heading_s1">
-                            <h3>Order Confirmed</h3>
-                            <h5 class="mt-2">Thank you for your purchase!</h5>
+                            <h3>Payment Failed</h3>
+                            <h5 class="mt-2">Your payment has been failed.</h5>
                         </div>
-                        <p>Your order has now been received, and you will shortly receive a confirmation email<br>containing details of your order. If you have any questions, please<br>contact us and we will be happy to assist you.</p>
-                        <a href="<?= site_url() ?>" class="btn btn-fill-out">Continue Shopping</a>
+                        <p>We are sorry but your purchase has not been completed due to payment failed. You can try again by checkout.<br>If your amount has been deducted, please contact us.</p>
+                        <a href="<?= site_url('cart') ?>" class="btn btn-fill-out">Try again</a>
                     </div>
                 </div>
             </div>

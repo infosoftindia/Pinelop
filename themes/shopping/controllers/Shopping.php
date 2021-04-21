@@ -691,7 +691,7 @@ class Shopping extends MX_Controller
 			$this->session->set_userdata('n_method', 'PayTm');
 			$this->complete_payment();
 		} else {
-			redirect('order-failed');
+			redirect('payment-failed');
 		}
 	}
 
@@ -719,7 +719,7 @@ class Shopping extends MX_Controller
 		/** clear the session payment ID * */
 		// Session::forget('paypal_payment_id');
 		if (empty($this->input->get('token'))) {
-			die('Error');
+			redirect('payment-failed');
 		}
 		$payment = \PayPal\Api\Payment::get($payment_id, $this->_api_context);
 		/** PaymentExecution object includes information necessary * */
@@ -823,7 +823,7 @@ class Shopping extends MX_Controller
 	{
 		$this->is_Logged_In();
 		$data["title"] = "Thank You";
-		$data["page"] = $this->load->view("order-failed", $data, true);
+		$data["page"] = $this->load->view("failed", $data, true);
 		return $data;
 	}
 
@@ -1091,10 +1091,10 @@ class Shopping extends MX_Controller
 	public function complete_payment($error = '')
 	{
 		if ($error == 'X') {
-			die('Something went wrong. We will fix and let you know');
+			redirect('payment-failed');
 		}
 		if ($error == 'Y') {
-			die('Payment Failed');
+			redirect('payment-failed');
 		}
 		if (!$this->session->userdata('user_id')) {
 			$this->e404();
@@ -1702,11 +1702,12 @@ class Shopping extends MX_Controller
 
 
 
-	// public function load_DeliveryInformation(){
-	// $data["title"] = "Delivery Information";
-	// $data["page"] = $this->load->view("delivery-information", $data, true);
-	// return $data;
-	// }
+	public function load_PaymentFailed()
+	{
+		$data["title"] = "Payment Failed";
+		$data["page"] = $this->load->view("failed", $data, true);
+		return $data;
+	}
 
 	// public function load_LearnToSell(){
 	// $data["title"] = "Learn to Sell";
