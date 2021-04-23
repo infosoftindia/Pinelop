@@ -128,9 +128,26 @@
 
                                                 <li class="mega-menu-col col-lg-6">
                                                     <ul>
-                                                        <?php for ($cat = 5; $cat < count($categories); $cat++) { ?>
-                                                            <li><a class="dropdown-item nav-link nav_item" href="<?= site_url('category/' . $categories[$cat]['categories_slug']) ?>"><?= $categories[$cat]['categories_name'] ?></a></li>
-                                                        <?php } ?>
+                                                        <?php for ($cat = 5; $cat < count($categories); $cat++) {
+                                                            if (count($categories[$cat]['children']) == 0) { ?>
+                                                                <li>
+                                                                    <a class="dropdown-item nav-link nav_item" href="<?= site_url('category/' . $categories[$cat]['categories_slug']) ?>"><?= $categories[$cat]['categories_name'] ?></a>
+                                                                </li>
+                                                            <?php } else { ?>
+                                                                <li>
+                                                                    <a class="dropdown-item menu-link dropdown-toggler" href="<?= site_url('category/' . $categories[$cat]['categories_slug']) ?>"><?= $categories[$cat]['categories_name'] ?></a>
+                                                                    <div class="dropdown-menu">
+                                                                        <ul>
+                                                                            <?php if ($categories[$cat]['children']) {
+                                                                                foreach ($categories[$cat]['children'] as $catt) { ?>
+                                                                                    <li><a class="dropdown-item nav-link nav_item" href="<?= site_url('category/' . $catt['categories_slug']) ?>"><?= $catt['categories_name'] ?></a></li>
+                                                                            <?php }
+                                                                            } ?>
+                                                                        </ul>
+                                                                    </div>
+                                                                </li>
+                                                        <?php }
+                                                        } ?>
                                                     </ul>
                                                 </li>
                                             </ul>
