@@ -6,6 +6,13 @@ if ($salePrice != '0' && $salePrice != '' && $salePrice < $price) {
 } else {
 	$sPrice = $price;
 }
+$sPrice1 = $sPrice;
+$sPrice = pPrice($sPrice);
+if ($product['search_min'] > 0 && $product['search_max'] > 0) {
+	if ($product['search_min'] < $product['search_max']) {
+		$sPrice = pPrice($product['search_min']) . ' - ' . pPrice($product['search_max']);
+	}
+}
 ?>
 <div class="product_box text-center">
 	<div class="product_img">
@@ -24,8 +31,8 @@ if ($salePrice != '0' && $salePrice != '' && $salePrice < $price) {
 	<div class="product_info">
 		<h6 class="product_title"><a href="<?= site_url('product/' . $product['search_slug']) ?>"><?= $product['search_title'] ?></a></h6>
 		<div class="product_price">
-			<span class="price"><?= pPrice($sPrice) ?></span>
-			<?= ($sPrice != $product['search_amount']) ? '<del>' . pPrice($product['search_amount'], 1) . '</del>' : '' ?>
+			<span class="price"><?= $sPrice ?></span>
+			<?= ($sPrice1 != $product['search_amount']) ? '<del>' . pPrice($product['search_amount'], 1) . '</del>' : '' ?>
 		</div>
 		<div class="rating_wrap" style="<?= ($product['search_rate_count'] == 0) ? 'display: none' : '' ?>">
 			<div class="rating">

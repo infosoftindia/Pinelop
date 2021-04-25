@@ -90,7 +90,7 @@
                             <li class="dropdown">
                                 <a class="nav-link <?= (current_url() == site_url('about')) ? 'active' : '' ?>" href="<?= site_url('about') ?>">About</a>
                             </li>
-                            <!-- <li class="dropdown">
+                            <li class="dropdown">
                                 <a class="dropdown-toggle nav-link <?= (current_url() == site_url('categories')) ? 'active' : '' ?>" href="#" data-toggle="dropdown">Categories</a>
                                 <div class="dropdown-menu" style="width: 520px;">
                                     <ul class="mega-menu d-lg-flex">
@@ -154,7 +154,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                            </li> -->
+                            </li>
                             <li class="dropdown">
                                 <a class="nav-link <?= (current_url() == site_url('shop')) ? 'active' : '' ?>" href="<?= site_url('shop') ?>">Shop</a>
                             </li>
