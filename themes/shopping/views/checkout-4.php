@@ -146,7 +146,7 @@
 						<div class="col-lg-4 col-md-4">
 							<div class="card">
 								<div class="card-body">
-									<a href="<?= site_url(($this->input->get('mode') == 'paypal') ? 'shopping/make_payment' : 'shopping/make_payment') ?>" class="btn btn-fill-out mb-3">Place Your Order and Pay </a>
+									<a href="<?= site_url(($this->input->get('mode') == 'paypal') ? 'shopping/make_payment' : 'shopping/make_payment') . '?address=' . $add ?>" class="btn btn-fill-out mb-3">Place Your Order and Pay </a>
 									<p class="text-justify" style="color: green"><i class="linearicons-lock text-success"></i>Secure transactions. </p>
 									<p><b>Order Summary</b></p>
 									<div class="d-flex justify-content-between">

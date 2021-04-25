@@ -591,6 +591,22 @@ class Shopping extends MX_Controller
 		if (empty($data['post'])) {
 			show_404();
 		}
+		$price_to_show = '0';
+		$price = $data['post']['products_price'];
+		$salePrice = $data['post']['products_sale_price'];
+		if ($salePrice != '0' && $salePrice != '' && $salePrice < $price) {
+			$sPrice = $salePrice;
+		} else {
+			$sPrice = $price;
+		}
+		$price_to_show = pPrice($sPrice);
+		if ($data['post']['search_min'] > 0 && $data['post']['search_max'] > 0) {
+			if ($data['post']['search_min'] < $data['post']['search_max']) {
+				$price_to_show = pPrice($data['post']['search_min']) . ' - ' . pPrice($data['post']['search_max']);
+			}
+		}
+		$data['pprice'] = $price_to_show;
+		$data['sPrice'] = $sPrice;
 		$data["title"] = $data['post']['posts_title'];
 		// print_r($data);
 		$data["page"] = $this->load->view("single_product", $data, true);
@@ -661,6 +677,7 @@ class Shopping extends MX_Controller
 		$address = $this->input->get('address');
 		$this->session->set_userdata('address', $address);
 		$card = $this->session->userdata('card');
+		$data["add"] = $address;
 		$data["address"] = $this->Shopping_model->get_Address_By_ID($address);
 		$data["card"] = $this->Shopping_model->get_Card_By_ID($card);
 		$data['carts'] = $this->Shopping_model->get_Cart();
@@ -1097,17 +1114,6 @@ class Shopping extends MX_Controller
 			$this->load->model('Shopping_model');
 			$this->load->model('New_model');
 
-			$user = $this->session->userdata('user_id');
-
-			$address = $this->session->userdata('address');
-			$card = $this->session->userdata('card');
-
-			// $this->load->library('razorpay');
-			// $p_order_id = $this->input->post('p_order_id');
-			// $razor = $this->razorpay->check_Order($p_order_id);
-			// print_r($razor);
-			// echo $json = json_encode($razor, JSON_FORCE_OBJECT);
-
 			$carts = $this->Shopping_model->get_Cart();
 
 			$this->load->module('coupons/coupons');
@@ -1121,7 +1127,7 @@ class Shopping extends MX_Controller
 			}
 
 			$order = array(
-				'orders_address' => $address,
+				'orders_address' => $this->input->get('address'),
 				'orders_total' => 0,
 				'orders_coupon' => get_cookie('my_coupon'),
 				'orders_discount' => $discount_amount,
@@ -1181,18 +1187,6 @@ class Shopping extends MX_Controller
 
 	public function make_payment()
 	{
-		// use PayPal\Rest\ApiContext;
-		// use PayPal\Auth\OAuthTokenCredential;
-		// use PayPal\Api\Amount;
-		// use PayPal\Api\Details;
-		// use PayPal\Api\Item;
-		// use PayPal\Api\ItemList;
-		// use PayPal\Api\Payer;
-		// use PayPal\Api\Payment as PPPayment;
-		// use PayPal\Api\RedirectUrls;
-		// use PayPal\Api\ExecutePayment;
-		// use PayPal\Api\PaymentExecution;
-		// use PayPal\Api\Transaction;
 		$this->is_Logged_In();
 		$this->load->model('Shopping_model');
 		$settings = array(
@@ -1239,11 +1233,10 @@ class Shopping extends MX_Controller
 		}
 
 		echo '<center><h1>Please do not refresh this page...</h1></center>';
-		$data1["CALLBACK_URL"] = base_url('paypal-success') . '?amount=' . $priceTotal . '&txnid=';
 		$data1["order"] = rand() . rand();
 		$data1["price"] = $priceTotal;
 		$this->load->library('Paypal_lib');
-		$returnURL = base_url('paypal-success');
+		$returnURL = base_url('paypal-success') . '?address=' . $this->input->get('address');
 		$failURL = base_url('paypal-failed');
 		$notifyURL = base_url('paypal-ipn');
 		//get particular product data
@@ -1632,6 +1625,8 @@ class Shopping extends MX_Controller
 		$this->db->query('TRUNCATE search_filter');
 		if ($posts) {
 			foreach ($posts as $post) {
+				$min = $this->db->where('product_attributes_post', $post['posts_id'])->join('product_attributes', 'product_variables_attribute = product_attributes_id', 'left')->order_by('product_variables_price', 'ASC')->get('product_variables')->row_array();
+				$max = $this->db->where('product_attributes_post', $post['posts_id'])->join('product_attributes', 'product_variables_attribute = product_attributes_id', 'left')->order_by('product_variables_price', 'DESC')->get('product_variables')->row_array();
 				$filter = 1;
 				$data = [];
 				$per = 0;
@@ -1664,6 +1659,8 @@ class Shopping extends MX_Controller
 					'search_rate' => $per,
 					'search_exclusive' => $post['products_featured'],
 					'search_rate_count' => count($rates),
+					'search_min' => $min['product_variables_price'],
+					'search_max' => $max['product_variables_price'],
 				];
 				$this->db->insert('search', $data);
 				$ins_id = $this->db->insert_id();

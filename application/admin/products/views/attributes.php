@@ -37,7 +37,7 @@
 											<?php }
 											} ?>
 											<li class="nav-item">
-												<a class="nav-link <?= $vari++ == 0 ? 'active' : '' ?>" data-toggle="tab" href="#childNew"><i class="icon-plus"></i></a>
+												<a class="nav-link <?= $vari++ == 0 ? 'active' : '' ?>" data-toggle="tab" href="#childNew<?= $attribute['product_attributes_id'] ?>"><i class="icon-plus"></i></a>
 											</li>
 										</ul>
 										<!-- Tab panes -->
@@ -71,7 +71,7 @@
 													</div>
 											<?php }
 											} ?>
-											<div class="tab-pane container <?= $vari++ == 0 ? 'active' : 'fade' ?>" id="childNew">
+											<div class="tab-pane container <?= $vari++ == 0 ? 'active' : 'fade' ?>" id="childNew<?= $attribute['product_attributes_id'] ?>">
 												<form method="POST" action="<?= admin_url('products/attribute/save-variant/' . $attribute['product_attributes_id']) ?>" enctype="multipart/form-data">
 													<div class="form-group mb-3">
 														<label for="name">Name</label>

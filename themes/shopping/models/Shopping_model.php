@@ -226,6 +226,7 @@ class Shopping_model extends CI_Model
 		$this->db->where('posts_type', 'product');
 		$this->db->where('posts_status', '1');
 		$this->db->join('products', 'products_post = posts_id', 'left');
+		$this->db->join('search', 'search_product = posts_id', 'left');
 		$this->db->where('posts_slug', $slug);
 		$post = $this->db->get('posts')->row_array();
 

@@ -184,7 +184,7 @@ class New_model extends CI_Model
 		$this->db->join('users', 'users_id = orders_user', 'left');
 		$this->db->join('address', 'address_id = users_address', 'left');
 		$this->db->join('coupons', 'coupons_id = orders_coupon', 'left');
-		$this->db->join('user_address', 'user_address_user = users_id', 'left');
+		$this->db->join('user_address', 'user_address_id = orders_address', 'left');
 		$orders = $this->db->get('orders')->result_array();
 		if ($orders) {
 			foreach ($orders as $order) {

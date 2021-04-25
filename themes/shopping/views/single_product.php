@@ -1,13 +1,4 @@
 		<?php
-		$price = $post['products_price'];
-		$salePrice = $post['products_sale_price'];
-		if ($salePrice != '0' && $salePrice != '' && $salePrice < $price) {
-			$sPrice = $salePrice;
-		} else {
-			$sPrice = $price;
-		}
-		$prcP = $sPrice + ((20 / 100) * $sPrice);
-		$perMmPrice = $prcP / 1000;
 		$per = 0;
 		if ($post['comments']) {
 			$totalRate = 0;
@@ -81,7 +72,7 @@
 								<div class="product_description">
 									<h4 class="product_title"><a href="#"><?= $post['posts_title'] ?></a></h4>
 									<div class="product_price">
-										<span class="price pPrice"><?= pPrice($sPrice) ?></span>
+										<span class="price pPrice"><?= $pprice ?></span>
 										<?= ($sPrice != $post['products_price']) ? '<del>' . pPrice($post['products_price']) . '</del>' : '' ?>
 										<!-- <div class="on_sale">
 											<span>35% Off</span>
