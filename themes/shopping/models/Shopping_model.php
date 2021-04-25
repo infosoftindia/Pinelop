@@ -490,23 +490,21 @@ class Shopping_model extends CI_Model
 	public function contact()
 	{
 		$f_Name = $this->input->post('name');
-		// $l_Name = $this->input->post('lname');
 		$email = $this->input->post('email');
 		$phone = $this->input->post('phone');
 		$subject = $this->input->post('subject');
 		$message = $this->input->post('message');
 
-		$this->db->insert('contacts', [
-			// 'contacts_name' => $f_Name.' '.$l_Name,
-			'contacts_name' => $f_Name,
-			'contacts_email' => $email,
-			'contacts_phone' => $phone,
-			'contacts_opt1' => $subject,
-			'contacts_message' => $message,
-			'contacts_status' => 0,
-			'contacts_created' => now()
-		]);
-		return $this->db->insert_id();
+		$data['message'] = 'Hi Admin, <br>' .
+			'Someone has filled the contact form from your site Pinelop Shopping Cart<br>' .
+			'Name: ' . $f_Name . '<br>' .
+			'Email: ' . $email . '<br>' .
+			'Phone: ' . $phone . '<br>' .
+			'Subject: ' . $subject . '<br>' .
+			'Message: ' . $message . '<br>';
+		$body = $this->load->view('email/mail', $data, true);
+		addMailQueue('support@pinelop.com', 'Pinelop Contact | ' . $subject, $body);
+		return 1;
 	}
 
 	public function checkout()

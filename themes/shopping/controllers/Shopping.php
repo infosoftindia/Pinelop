@@ -234,10 +234,18 @@ class Shopping extends MX_Controller
 
 	public function load_ContactUs()
 	{
-		$data["categories"] = $this->Shopping_model->get_Categories();
-		$data["title"] = "Contact us";
-		$data["page"] = $this->load->view("contact", $data, true);
-		return $data;
+		$this->form_validation->set_rules('name', 'Name', 'required');
+		$this->form_validation->set_rules('email', 'Email', 'required');
+		$this->form_validation->set_rules('phone', 'Phone', 'required');
+		$this->form_validation->set_rules('subject', 'Subject', 'required');
+		$this->form_validation->set_rules('message', 'Message', 'required');
+		if ($this->form_validation->run() === FALSE) {
+			$data["categories"] = $this->Shopping_model->get_Categories();
+			$data["title"] = "Contact us";
+			$data["page"] = $this->load->view("contact", $data, true);
+			return $data;
+		} else {
+		}
 	}
 
 	public function QuickView($slug)

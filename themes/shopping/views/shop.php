@@ -130,15 +130,18 @@
 									<ul class="widget_categories">
 										<?php foreach ($categories as $category) { ?>
 											<li>
-												<a href="<?= site_url('category/' . $category['categories_slug']) ?>"><span class="categories_name active"><?= $category['categories_name'] ?></span></a>
+												<a href="<?= site_url('category/' . $category['categories_slug']) ?>"><span class="categories_name active"><?= $category['categories_name'] ?></span> </a>
+												<?php if ($category['children']) { ?>
+													<span href="javascript:;" class="float-right" style="cursor: pointer" data-toggle="collapse" data-target="#collapseExample<?= $category['categories_id'] ?>" aria-expanded="false" aria-controls="collapseExample">+</span>
+													<ul class="pl-3 collapse" id="collapseExample<?= $category['categories_id'] ?>">
+														<?php foreach ($category['children'] as $cat) { ?>
+															<li>
+																<a href="<?= site_url('category/' . $cat['categories_slug']) ?>"><span class="categories_name active"><?= $cat['categories_name'] ?></span></a>
+															</li>
+														<?php } ?>
+													</ul>
+												<?php } ?>
 											</li>
-											<?php if ($category['children']) {
-												foreach ($category['children'] as $cat) { ?>
-													<li>
-														<a href="<?= site_url('category/' . $cat['categories_slug']) ?>"><span class="categories_name active"><?= $cat['categories_name'] ?></span></a>
-													</li>
-											<?php }
-											} ?>
 										<?php } ?>
 									</ul>
 								</div>

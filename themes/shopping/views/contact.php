@@ -75,31 +75,29 @@
                         </div>
                         <!-- <p class="leads">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit massa enim. Nullam id varius nunc id varius nunc.</p> -->
                         <div class="field_form">
-                            <form method="post" name="enq">
-                                <div class="row">
-                                    <div class="form-group col-md-6">
-                                        <input required="" placeholder="Enter Name *" id="first-name" class="form-control" name="name" type="text" autocomplete="off">
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <input required="" placeholder="Enter Email *" id="email" class="form-control" name="email" type="email" autocomplete="off">
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <input required="" placeholder="Enter Phone No. *" id="phone" class="form-control" name="phone" type="text" autocomplete="off">
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <input placeholder="Enter Subject" id="subject" class="form-control" name="subject" type="text" autocomplete="off">
-                                    </div>
-                                    <div class="form-group col-md-12">
-                                        <textarea required="" placeholder="Message *" id="description" class="form-control" name="message" rows="4" type="text"></textarea>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <button type="submit" title="Submit Your Message!" class="btn btn-fill-out" value="Submit">Send Message</button>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div id="alert-msg" class="alert-msg text-center"></div>
-                                    </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <input required="" placeholder="Enter Name *" id="first-name" class="form-control" name="name" type="text" autocomplete="off" value="<?= set_value('name') ?>">
                                 </div>
-                            </form>
+                                <div class="form-group col-md-6">
+                                    <input required="" placeholder="Enter Email *" id="email" class="form-control" name="email" type="email" autocomplete="off" value="<?= set_value('email') ?>">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <input required="" placeholder="Enter Phone No. *" id="phone" class="form-control" name="phone" type="text" autocomplete="off" value="<?= set_value('phone') ?>">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <input placeholder="Enter Subject" id="subject" class="form-control" name="subject" type="text" autocomplete="off" required value="<?= set_value('subject') ?>">
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <textarea required="" placeholder="Message *" id="description" class="form-control" name="message" rows="4" type="text"><?= set_value('message') ?></textarea>
+                                </div>
+                                <div class="col-md-12">
+                                    <button type="submit" title="Submit Your Message!" class="btn btn-fill-out" value="Submit">Send Message</button>
+                                </div>
+                                <div class="col-md-12">
+                                    <div id="alert-msg" class="alert-msg text-center"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- <div class="col-lg-6 pt-2 pt-lg-0 mt-4 mt-lg-0">

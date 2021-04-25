@@ -108,7 +108,7 @@
                                                                     </li>
                                                                 <?php } else { ?>
                                                                     <li>
-                                                                        <a class="dropdown-item menu-link dropdown-toggler" href="<?= site_url('category/' . $categories[$cat]['categories_slug']) ?>"><?= $categories[$cat]['categories_name'] ?></a>
+                                                                        <a class="dropdown-item menu-link dropdown-toggler" href="<?= site_url('category/' . $categories[$cat]['categories_slug']) ?>" onclick="location.href='<?= site_url('category/' . $categories[$cat]['categories_slug']) ?>'"><?= $categories[$cat]['categories_name'] ?></a>
                                                                         <div class="dropdown-menu">
                                                                             <ul>
                                                                                 <?php if ($categories[$cat]['children']) {
@@ -135,7 +135,7 @@
                                                                 </li>
                                                             <?php } else { ?>
                                                                 <li>
-                                                                    <a class="dropdown-item menu-link dropdown-toggler" href="<?= site_url('category/' . $categories[$cat]['categories_slug']) ?>"><?= $categories[$cat]['categories_name'] ?></a>
+                                                                    <a class="dropdown-item menu-link dropdown-toggler" href="<?= site_url('category/' . $categories[$cat]['categories_slug']) ?>" onclick="location.href='<?= site_url('category/' . $categories[$cat]['categories_slug']) ?>'"><?= $categories[$cat]['categories_name'] ?></a>
                                                                     <div class="dropdown-menu">
                                                                         <ul>
                                                                             <?php if ($categories[$cat]['children']) {
