@@ -1625,7 +1625,7 @@ class Shopping extends MX_Controller
 		$this->db->query('TRUNCATE search_filter');
 		if ($posts) {
 			foreach ($posts as $post) {
-				$min = $this->db->where('product_attributes_post', $post['posts_id'])->join('product_attributes', 'product_variables_attribute = product_attributes_id', 'left')->order_by('product_variables_price', 'ASC')->get('product_variables')->row_array();
+				$min = $this->db->where('product_attributes_post', $post['posts_id'])->where('product_variables_price > ', '0')->join('product_attributes', 'product_variables_attribute = product_attributes_id', 'left')->order_by('product_variables_price', 'ASC')->get('product_variables')->row_array();
 				$max = $this->db->where('product_attributes_post', $post['posts_id'])->join('product_attributes', 'product_variables_attribute = product_attributes_id', 'left')->order_by('product_variables_price', 'DESC')->get('product_variables')->row_array();
 				$filter = 1;
 				$data = [];
@@ -1659,8 +1659,8 @@ class Shopping extends MX_Controller
 					'search_rate' => $per,
 					'search_exclusive' => $post['products_featured'],
 					'search_rate_count' => count($rates),
-					'search_min' => $min['product_variables_price'],
-					'search_max' => $max['product_variables_price'],
+					'search_min' => ($min['product_variables_price'] ?? '0'),
+					'search_max' => ($max['product_variables_price'] ?? '0'),
 				];
 				$this->db->insert('search', $data);
 				$ins_id = $this->db->insert_id();

@@ -155,14 +155,26 @@
     <?php if ($bestOffers) { ?>
         <div class="section pb_20 small_pt">
             <div class="container px-2">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="heading_s3 text-center">
+                            <h2>Best Offers</h2>
+                        </div>
+                        <div class="small_divider clearfix"></div>
+                    </div>
+                </div>
                 <div class="row no-gutters">
-                    <?php foreach ($bestOffers as $bestOffer) { ?>
-                        <div class="col-md-4">
-                            <div class="sale_banner">
-                                <a class="hover_effect1" href="<?= base_url('best-offers/' . $bestOffer['products_best_offers_id']) ?>">
-                                    <img src="<?= site_url('themes/shopping') ?>/assets/load.gif" class="lazy" data-src="<?= base_url(getenv('uploads') . $bestOffer['products_best_offers_image']) ?>" alt="<?= $bestOffer['products_best_offers_title'] ?>">
-                                    <h6 class="product_title text-center pt-3"><a href="<?= base_url('best-offers/' . $bestOffer['products_best_offers_id']) ?>"><?= $bestOffer['products_best_offers_title'] ?></a></h6>
-                                </a>
+                    <?php foreach ($bestOffers as $offer) { ?>
+                        <div class="col-lg-4">
+                            <div class="product_box text-center">
+                                <div class="product_img">
+                                    <a href="<?= base_url('best-offers/' . $offer['products_best_offers_id']) ?>">
+                                        <img src="<?= site_url('themes/shopping') ?>/assets/load.gif" class="lazy" data-src="<?= base_url(getenv('uploads') . $offer['products_best_offers_image']) ?>" style="height: 200px; width: 100%; object-fit: cover;" alt="<?= $offer['products_best_offers_title'] ?>">
+                                    </a>
+                                </div>
+                                <div class="product_info">
+                                    <h6 class="product_title"><a href="<?= base_url('best-offers/' . $offer['products_best_offers_id']) ?>"><?= $offer['products_best_offers_title'] ?></a></h6>
+                                </div>
                             </div>
                         </div>
                     <?php } ?>
