@@ -131,7 +131,7 @@
 														<td class="product-name" data-title="Product"><a href="<?= site_url('product/' . $cart['posts_slug']) ?>"><?= $cart['posts_title'] ?> (<?= $cart['carts_quantity'] ?>)</a>
 															<?php if ($cart['variable']) {
 																foreach ($cart['variable'] as $variable) { ?>
-																	<small class="ml-3"><?= '<i>' . $variable['product_attributes_name'] . '</i>: ' . $variable['cart_variables_value']  ?></small><br>
+																	<br><small class="ml-3"><?= '<i>' . $variable['product_attributes_name'] . '</i>: ' . $variable['cart_variables_value']  ?></small>
 															<?php }
 															} ?>
 														</td>
