@@ -456,10 +456,12 @@ class Shopping_model extends CI_Model
 		$prc = [];
 		if ($result) {
 			foreach ($result as $cart) {
-				$cart['variable'] = $this->db->where('cart_variables_cart', $cart['carts_id'])->order_by('cart_variables_id', 'DESC')->get('cart_variables')->row_array();
+				$cart['variable'] = $this->db->where('cart_variables_cart', $cart['carts_id'])->join('product_attributes', 'product_attributes_id = cart_variables_key', 'left')->order_by('cart_variables_id', 'DESC')->get('cart_variables')->result_array();
 				$prc[] = $cart;
 			}
 		}
+		// print_r($prc);
+		// die;
 		return $prc;
 	}
 

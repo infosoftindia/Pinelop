@@ -120,7 +120,7 @@
 										<a href="<?= base_url('product/' . $product['posts_slug']) ?>" target="_blank"><?= $product['order_products_returned'] == 1 ? '<b class="text-danger">' . $product['posts_title'] . '</b>' : $product['posts_title'] ?></a> <br />
 										<?php if (!empty($product['attributes'])) {
 											foreach ($product['attributes'] as $attribute) { ?>
-												&nbsp;<small> - <?= $attribute['product_attributes_name'] ?>: <?= $attribute['order_attributes_value'] ?></small>
+												&nbsp;<small> - <?= $attribute['product_attributes_name'] ?>: <?= $attribute['order_attributes_value'] ?></small><br>
 										<?php }
 										} ?>
 										<?= (strlen($product['order_products_text']) > 2) ? '&nbsp;<small> - ' . $product['order_products_text'] . '</small>' : '' ?>

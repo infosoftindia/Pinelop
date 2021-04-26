@@ -62,7 +62,11 @@
 														<td class="product-thumbnail"><a href="<?= site_url('product/' . $cart['posts_slug']) ?>"><img src="<?= site_url('themes/shopping') ?>/assets/load.gif" class="lazy" data-src="<?= base_url(getenv('uploads') . $cart['carts_image']) ?>" alt="product1" style="height: 80px; object-fit: contain;"></a></td>
 														<td class="product-name" data-title="Product">
 															<a href="<?= site_url('product/' . $cart['posts_slug']) ?>"><?= $cart['posts_title'] ?></a><br>
-															<small><?= ($cart['variable']) ? $cart['variable']['cart_variables_key'] . ': ' . $cart['variable']['cart_variables_value'] : '' ?></small>
+															<?php if ($cart['variable']) {
+																foreach ($cart['variable'] as $variable) { ?>
+																	<small class="ml-3"><?= '<i>' . $variable['product_attributes_name'] . '</i>: ' . $variable['cart_variables_value']  ?></small><br>
+															<?php }
+															} ?>
 														</td>
 														<td class="product-price" data-title="Price"><?= pPrice($sPrice) ?></td>
 														<td class="product-quantity" data-title="Quantity">

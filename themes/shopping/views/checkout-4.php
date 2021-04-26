@@ -49,7 +49,7 @@
 			<div class="col-md-6">
 				<ol class="breadcrumb justify-content-md-end">
 					<li class="breadcrumb-item"><a href="<?= site_url() ?>">Home</a></li>
-					<li class="breadcrumb-item"><a href="<?= site_url('checkout') ?>">Home</a></li>
+					<li class="breadcrumb-item"><a href="<?= site_url('checkout') ?>">Checkout</a></li>
 					<li class="breadcrumb-item active">Complete Payment</li>
 				</ol>
 			</div>
@@ -128,7 +128,13 @@
 
 													<tr>
 														<td class="product-thumbnail"><a href="<?= site_url('product/' . $cart['posts_slug']) ?>"><img src="<?= base_url(getenv('uploads') . $cart['carts_image']) ?>" alt="product1" style="height: 80px; object-fit: contain;"></a></td>
-														<td class="product-name" data-title="Product"><a href="<?= site_url('product/' . $cart['posts_slug']) ?>"><?= $cart['posts_title'] ?> (<?= $cart['carts_quantity'] ?>)</a></td>
+														<td class="product-name" data-title="Product"><a href="<?= site_url('product/' . $cart['posts_slug']) ?>"><?= $cart['posts_title'] ?> (<?= $cart['carts_quantity'] ?>)</a>
+															<?php if ($cart['variable']) {
+																foreach ($cart['variable'] as $variable) { ?>
+																	<small class="ml-3"><?= '<i>' . $variable['product_attributes_name'] . '</i>: ' . $variable['cart_variables_value']  ?></small><br>
+															<?php }
+															} ?>
+														</td>
 														<td class="product-price" data-title="Price"><?= pPrice($sPrice) ?></td>
 														<td class="product-subtotal" data-title="Total"><?= pPrice($sPrice * $cart['carts_quantity']) ?></td>
 														<?php

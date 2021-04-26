@@ -99,12 +99,12 @@
 										foreach ($post['attributes'] as $attribute) { ?>
 											<?php if (strtolower($attribute['product_attributes_type']) == 'color') { ?>
 												<div class="pr_switch_wrap">
-													<span class="switch_lable"><?= $attribute['product_attributes_name'] ?>: <label id="<?= str_replace(' ', '--', 'p' . $attribute['product_attributes_name']) ?>"></label></span><br>
+													<span class="switch_lable"><?= $attribute['product_attributes_name'] ?>: <label id="<?= str_replace(' ', '--', 'p' . $attribute['product_attributes_id']) ?>"></label></span><br>
 													<div class="product_color_switch" style="margin-top: 10px;">
 														<?php if ($attribute['variables']) {
 															foreach ($attribute['variables'] as $variable) {
 																$ppp = (($variable['product_variables_price'] > 0) ? $variable['product_variables_price'] : $sPrice); ?>
-																<span data-color="<?= $variable['product_variables_value'] ?>" onclick="addValue('<?= $variable['product_variables_value'] ?>', '#<?= str_replace(' ', '---', $attribute['product_attributes_name']) ?>', '<?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? $variable['product_variables_image'] : $post['posts_cover'] ?>', '<?= $ppp ?>', '<?= pPrice($ppp) ?>', '#<?= str_replace(' ', '--', 'p' . $attribute['product_attributes_name']) ?>')"></span>
+																<span data-color="<?= $variable['product_variables_value'] ?>" onclick="addValue('<?= $variable['product_variables_value'] ?>', '#<?= str_replace(' ', '---', $attribute['product_attributes_id']) ?>', '<?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? $variable['product_variables_image'] : '' ?>', '<?= $ppp ?>', '<?= pPrice($ppp) ?>', '#<?= str_replace(' ', '--', 'p' . $attribute['product_attributes_id']) ?>')"></span>
 														<?php }
 														} ?>
 													</div>
@@ -112,12 +112,12 @@
 											<?php } elseif (strtolower($attribute['product_attributes_type']) == 'radio') { ?>
 
 												<div class="pr_switch_wrap">
-													<span class="switch_lable"><?= $attribute['product_attributes_name'] ?>: <label id="<?= str_replace(' ', '--', 'p' . $attribute['product_attributes_name']) ?>"></label></span><br>
+													<span class="switch_lable"><?= $attribute['product_attributes_name'] ?>: <label id="<?= str_replace(' ', '--', 'p' . $attribute['product_attributes_id']) ?>"></label></span><br>
 													<div class="product_size_switch" style="margin-top: 10px;">
 														<?php if ($attribute['variables']) {
 															foreach ($attribute['variables'] as $variable) {
-																$ppp = (($variable['product_variables_price'] > 0) ? $variable['product_variables_price'] : $sPrice); ?>
-																<span style="height: 50px; min-width: 50px;" onclick="addValue('<?= $variable['product_variables_value'] ?>', '#<?= str_replace(' ', '---', $attribute['product_attributes_name']) ?>', '<?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? $variable['product_variables_image'] : $post['posts_cover'] ?>', '<?= $ppp ?>', '<?= pPrice($ppp) ?>', '#<?= str_replace(' ', '--', 'p' . $attribute['product_attributes_name']) ?>')"><?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? '<img class="lazy" data-src="' . base_url(getenv('uploads') . $variable['product_variables_image']) . '" style="width: 50px; max-height: 46px">' : '<label style="margin-top: 9px;">' . $variable['product_variables_value'] . '</label style="margin-top: 9px;">' ?></span>
+																$ppp = (($variable['product_variables_price'] > 0) ? $variable['product_variables_price'] : 0); ?>
+																<span style="height: 50px; min-width: 50px;" onclick="addValue('<?= $variable['product_variables_value'] ?>', '#<?= str_replace(' ', '---', $attribute['product_attributes_id']) ?>', '<?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? $variable['product_variables_image'] : '' ?>', '<?= $ppp ?>', '<?= pPrice($ppp) ?>', '#<?= str_replace(' ', '--', 'p' . $attribute['product_attributes_id']) ?>')"><?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? '<img class="lazy" data-src="' . base_url(getenv('uploads') . $variable['product_variables_image']) . '" style="width: 50px; max-height: 46px">' : '<label style="margin-top: 9px;">' . $variable['product_variables_value'] . '</label style="margin-top: 9px;">' ?></span>
 														<?php }
 														} ?>
 													</div>
@@ -131,7 +131,7 @@
 								<form method="post" action="<?= site_url('shopping/add_to_cart/' . $post['posts_id']) ?>" class="add_To_Cart">
 									<?php if ($post['attributes']) {
 										foreach ($post['attributes'] as $attribute) { ?>
-											<input type="hidden" name="<?= str_replace(' ', '---', $attribute['product_attributes_name']) ?>" id="<?= str_replace(' ', '---', $attribute['product_attributes_name']) ?>" value="">
+											<input type="hidden" name="<?= str_replace(' ', '---', $attribute['product_attributes_id']) ?>" id="<?= str_replace(' ', '---', $attribute['product_attributes_id']) ?>" value="">
 									<?php }
 									} ?>
 									<input type="hidden" name="price" id="dPrice" value="">

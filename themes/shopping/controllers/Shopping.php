@@ -252,7 +252,27 @@ class Shopping extends MX_Controller
 	{
 		$this->load->model('Shopping_model');
 		$data['post'] = $this->Shopping_model->get_Products_By_Slug($slug);
-		$data["title"] = "Quick View";
+		// print_r($data['post']);die;
+		if (empty($data['post'])) {
+			show_404();
+		}
+		$price_to_show = '0';
+		$price = $data['post']['products_price'];
+		$salePrice = $data['post']['products_sale_price'];
+		if ($salePrice != '0' && $salePrice != '' && $salePrice < $price) {
+			$sPrice = $salePrice;
+		} else {
+			$sPrice = $price;
+		}
+		$price_to_show = pPrice($sPrice);
+		if ($data['post']['search_min'] > 0 && $data['post']['search_max'] > 0) {
+			if ($data['post']['search_min'] < $data['post']['search_max']) {
+				$price_to_show = pPrice($data['post']['search_min']) . ' - ' . pPrice($data['post']['search_max']);
+			}
+		}
+		$data['pprice'] = $price_to_show;
+		$data['sPrice'] = $sPrice;
+		$data["title"] = $data['post']['posts_title'];
 		$this->load->view("quick-view", $data);
 		// return $data;
 	}

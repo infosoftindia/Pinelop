@@ -1,11 +1,4 @@
 <?php
-$price = $post['products_price'];
-$salePrice = $post['products_sale_price'];
-if ($salePrice != '0' && $salePrice != '' && $salePrice < $price) {
-	$sPrice = $salePrice;
-} else {
-	$sPrice = $price;
-}
 $per = 0;
 if ($post['comments']) {
 	$totalRate = 0;
@@ -48,64 +41,69 @@ if ($post['comments']) {
 		</div>
 		<div class="col-lg-6 col-md-6">
 			<div class="pr_detail">
-				<form method="post" action="<?= site_url('shopping/add_to_cart/' . $post['posts_id']) ?>" class="add_To_Cart">
-					<div class="product_description">
-						<h4 class="product_title"><a href="#"><?= $post['posts_title'] ?></a></h4>
-						<div class="product_price">
-							<span class="price"><?= pPrice($sPrice) ?></span>
-							<?= ($sPrice != $post['products_price']) ? '<del>' . pPrice($post['products_price'], 1) . '</del>' : '' ?>
-						</div>
-						<div class="rating_wrap" style="<?= (count($post['comments']) == 0) ? 'display: none' : '' ?>">
-							<div class="rating">
-								<div class="product_rate" style="width:<?= $per * 20 ?>%"></div>
-							</div>
-							<span class="rating_num">(<?= count($post['comments']) ?>)</span>
-						</div>
-						<div class="pr_desc w-100">
-							<p><?= $post['products_short_description'] ?></p>
-						</div>
-						<div class="product_sort_info">
-							<ul>
-								<li><i class="linearicons-shield-check"></i> Payment Security</li>
-								<li><i class="linearicons-sync"></i> 30 Day Return Policy</li>
-								<li><i class="linearicons-bag-dollar"></i> Free fast worldwide delivery</li>
-							</ul>
-						</div>
-						<?php if ($post['attributes']) {
-							foreach ($post['attributes'] as $attribute) { ?>
-								<?php if (strtolower($attribute['product_attributes_type']) == 'color') { ?>
-									<div class="pr_switch_wrap">
-										<span class="switch_lable"><?= $attribute['product_attributes_name'] ?></span>
-										<div class="product_color_switch">
-											<?php if ($attribute['variables']) {
-												foreach ($attribute['variables'] as $variable) {
-													$ppp = (($variable['product_variables_price'] > 0) ? $variable['product_variables_price'] : $sPrice); ?>
-													<span data-color="<?= $variable['product_variables_value'] ?>" onclick="addValue('<?= $variable['product_variables_value'] ?>', '#<?= str_replace(' ', '---', $attribute['product_attributes_name']) ?>', '<?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? $variable['product_variables_image'] : $post['posts_cover'] ?>', '<?= $ppp ?>', '<?= pPrice($ppp) ?>')"></span>
-											<?php }
-											} ?>
-										</div>
-									</div>
-								<?php } elseif (strtolower($attribute['product_attributes_type']) == 'radio') { ?>
-
-									<div class="pr_switch_wrap">
-										<span class="switch_lable"><?= $attribute['product_attributes_name'] ?></span>
-										<div class="product_size_switch">
-											<?php if ($attribute['variables']) {
-												foreach ($attribute['variables'] as $variable) {
-													$ppp = (($variable['product_variables_price'] > 0) ? $variable['product_variables_price'] : $sPrice); ?>
-													<span style="height: 50px; min-width: 50px;" onclick="addValue('<?= $variable['product_variables_value'] ?>', '#<?= str_replace(' ', '---', $attribute['product_attributes_name']) ?>', '<?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? $variable['product_variables_image'] : $post['posts_cover'] ?>', '<?= $ppp ?>', '<?= pPrice($ppp) ?>')"><?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? '<img src="' . site_url('themes/shopping/assets/load.gif') . '" class="lazy" data-src="' . base_url(getenv('uploads') . $variable['product_variables_image']) . '" style="width: 50px; max-height: 46px">' : '<label style="margin-top: 9px;">' . $variable['product_variables_value'] . '</label style="margin-top: 9px;">' ?></span>
-											<?php }
-											} ?>
-										</div>
-									</div>
-								<?php } ?>
-						<?php }
-						} ?>
+				<div class="product_description">
+					<h4 class="product_title"><a href="#"><?= $post['posts_title'] ?></a></h4>
+					<div class="product_price">
+						<span class="price pPrice"><?= $pprice ?></span>
+						<?= ($sPrice != $post['products_price']) ? '<del>' . pPrice($post['products_price']) . '</del>' : '' ?>
+						<!-- <div class="on_sale">
+											<span>35% Off</span>
+										</div> -->
 					</div>
-					<hr />
+					<div class="rating_wrap" style="<?= (count($post['comments']) == 0) ? 'display: none' : '' ?>">
+						<div class="rating">
+							<div class="product_rate" style="width:<?= $per * 20 ?>%"></div>
+						</div>
+						<span class="rating_num">(<?= count($post['comments']) ?>)</span>
+					</div>
+					<div class="pr_desc w-100">
+						<p><?= $post['products_short_description'] ?></p>
+					</div>
+					<div class="product_sort_info">
+						<ul>
+							<li><i class="linearicons-shield-check"></i> Payment Security</li>
+							<li><i class="linearicons-sync"></i> 30 Day Return Policy</li>
+							<li><i class="linearicons-bag-dollar"></i> Free fast worldwide delivery</li>
+						</ul>
+					</div>
+
 					<?php if ($post['attributes']) {
 						foreach ($post['attributes'] as $attribute) { ?>
-							<input type="hidden" name="<?= str_replace(' ', '---', $attribute['product_attributes_name']) ?>" id="<?= str_replace(' ', '---', $attribute['product_attributes_name']) ?>" value="">
+							<?php if (strtolower($attribute['product_attributes_type']) == 'color') { ?>
+								<div class="pr_switch_wrap">
+									<span class="switch_lable"><?= $attribute['product_attributes_name'] ?>: <label id="<?= str_replace(' ', '--', 'p' . $attribute['product_attributes_id']) ?>"></label></span><br>
+									<div class="product_color_switch" style="margin-top: 10px;">
+										<?php if ($attribute['variables']) {
+											foreach ($attribute['variables'] as $variable) {
+												$ppp = (($variable['product_variables_price'] > 0) ? $variable['product_variables_price'] : $sPrice); ?>
+												<span data-color="<?= $variable['product_variables_value'] ?>" onclick="addValue('<?= $variable['product_variables_value'] ?>', '#<?= str_replace(' ', '---', $attribute['product_attributes_id']) ?>', '<?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? $variable['product_variables_image'] : '' ?>', '<?= $ppp ?>', '<?= pPrice($ppp) ?>', '#<?= str_replace(' ', '--', 'p' . $attribute['product_attributes_id']) ?>')"></span>
+										<?php }
+										} ?>
+									</div>
+								</div>
+							<?php } elseif (strtolower($attribute['product_attributes_type']) == 'radio') { ?>
+
+								<div class="pr_switch_wrap">
+									<span class="switch_lable"><?= $attribute['product_attributes_name'] ?>: <label id="<?= str_replace(' ', '--', 'p' . $attribute['product_attributes_id']) ?>"></label></span><br>
+									<div class="product_size_switch" style="margin-top: 10px;">
+										<?php if ($attribute['variables']) {
+											foreach ($attribute['variables'] as $variable) {
+												$ppp = (($variable['product_variables_price'] > 0) ? $variable['product_variables_price'] : 0); ?>
+												<span style="height: 50px; min-width: 50px;" onclick="addValue('<?= $variable['product_variables_value'] ?>', '#<?= str_replace(' ', '---', $attribute['product_attributes_id']) ?>', '<?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? $variable['product_variables_image'] : '' ?>', '<?= $ppp ?>', '<?= pPrice($ppp) ?>', '#<?= str_replace(' ', '--', 'p' . $attribute['product_attributes_id']) ?>')"><?= ($variable['product_variables_image'] != '' && $variable['product_variables_image'] != 'default.png') ? '<img class="lazy" data-src="' . base_url(getenv('uploads') . $variable['product_variables_image']) . '" style="width: 50px; max-height: 46px">' : '<label style="margin-top: 9px;">' . $variable['product_variables_value'] . '</label style="margin-top: 9px;">' ?></span>
+										<?php }
+										} ?>
+									</div>
+								</div>
+							<?php } ?>
+					<?php }
+					} ?>
+
+				</div>
+				<hr>
+				<form method="post" action="<?= site_url('shopping/add_to_cart/' . $post['posts_id']) ?>" class="add_To_Cart">
+					<?php if ($post['attributes']) {
+						foreach ($post['attributes'] as $attribute) { ?>
+							<input type="hidden" name="<?= str_replace(' ', '---', $attribute['product_attributes_id']) ?>" id="<?= str_replace(' ', '---', $attribute['product_attributes_id']) ?>" value="">
 					<?php }
 					} ?>
 					<input type="hidden" name="price" id="dPrice" value="">
@@ -114,43 +112,47 @@ if ($post['comments']) {
 						<div class="cart-product-quantity">
 							<div class="quantity">
 								<input type="button" value="-" class="minus">
-								<input type="text" name="quantity" value="1" title="Qty" class="qty" size="4">
+								<input type="text" name="quantity" value="1" min="1" title="Qty" class="qty" size="4" autocomplete="off">
 								<input type="button" value="+" class="plus">
 							</div>
 						</div>
 						<input type="hidden" name="post" value="<?= $post['posts_id'] ?>">
 						<div class="cart_btn">
-							<button class="btn btn-fill-out btn-addtocart" type="submit"><i class="icon-basket-loaded"></i> Add to cart</button>
-							<a href="javascript:;" data-href="<?= site_url('shopping/add_to_wishlist/' . $post['posts_id']) ?>" title="Add to Wishlist" class="add_To_Wishlist add_wishlist"><i class="<?= ($post['wishlist'] < 1) ? 'icon-heart' : 'lni lni-heart-filled text-danger' ?>"></i></a>
+							<?php if ($this->session->userdata('user_id') > 0) { ?>
+								<button class="btn btn-fill-out btn-addtocart" type="submit"><i class="icon-basket-loaded"></i> Add to cart</button>
+
+								<a href="javascript:;" data-href="<?= site_url('shopping/add_to_wishlist/' . $post['posts_id']) ?>" title="Add to Wishlist" class="add_To_Wishlist add_wishlist"><i class="<?= ($post['wishlist'] < 1) ? 'icon-heart' : 'lni lni-heart-filled text-danger' ?>"></i></a>
+
+							<?php } else { ?>
+
+								<a href="javascript:;" onclick="login('<?= site_url('login') ?>','Please Login, For Add to Cart')" class="btn btn-fill-out btn-addtocart"><i class="icon-basket-loaded"></i> Add to cart</a>
+
+								<a class="add_wishlist" href="javascript:;" onclick="login('<?= site_url('login') ?>', 'Please Login, For Add to Wishlist')"><i class="icon-heart"></i></a>
+							<?php } ?>
 						</div>
 					</div>
 				</form>
-				<hr />
+				<hr>
 				<ul class="product-meta">
-					<!-- <li>SKU: <a href="#">BE45VGRT</a></li> -->
-					<li>Category:
-						<?php
-						if ($post['categories']) {
-							foreach ($post['categories'] as $cat) {
-								echo '<a href="' . site_url('category/' . $cat['categories_slug']) . '">' . $cat['categories_name'] . '</a>';
-							}
-						}
-						?>
-					</li>
-					<?php
-					// $tags = explode(',', $post['products_tags']);
-					// if (count($tags) > 0) {
-					?>
-					<!-- <li>Tags:
-							<?php
-							foreach ($tags as $tag) {
-								echo '<a href="' . site_url('tags/' . $tag) . '">' . $tag . '</a>';
-							}
-							?>
-						</li> -->
-					<?php //} 
-					?>
+					<!-- <li>SKU: <a href="#"><?= $post['products_sku'] ?></a></li> -->
+					<?php if ($post['categories']) {
+						foreach ($post['categories'] as $category) { ?>
+							<li>Category: <a href="<?= site_url('category/' . $category['categories_slug']) ?>"><?= $category['categories_name'] ?></a></li>
+					<?php }
+					} ?>
+					<!-- <li>Tags: <a href="#" rel="tag">Cloth</a>, <a href="#" rel="tag">printed</a> </li> -->
 				</ul>
+
+				<!-- <div class="product_share">
+									<span>Share:</span>
+									<ul class="social_icons">
+										<li><a href="#"><i class="ion-social-facebook"></i></a></li>
+										<li><a href="#"><i class="ion-social-twitter"></i></a></li>
+										<li><a href="#"><i class="ion-social-googleplus"></i></a></li>
+										<li><a href="#"><i class="ion-social-youtube-outline"></i></a></li>
+										<li><a href="#"><i class="ion-social-instagram-outline"></i></a></li>
+									</ul>
+								</div> -->
 			</div>
 		</div>
 	</div>
@@ -214,16 +216,19 @@ if ($post['comments']) {
 		$(output).val(val);
 	}
 
-	function addValue(val, output, image, price, pPrice) {
+	function addValue(val, output, image, price, pPrice, text) {
 		$(output).val(val);
+		$(text).html(val);
 		// alert(image)
 		if (image != '' && image != 'default.png') {
 			$('#product_img').attr('src', '<?= base_url('uploads/') ?>' + image);
 			$('#product_img').attr('data-zoom-image', '<?= base_url('uploads/') ?>' + image);
 			$('#dImage').val(image);
+			$('.zoomWindow').css('background-image', 'url(<?= base_url('uploads/') ?>' + image + ')');
+		}
+		if (price != '' && price > 0) {
 			$('#dPrice').val(price);
 			$('.pPrice').html(pPrice);
-			$('.zoomWindow').css('background-image', 'url(<?= base_url('uploads/') ?>' + image + ')');
 		}
 	}
 	$(document).ready(function() {

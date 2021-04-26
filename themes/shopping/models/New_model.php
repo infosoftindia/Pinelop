@@ -121,12 +121,24 @@ class New_model extends CI_Model
 							'order_products_price' => $cart['products_price'],
 							'order_products_total' => $cart['products_price'] * $cart['carts_quantity'],
 						]);
+						$product = $this->db->insert_id();
+						if ($cart['variable']) {
+							foreach ($cart['variable'] as $variable) {
+								$this->db->insert('order_attributes', [
+									'order_attributes_product' => $product,
+									'order_attributes_attrubute' => $variable['cart_variables_key'],
+									'order_attributes_value' => $variable['cart_variables_value'],
+								]);
+							}
+						}
 					}
 				}
 
 				foreach ($carts as $cart) {
 					$this->db->where('carts_id', $cart['carts_id']);
 					$this->db->delete('carts');
+					$this->db->where('cart_variables_cart', $cart['carts_id']);
+					$this->db->delete('cart_variables');
 				}
 
 				$this->db->where('orders_id', $order_id);

@@ -52,9 +52,11 @@
 			$('#product_img').attr('src', '<?= base_url('uploads/') ?>' + image);
 			$('#product_img').attr('data-zoom-image', '<?= base_url('uploads/') ?>' + image);
 			$('#dImage').val(image);
+			$('.zoomWindow').css('background-image', 'url(<?= base_url('uploads/') ?>' + image + ')');
+		}
+		if (price != '' && price > 0) {
 			$('#dPrice').val(price);
 			$('.pPrice').html(pPrice);
-			$('.zoomWindow').css('background-image', 'url(<?= base_url('uploads/') ?>' + image + ')');
 		}
 	}
 
