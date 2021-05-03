@@ -164,10 +164,17 @@
 								<ul class="product-meta">
 									<!-- <li>SKU: <a href="#"><?= $post['products_sku'] ?></a></li> -->
 									<?php if ($post['categories']) {
-										foreach ($post['categories'] as $category) { ?>
-											<li>Category: <a href="<?= site_url('category/' . $category['categories_slug']) ?>"><?= $category['categories_name'] ?></a></li>
-									<?php }
-									} ?>
+									?>
+										<li>Category:
+											<?php
+											foreach ($post['categories'] as $category) { ?>
+												<?php if ($category['parent']['categories_slug']) { ?>
+													<a href="<?= site_url('category/' . $category['parent']['categories_slug']) ?>"><?= $category['parent']['categories_name'] ?></a> >
+												<?php } ?>
+												<a href="<?= site_url('category/' . $category['categories_slug']) ?>"><?= $category['categories_name'] ?></a>,
+											<?php } ?>
+										</li>
+									<?php } ?>
 									<!-- <li>Tags: <a href="#" rel="tag">Cloth</a>, <a href="#" rel="tag">printed</a> </li> -->
 								</ul>
 

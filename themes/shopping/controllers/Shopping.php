@@ -79,18 +79,6 @@ class Shopping extends MX_Controller
 		$data["products"] = $this->Shopping_model->get_Exclusive_Products(20);
 		$data["newCollection"] = $this->Shopping_model->get_New_Collection(10);
 		$data["bestOffers"] = $this->Shopping_model->get_Best_Offers(3);
-
-		// $data["firstOffers"] = $this->Shopping_model->get_Home_Offers(3, 'first');
-		// $data["secondOffers"] = $this->Shopping_model->get_Home_Offers(2, 'second');
-		// $data["testimonials"] = $this->Shopping_model->get_Testimonials();
-		// $data["featured"] = $this->Shopping_model->get_Featured_Product();
-		// $data["categories"] = $this->Shopping_model->get_Categories();
-		// $data["blogs"] = $this->Shopping_model->get_Blogs(4);
-		// $data["featuredProducts"] = $this->Shopping_model->get_Featured_Products(10);
-		// $data["brands"] = $this->New_model->get_Brands();
-		// $data["histories"] = $this->New_model->get_Recent_History(4);
-		// print_r($data["sliders"]);
-
 		$data["page"] = $this->load->view("home", $data, true);
 		return $data;
 	}

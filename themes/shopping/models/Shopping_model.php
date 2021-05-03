@@ -232,7 +232,17 @@ class Shopping_model extends CI_Model
 
 		$this->db->where('products_category_post', $post['posts_id']);
 		$this->db->join('categories', 'products_category_category = categories_id', 'left');
-		$post['categories'] = $this->db->get('products_category')->result_array();
+		$categories = $this->db->get('products_category')->result_array();
+		if ($categories) {
+			$cat = [];
+			foreach ($categories as $category) {
+				$this->db->where('products_category_category', $category['categories_parent']);
+				$this->db->join('categories', 'products_category_category = categories_id', 'left');
+				$category['parent'] = $this->db->get('products_category')->row_array();
+				$cat[] = $category;
+			}
+		}
+		$post['categories'] = $cat;
 
 		$this->db->where('products_gallery_post', $post['posts_id']);
 		$post['galleries'] = $this->db->get('products_gallery')->result_array();
@@ -1037,7 +1047,7 @@ class Shopping_model extends CI_Model
 		$this->db->where('categories_type', 'product');
 		$this->db->where('categories_status', '1');
 		$this->db->where('categories_featured', '1');
-		$this->db->where('categories_parent<>', '0');
+		$this->db->where('categories_parent', '0');
 		if ($limit) {
 			$this->db->limit($limit);
 			return $this->db->get('categories')->result_array();

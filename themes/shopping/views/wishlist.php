@@ -48,7 +48,7 @@
 												<td class="product-name" data-title="Product"><a href="<?= site_url('product/' . $wishlist['posts_slug']) ?>"><?= $wishlist['posts_title'] ?></a></td>
 												<td class="product-price" data-title="Price"><?= pPrice($wishlist['products_price']) ?></td>
 												<td class="product-stock-status" data-title="Stock Status"><span class="badge badge-pill badge-success">In Stock</span></td>
-												<td class="product-add-to-cart"><a href="<?= base_url('shopping/add_to_cart_wishlist/' . $wishlist['wishlists_post'] . '/' . $wishlist['wishlists_id']) ?>" class="btn btn-fill-out"><i class="icon-basket-loaded"></i> Add to Cart</a></td>
+												<td class="product-add-to-cart"><a href="<?= base_url('product/' . $wishlist['posts_slug']) ?>" class="btn btn-fill-out"><i class="icon-basket-loaded"></i> Add to Cart</a></td>
 												<td class="product-remove" data-title="Remove"><a href="<?= base_url('shopping/remove_wishlist/' . $wishlist['wishlists_id']) ?>"><i class="ti-close"></i></a></td>
 											</tr>
 										<?php } ?>

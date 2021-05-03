@@ -167,7 +167,7 @@
                                 <a class="nav-link <?= (current_url() == site_url('best-offers')) ? 'active' : '' ?>" href="<?= site_url('best-offers') ?>">Best Offers</a>
                             </li>
 
-                            <li><a class="nav-link nav_item <?= (current_url() == site_url('contact-us')) ? 'active' : '' ?>" href="<?= site_url('contact-us') ?>">Contact Us</a></li>
+                            <!-- <li><a class="nav-link nav_item <?= (current_url() == site_url('contact-us')) ? 'active' : '' ?>" href="<?= site_url('contact-us') ?>">Contact Us</a></li> -->
                         </ul>
                     </div>
 
