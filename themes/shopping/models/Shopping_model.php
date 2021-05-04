@@ -61,7 +61,7 @@ class Shopping_model extends CI_Model
 	public function parent_cat($id = FALSE)
 	{
 		$this->db->where('categories_type', 'product');
-		$this->db->where('categories_parent<>', '0');
+		$this->db->where('categories_parent', '0');
 		$this->db->where('categories_status', '1');
 		if ($id) {
 			$this->db->where('categories_id', $id);

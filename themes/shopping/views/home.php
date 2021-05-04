@@ -224,7 +224,7 @@
                                 <img src="<?= site_url('themes/shopping') ?>/assets/load.gif" class="lazy" data-src="<?= base_url(getenv('uploads') . ($featuredCat['categories_icon'])) ?>" alt="furniture_banner1" style="height: 300px; object-fit: cover;">
                                 <div class="fb_info">
                                     <h5 class="single_bn_title1">Featured</h5>
-                                    <h3 class="single_bn_title"><?= $category['categories_name'] ?></h3>
+                                    <h3 class="single_bn_title"><?= $featuredCat['categories_name'] ?></h3>
                                     <a href="<?= site_url('category/' . $featuredCat['categories_slug']) ?>" class="single_bn_link">Shop Now</a>
                                 </div>
                             </div>

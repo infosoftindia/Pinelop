@@ -241,14 +241,14 @@ class New_model extends CI_Model
 		]);
 	}
 
-	public function change_Password($password)
+	public function change_Password($opassword, $npassword)
 	{
 		$this->db->where('users_id', $this->session->userdata('user_id'));
 		$user = $this->db->get('users')->row_array();
-		if (password_verify($password, $user['users_password'])) {
+		if (password_verify($opassword, $user['users_password'])) {
 			$this->db->where('users_id', $this->session->userdata('user_id'));
 			$this->db->update('users', [
-				'users_password' => $password
+				'users_password' => HashPass($npassword)
 			]);
 			return 1;
 		} else {

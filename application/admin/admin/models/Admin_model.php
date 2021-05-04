@@ -16,6 +16,14 @@ class Admin_model extends CI_Model
 		return $this->db->get('users')->row();
 	}
 
+	public function user_Email_For_Reset($email)
+	{
+		$this->db->where('users_email', $email);
+		$this->db->where('users_role', '1');
+		$this->db->where('users_social', NULL);
+		return $this->db->get('users')->row();
+	}
+
 	public function vendor_Email($email)
 	{
 		$this->db->where('users_email', $email);

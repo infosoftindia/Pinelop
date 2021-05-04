@@ -29,6 +29,14 @@ class Shopping extends MX_Controller
 	public function ___load($data)
 	{
 		$this->load->model('Shopping_model');
+		if (!$this->session->userdata('user_id')) {
+			$cookie = get_cookie('users_data');
+			if (strlen($cookie) > 1) {
+				$data = json_decode($cookie, true);
+				$this->session->set_userdata($data);
+				redirect(current_url());
+			}
+		}
 		$data['css'] = $this->___css();
 		$data['js'] = $this->___js();
 		$data['carts'] = $this->Shopping_model->get_Cart();
@@ -860,6 +868,7 @@ class Shopping extends MX_Controller
 		$this->load->model('Shopping_model');
 		$email = $this->input->post('email');
 		$password = $this->input->post('password');
+		$remember_me = $this->input->post('remember_me');
 
 		$user = $this->Shopping_model->check_Login($email, $password);
 		$uEmail = $this->Shopping_model->user_Email($email);
@@ -876,6 +885,22 @@ class Shopping extends MX_Controller
 				'user_role' => $uEmail->users_role,
 				'user_in' => 1
 			]);
+			if ($remember_me == 1) {
+				$cookie_value = json_encode([
+					'user_id' => $uEmail->users_id,
+					'user_fname' => $uEmail->users_first_name,
+					'user_lname' => $uEmail->users_last_name,
+					'user_name' => $uEmail->users_first_name . ' ' . $uEmail->users_last_name,
+					'user_email' => $uEmail->users_email,
+					'user_mobile' => $uEmail->users_mobile,
+					'user_profile' => $uEmail->users_profile,
+					'user_role' => $uEmail->users_role,
+					'user_in' => 1
+				]);
+				setcookie('users_data', $cookie_value, time() + (86400 * 30 * 90), "/");
+				// echo get_cookie('users_data');
+				// die;
+			}
 			redirect('account');
 		} else {
 			$this->session->set_flashdata('error', $user);
@@ -886,6 +911,7 @@ class Shopping extends MX_Controller
 	public function logout()
 	{
 		$this->session->sess_destroy();
+		setcookie('users_data', '', time() + (86400 * 30 * 90), "/");
 		save_Activity('Succesfully logged out');
 		redirect('');
 	}
@@ -1401,13 +1427,20 @@ class Shopping extends MX_Controller
 	{
 		$this->is_Logged_In();
 		$this->load->model('New_model');
-		$password = $this->input->post('confirm-password');
-		$status = $this->New_model->change_Password($password);
-		if ($status == 1) {
-			$this->session->set_flashdata('info', 'Password Changed');
+		$opassword = $this->input->post('old-password');
+		$npassword = $this->input->post('new-password');
+		$cpassword = $this->input->post('confirm-password');
+		if ($npassword == $cpassword) {
+			$status = $this->New_model->change_Password($opassword, $npassword);
+			if ($status == 1) {
+				$this->session->set_flashdata('info', 'Password Changed');
+			} else {
+				$this->session->set_flashdata('error', 'Invalid Old Password');
+			}
 		} else {
 			$this->session->set_flashdata('error', 'Invalid Old Password');
 		}
+
 		redirect($_SERVER['HTTP_REFERER']);
 	}
 
