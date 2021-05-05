@@ -912,6 +912,7 @@ class Shopping extends MX_Controller
 	{
 		$this->session->sess_destroy();
 		setcookie('users_data', '', time() + (86400 * 30 * 90), "/");
+		setcookie("users_local_session", '', time() + 31536000);
 		save_Activity('Succesfully logged out');
 		redirect('');
 	}

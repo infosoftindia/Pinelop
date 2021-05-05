@@ -66,7 +66,7 @@
 									}
 									?>
 								</div>
-								<div class="row">
+								<!-- <div class="row">
 									<div class="col-12">
 										<ul class="pagination mt-3 justify-content-center pagination_style1">
 											<li class="page-item active"><a class="page-link" href="#">1</a></li>
@@ -75,7 +75,7 @@
 											<li class="page-item"><a class="page-link" href="#"><i class="linearicons-arrow-right"></i></a></li>
 										</ul>
 									</div>
-								</div>
+								</div> -->
 							</div>
 						</div>
 					</div>

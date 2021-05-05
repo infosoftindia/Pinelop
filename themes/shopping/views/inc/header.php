@@ -108,9 +108,10 @@
                                                                     </li>
                                                                 <?php } else { ?>
                                                                     <li>
-                                                                        <a class="dropdown-item menu-link dropdown-toggler" href="<?= site_url('category/' . $categories[$cat]['categories_slug']) ?>" onclick="location.href='<?= site_url('category/' . $categories[$cat]['categories_slug']) ?>'"><?= $categories[$cat]['categories_name'] ?></a>
+                                                                        <a class="dropdown-item menu-link dropdown-toggler" href="<?= site_url('category/' . $categories[$cat]['categories_slug']) ?>"><?= $categories[$cat]['categories_name'] ?></a>
                                                                         <div class="dropdown-menu">
                                                                             <ul>
+                                                                                <li><a class="dropdown-item nav-link nav_item" href="<?= site_url('category/' . $categories[$cat]['categories_slug']) ?>">View <?= $categories[$cat]['categories_name'] ?></a></li>
                                                                                 <?php if ($categories[$cat]['children']) {
                                                                                     foreach ($categories[$cat]['children'] as $catt) { ?>
                                                                                         <li><a class="dropdown-item nav-link nav_item" href="<?= site_url('category/' . $catt['categories_slug']) ?>"><?= $catt['categories_name'] ?></a></li>
@@ -135,9 +136,10 @@
                                                                 </li>
                                                             <?php } else { ?>
                                                                 <li>
-                                                                    <a class="dropdown-item menu-link dropdown-toggler" href="<?= site_url('category/' . $categories[$cat]['categories_slug']) ?>" onclick="location.href='<?= site_url('category/' . $categories[$cat]['categories_slug']) ?>'"><?= $categories[$cat]['categories_name'] ?></a>
+                                                                    <a class="dropdown-item menu-link dropdown-toggler" href="<?= site_url('category/' . $categories[$cat]['categories_slug']) ?>"><?= $categories[$cat]['categories_name'] ?></a>
                                                                     <div class="dropdown-menu">
                                                                         <ul>
+                                                                            <li><a class="dropdown-item nav-link nav_item" href="<?= site_url('category/' . $categories[$cat]['categories_slug']) ?>">View <?= $categories[$cat]['categories_name'] ?></a></li>
                                                                             <?php if ($categories[$cat]['children']) {
                                                                                 foreach ($categories[$cat]['children'] as $catt) { ?>
                                                                                     <li><a class="dropdown-item nav-link nav_item" href="<?= site_url('category/' . $catt['categories_slug']) ?>"><?= $catt['categories_name'] ?></a></li>
