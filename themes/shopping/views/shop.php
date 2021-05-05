@@ -10,8 +10,8 @@
 			</div>
 			<div class="col-md-6">
 				<ol class="breadcrumb justify-content-md-end">
-					<li class="breadcrumb-item"><a href="#">Home</a></li>
-					<li class="breadcrumb-item active">Shop</li>
+					<li class="breadcrumb-item"><a href="<?= site_url() ?>">Home</a></li>
+					<?= $breadcrumb ?>
 				</ol>
 			</div>
 		</div>

@@ -136,6 +136,7 @@ class Shopping extends MX_Controller
 		$data["categories"] = $this->Shopping_model->get_Categories();
 		$data['total_rows'] = count($data["posts"]);
 		$data["title"] = "Quick Shop";
+		$data['breadcrumb'] = '<li class="breadcrumb-item active">Shop</li>';
 		$data["page"] = $this->load->view("shop", $data, true);
 		return $data;
 	}
@@ -327,6 +328,7 @@ class Shopping extends MX_Controller
 		$data['total_rows'] = count($data["posts"]);
 		$data["colours"] = $this->Shopping_model->getColours();
 		$data["brands"] = $this->Shopping_model->getBrands();
+		$data['breadcrumb'] = '<li class="breadcrumb-item active">Daily Deals</li>';
 		$data["page"] = $this->load->view("shop", $data, true);
 		return $data;
 	}
@@ -351,6 +353,7 @@ class Shopping extends MX_Controller
 			$data["posts"] = $this->Shopping_model->get_Best_Offers_Products($id);
 			$data['total_rows'] = count($data["posts"]);
 			$data["title"] = @$data["posts"][0]['products_best_offers_title'];
+			$data['breadcrumb'] = '<li class="breadcrumb-item active">Best Offers</li>';
 			$data["page"] = $this->load->view("shop", $data, true);
 		}
 		return $data;
@@ -486,6 +489,7 @@ class Shopping extends MX_Controller
 		$data["colours"] = $this->Shopping_model->getColours();
 		$data["brands"] = $this->Shopping_model->getBrands();
 		$data["title"] = "Search Result";
+		$data['breadcrumb'] = '<li class="breadcrumb-item active">Search Result</li>';
 		$data["page"] = $this->load->view("shop", $data, true);
 		return $data;
 	}
@@ -601,6 +605,8 @@ class Shopping extends MX_Controller
 		$data["brands"] = $this->Shopping_model->getBrands();
 		$data['posts'] = $this->Shopping_model->get_Products_By_Categories_Slug($slug, $limit, $offset * $limit);
 		$data["title"] = $data['category']['categories_name'];
+		$data['breadcrumb'] = '<li class="breadcrumb-item"><a href="' . site_url("categories") . '">Categories</a></li>
+		<li class="breadcrumb-item active">' . $data['category']['categories_name'] . '</li>';
 		$data["page"] = $this->load->view("shop", $data, true);
 		return $data;
 	}
