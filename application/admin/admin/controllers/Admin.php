@@ -188,10 +188,12 @@ class Admin extends MX_Controller
 		if ($uEmail) {
 			$token = $uEmail->users_password;
 			$data['link'] = site_url('reset-password/?token=' . $token);
-			$page = $this->load->view('forgot-password', $data);
+			$page = $this->load->view('forgot-password', $data, true);
 			addMailQueue($email, 'Password Reset', $page);
+			$this->session->set_flashdata('success', 'Password Reset link is sent to your email address');
+			redirect($_SERVER['HTTP_REFERER']);
 		}
-		$this->session->set_flashdata('success', 'Password Reset link is sent to your email address');
+		$this->session->set_flashdata('error', 'Enter valid email');
 		redirect($_SERVER['HTTP_REFERER']);
 	}
 
