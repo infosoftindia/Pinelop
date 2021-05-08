@@ -31,11 +31,11 @@
 								<div class="row shop_container">
 									<?php if ($offers) {
 										foreach ($offers as $offer) { ?>
-											<div class="col-lg-4">
+											<div class="col-lg-3">
 												<div class="product_box text-center">
 													<div class="product_img">
 														<a href="<?= base_url('best-offers/' . $offer['products_best_offers_id']) ?>">
-															<img src="<?= site_url('themes/shopping') ?>/assets/load.gif" class="lazy" data-src="<?= base_url(getenv('uploads') . $offer['products_best_offers_image']) ?>" style="height: 200px; width: 100%; object-fit: cover;" alt="<?= $offer['products_best_offers_title'] ?>">
+															<img src="<?= site_url('themes/shopping') ?>/assets/load.gif" class="lazy" data-src="<?= base_url(getenv('uploads') . $offer['products_best_offers_image']) ?>" style="height: 170px; width: 100%; object-fit: cover;" alt="<?= $offer['products_best_offers_title'] ?>">
 														</a>
 													</div>
 													<div class="product_info">

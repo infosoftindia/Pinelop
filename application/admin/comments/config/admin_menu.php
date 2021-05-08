@@ -4,11 +4,10 @@
 					<span class="has-icon">
 						<i class="icon-chat_bubble_outline"></i>
 					</span>
-					<span class="nav-title">Comments</span>
+					<span class="nav-title">Reviews</span>
 				</a>
 			</li>';
 	
 	$menus['menu'] = $menu;
-	$menus['position'] = 9;
-	$menus['role'] = 5;
-?>
+	$menus['position'] = 90;
+	$menus['role'] = 121;

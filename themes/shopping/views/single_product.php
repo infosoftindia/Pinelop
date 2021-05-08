@@ -60,7 +60,7 @@
 									} ?>
 								</div>
 								<div class="product_img_box">
-									<img src="<?= site_url('themes/shopping') ?>/assets/load.gif" id="product_img" data-src='<?= base_url(getenv('uploads') . $post['posts_cover']) ?>' data-zoom-image="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>" class="lazy" alt="<?= $post['posts_title'] ?>">
+									<img src="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>" id="product_img" data-zoom-image="<?= base_url(getenv('uploads') . $post['posts_cover']) ?>" alt="<?= $post['posts_title'] ?>">
 									<a href="#" class="product_img_zoom" title="Zoom">
 										<span class="linearicons-zoom-in"></span>
 									</a>
@@ -239,7 +239,7 @@
 													foreach ($post['comments'] as $comment) { ?>
 														<li>
 															<div class="comment_img">
-																<img src="<?= site_url('themes/shopping') ?>/assets/load.gif" data-src="<?= site_url('themes/shopping') ?>/assets/images/user1.jpg" alt="user1" class="lazy">
+																<img src="<?= site_url('themes/shopping') ?>/assets/load.gif" data-src="https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=<?= $comment['comments_name'] ?>" alt="user1" class="lazy">
 															</div>
 															<div class="comment_block">
 																<div class="rating_wrap">

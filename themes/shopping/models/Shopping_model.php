@@ -247,7 +247,7 @@ class Shopping_model extends CI_Model
 		$this->db->where('products_gallery_post', $post['posts_id']);
 		$post['galleries'] = $this->db->get('products_gallery')->result_array();
 
-		$this->db->where('comments_post', $post['posts_id']);
+		$this->db->where('comments_post', $post['posts_id'])->where('comments_status', '1');
 		$post['comments'] = $this->db->get('comments')->result_array();
 
 		$this->db->where('product_similars_post', $post['posts_id']);
@@ -452,6 +452,10 @@ class Shopping_model extends CI_Model
 	{
 		$user_ses = get_cookie('users_local_session');
 		$user = $this->session->userdata('user_id');
+		$user_get = $this->input->get('user');
+		if ($this->session->userdata('user_role') == 121 && $user_get > 0) {
+			$user = $user_get;
+		}
 		$this->db->select('*');
 		$this->db->from('carts');
 		if (!is_null($user)) {
@@ -543,6 +547,10 @@ class Shopping_model extends CI_Model
 	public function get_User_Address()
 	{
 		$user = $this->session->userdata('user_id');
+		$user_get = $this->input->get('user');
+		if ($this->session->userdata('user_role') == 121 && $user_get > 0) {
+			$user = $user_get;
+		}
 		$this->db->where('user_address_user', $user);
 		$this->db->join('address', 'user_address_address = address_id', 'left');
 		return $this->db->get('user_address')->result_array();
@@ -912,6 +920,10 @@ class Shopping_model extends CI_Model
 	public function get_Wishlist()
 	{
 		$user = $this->session->userdata('user_id');
+		$user_get = $this->input->get('user');
+		if ($this->session->userdata('user_role') == 121 && $user_get > 0) {
+			$user = $user_get;
+		}
 		$this->db->select('*');
 		$this->db->from('wishlists');
 		$this->db->where('wishlists_user', $user);

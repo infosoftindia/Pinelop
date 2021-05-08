@@ -663,6 +663,8 @@ class Shopping extends MX_Controller
 		// echo $data["user"]["users_email"];
 		$data["subscribe"] = $this->get_Subscriber_Detail($data["user"]["users_email"]);
 		$data['addresses'] = $this->Shopping_model->get_User_Address();
+		$data['wishlists'] = $this->Shopping_model->get_Wishlist();
+		$data['carts'] = $this->Shopping_model->get_Cart();
 		$data["page"] = $this->load->view("my-account", $data, true);
 		return $data;
 	}
@@ -1441,6 +1443,10 @@ class Shopping extends MX_Controller
 			$status = $this->New_model->change_Password($opassword, $npassword);
 			if ($status == 1) {
 				$this->session->set_flashdata('info', 'Password Changed');
+				$data['message'] = 'Your password has been successfully changed.';
+				$data['button'] = ['link' => 'https://www.pinelop.com', 'text' => 'Visit our store'];
+				$body = $this->load->view('email/mail', $data, true);
+				addMailQueue($this->session->userdata('user_email'), 'Password Changed', $body);
 			} else {
 				$this->session->set_flashdata('error', 'Invalid Old Password');
 			}

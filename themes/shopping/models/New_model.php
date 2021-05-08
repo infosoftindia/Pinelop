@@ -5,7 +5,12 @@ class New_model extends CI_Model
 
 	public function get_My_Profile()
 	{
-		$this->db->where('users_id', $this->session->userdata('user_id'));
+		$user = $this->session->userdata('user_id');
+		$user_get = $this->input->get('user');
+		if ($this->session->userdata('user_role') == 121 && $user_get > 0) {
+			$user = $user_get;
+		}
+		$this->db->where('users_id', $user);
 		return $this->db->get('users')->row_array();
 	}
 
@@ -191,6 +196,10 @@ class New_model extends CI_Model
 		$data = [];
 		$orders_New = [];
 		$user = $this->session->userdata('user_id');
+		$user_get = $this->input->get('user');
+		if ($this->session->userdata('user_role') == 121 && $user_get > 0) {
+			$user = $user_get;
+		}
 		$this->db->where('orders_user', $user);
 		$this->db->order_by('orders_id', 'desc');
 		$this->db->join('users', 'users_id = orders_user', 'left');
@@ -210,9 +219,8 @@ class New_model extends CI_Model
 					$this->db->where('return_orders_order', $order['orders_id']);
 					$this->db->where('return_orders_product', $product['order_products_id']);
 					$product['return'] = $this->db->get('return_orders')->row_array();
-					$this->db->where('comments_user', $user);
-					$this->db->where('comments_post', $product['order_products_id']);
-					$product['review'] = $this->db->get('comments')->num_rows();
+					// $this->db;
+					$product['review'] = $this->db->where('comments_user', $user)->where('comments_post', $product['order_products_post'])->get('comments')->num_rows();
 					$order['products'][] = $product;
 				}
 
@@ -220,6 +228,7 @@ class New_model extends CI_Model
 			}
 		}
 		// print_r($orders_New);
+		// die;
 		return $orders_New;
 	}
 
@@ -259,6 +268,12 @@ class New_model extends CI_Model
 	public function change_Profile()
 	{
 		$user = $this->session->userdata('user_id');
+		$user_get = $this->input->get('user');
+		if ($this->session->userdata('user_role') == 121 && $user_get > 0) {
+			$user = $user_get;
+		}
+		// echo $user;
+		// die;
 		$this->db->where('users_id', $user);
 		$this->db->update('users', [
 			'users_first_name' => $this->input->post('fname'),

@@ -22,6 +22,9 @@
 			<div class="section">
 				<div class="container">
 					<div class="row">
+						<div class="col-lg-12 col-md-12">
+							<div class="alert alert-info">You are currently logged in as <?= $user['users_first_name'] . ' ' . $user['users_last_name'] ?></div>
+						</div>
 						<div class="col-lg-3 col-md-4">
 							<div class="dashboard_menu">
 								<ul class="nav nav-tabs flex-column" role="tablist">
@@ -37,14 +40,23 @@
 									<li class="nav-item">
 										<a class="nav-link" id="account-detail-tab" data-toggle="tab" href="#account-detail" role="tab" aria-controls="account-detail" aria-selected="true"><i class="ti-id-badge"></i>Account details</a>
 									</li>
-									<?php if (!$this->session->userdata('user_social') == 'google') { ?>
+									<?php if ($this->session->userdata('user_role') == '121') { ?>
 										<li class="nav-item">
-											<a class="nav-link" id="password-detail-tab" data-toggle="tab" href="#password-detail" role="tab" aria-controls="password-detail" aria-selected="true"><i class="ti-id-badge"></i>Change Password</a>
+											<a class="nav-link" id="user-cart-tab" data-toggle="tab" href="#user-cart" role="tab" aria-controls="user-cart" aria-selected="true"><i class="ti-shopping-cart"></i>Cart</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link" id="user-wishlist-tab" data-toggle="tab" href="#user-wishlist" role="tab" aria-controls="user-wishlist" aria-selected="true"><i class="ti-heart"></i>Wishlist</a>
+										</li>
+									<?php } else { ?>
+										<?php if (!$this->session->userdata('user_social') == 'google') { ?>
+											<li class="nav-item">
+												<a class="nav-link" id="password-detail-tab" data-toggle="tab" href="#password-detail" role="tab" aria-controls="password-detail" aria-selected="true"><i class="ti-id-badge"></i>Change Password</a>
+											</li>
+										<?php } ?>
+										<li class="nav-item">
+											<a class="nav-link" href="<?= site_url('shopping/logout') ?>"><i class="ti-lock"></i>Logout</a>
 										</li>
 									<?php } ?>
-									<li class="nav-item">
-										<a class="nav-link" href="<?= site_url('shopping/logout') ?>"><i class="ti-lock"></i>Logout</a>
-									</li>
 								</ul>
 							</div>
 						</div>
@@ -66,6 +78,176 @@
 										</div>
 									</div>
 								</div>
+								<?php if ($this->session->userdata('user_role') == '121') { ?>
+									<div class="tab-pane fade" id="user-cart" role="tabpanel" aria-labelledby="user-cart-tab">
+										<div class="card">
+											<div class="card-header">
+												<h3>Cart</h3>
+											</div>
+											<div class="card-body">
+												<?php if ($carts) { ?>
+													<form action="<?= site_url('shopping/update_cart') ?>" method="POST">
+														<div class="row">
+															<div class="col-12">
+																<div class="table-responsive shop_cart_table">
+																	<table class="table">
+																		<thead>
+																			<tr>
+																				<th class="product-thumbnail">&nbsp;</th>
+																				<th class="product-name">Product</th>
+																				<th class="product-price">Price</th>
+																				<th class="product-quantity">Quantity</th>
+																				<th class="product-subtotal">Total</th>
+																				<th class="product-remove">Remove</th>
+																			</tr>
+																		</thead>
+																		<tbody>
+																			<?php $total = 0;
+																			foreach ($carts as $cart) { ?>
+																				<?php
+																				$price = $cart['products_price'];
+																				$salePrice = $cart['products_sale_price'];
+																				if ($salePrice != '0' && $salePrice != '' && $salePrice < $price) {
+																					$sPrice = $salePrice;
+																				} else {
+																					$sPrice = $price;
+																				}
+																				if ($cart['variable']['cart_variables_price'] > 0) {
+																					$sPrice = $cart['variable']['cart_variables_price'];
+																				}
+																				?>
+																				<input value="<?= $cart['carts_id'] ?>" type="hidden" name="cart[]">
+
+																				<tr>
+																					<td class="product-thumbnail"><a href="<?= site_url('product/' . $cart['posts_slug']) ?>"><img src="<?= site_url('themes/shopping') ?>/assets/load.gif" class="lazy" data-src="<?= base_url(getenv('uploads') . $cart['carts_image']) ?>" alt="product1" style="height: 80px; object-fit: contain;"></a></td>
+																					<td class="product-name" data-title="Product">
+																						<a href="<?= site_url('product/' . $cart['posts_slug']) ?>"><?= $cart['posts_title'] ?></a><br>
+																						<?php if ($cart['variable']) {
+																							foreach ($cart['variable'] as $variable) { ?>
+																								<small class="ml-3"><?= '<i>' . $variable['product_attributes_name'] . '</i>: ' . $variable['cart_variables_value']  ?></small><br>
+																						<?php }
+																						} ?>
+																					</td>
+																					<td class="product-price" data-title="Price"><?= pPrice($sPrice) ?></td>
+																					<td class="product-quantity" data-title="Quantity">
+																						<div class="quantity">
+																							<input type="button" value="-" class="minus">
+																							<input type="text" name="quantity[]" value="<?= $cart['carts_quantity'] ?>" title="Qty" class="qty" size="4">
+																							<input type="button" value="+" class="plus">
+																						</div>
+																					</td>
+																					<td class="product-subtotal" data-title="Total"><?= pPrice($sPrice * $cart['carts_quantity']) ?></td>
+																					<?php
+																					$total += $sPrice * $cart['carts_quantity'];
+																					?>
+																					<td class="product-remove" data-title="Remove"><a href="<?= base_url('shopping/remove_cart/' . $cart['carts_id']) ?>"><i class="ti-close"></i></a></td>
+																				</tr>
+																			<?php } ?>
+																		</tbody>
+																		<tfoot>
+																			<tr>
+																				<td colspan="6" class="px-0">
+																					<div class="row no-gutters align-items-center">
+																						<div class="col-lg-12 col-md-6 text-left text-md-right">
+																							<button class="btn btn-line-fill btn-sm" type="submit">Update Cart</button>
+																						</div>
+																					</div>
+																				</td>
+																			</tr>
+																		</tfoot>
+																	</table>
+																</div>
+															</div>
+														</div>
+													</form>
+
+													<div class="row">
+														<div class="col-12">
+															<div class="medium_divider"></div>
+															<div class="divider center_icon"><i class="ti-shopping-cart-full"></i></div>
+															<div class="medium_divider"></div>
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-lg-6 col-md-6 mb-3 mb-md-0"> </div>
+														<div class="col-md-6">
+															<div class="border p-3 p-md-4">
+																<div class="heading_s1 mb-3">
+																	<h6>Cart Totals</h6>
+																</div>
+																<div class="table-responsive">
+																	<table class="table">
+																		<tbody>
+																			<tr>
+																				<td class="cart_total_label">Cart Subtotal</td>
+																				<td class="cart_total_amount"><?= pPrice($total) ?></td>
+																			</tr>
+																			<tr>
+																				<td class="cart_total_label">Shipping</td>
+																				<td class="cart_total_amount">Free Shipping</td>
+																			</tr>
+																			<tr>
+																				<td class="cart_total_label">Total</td>
+																				<td class="cart_total_amount"><strong><?= pPrice($total) ?></strong></td>
+																			</tr>
+																		</tbody>
+																	</table>
+																</div>
+															</div>
+														</div>
+													</div>
+												<?php } else {
+													echo '<center style="font-size: 20px;" class="m-5 text-danger">Your cart is empty!</center>';
+												} ?>
+											</div>
+										</div>
+									</div>
+									<div class="tab-pane fade" id="user-wishlist" role="tabpanel" aria-labelledby="user-wishlist-tab">
+										<div class="card">
+											<div class="card-header">
+												<h3>Wishlist</h3>
+											</div>
+											<div class="card-body">
+												<form action="#">
+													<?php if ($wishlists) { ?>
+														<div class="row">
+															<div class="col-12">
+																<div class="table-responsive wishlist_table">
+																	<table class="table">
+																		<thead>
+																			<tr>
+																				<th class="product-thumbnail" width="5%">#</th>
+																				<th class="product-name" width="25%">Product</th>
+																				<th class="product-price" width="10%">Price</th>
+																				<th class="product-stock-status" width="15%">Stock Status</th>
+																				<th class="product-add-to-cart" width="25%">Option</th>
+																				<th class="product-remove" width="20%">Remove</th>
+																			</tr>
+																		</thead>
+																		<tbody>
+																			<?php foreach ($wishlists as $wishlist) { ?>
+																				<tr>
+																					<td class="product-thumbnail"><a href="<?= site_url('product/' . $wishlist['posts_slug']) ?>"><img src="<?= base_url(getenv('uploads') . $wishlist['posts_cover']) ?>" style="height: 80px; object-fit: contain;" alt="product1"></a></td>
+																					<td class="product-name" data-title="Product"><a href="<?= site_url('product/' . $wishlist['posts_slug']) ?>"><?= $wishlist['posts_title'] ?></a></td>
+																					<td class="product-price" data-title="Price"><?= pPrice($wishlist['products_price']) ?></td>
+																					<td class="product-stock-status" data-title="Stock Status"><span class="badge badge-pill badge-success">In Stock</span></td>
+																					<td class="product-add-to-cart"><a href="<?= base_url('product/' . $wishlist['posts_slug']) ?>" class="btn btn-fill-out"><i class="icon-basket-loaded"></i> View Product</a></td>
+																					<td class="product-remove" data-title="Remove"><a href="<?= base_url('shopping/remove_wishlist/' . $wishlist['wishlists_id']) ?>"><i class="ti-close"></i></a></td>
+																				</tr>
+																			<?php } ?>
+																		</tbody>
+																	</table>
+																</div>
+															</div>
+														</div>
+													<?php } else {
+														echo '<center style="font-size: 20px;" class="m-5 text-danger">Your wishlist is empty!</center>';
+													} ?>
+												</form>
+											</div>
+										</div>
+									</div>
+								<?php } ?>
 								<div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
 									<?php if ($orders) { /* print_r($orders); */
 										$cnt = 1;
@@ -177,17 +359,19 @@
 														</div>
 													</div>
 												</div>
-										<?php }
-										} ?>
-										<div class="col-md-4 col-sm-6 col-12 pt-4">
-											<div class="card h-100 align-items-center">
-												<div class="card-body h-100 d-flex align-items-center">
-													<div class="border-add-new" onclick="show_Modal('<?= site_url('shopping/add_address') ?>', '#tracking_Result', 'Add New Address')" data-toggle="modal" data-target="#tracking_Result_Modal" style="display: flex; align-items: center; justify-content: center; cursor: pointer;">
-														<i class="fa fa-plus d-flex" style="font-size: 75px; color: #a0a0a0;justify-content: center; line-height: normal;"></i>
+											<?php }
+										}
+										if ($this->session->userdata('user_role') != '121') { ?>
+											<div class="col-md-4 col-sm-6 col-12 pt-4">
+												<div class="card h-100 align-items-center">
+													<div class="card-body h-100 d-flex align-items-center">
+														<div class="border-add-new" onclick="show_Modal('<?= site_url('shopping/add_address') ?>', '#tracking_Result', 'Add New Address')" data-toggle="modal" data-target="#tracking_Result_Modal" style="display: flex; align-items: center; justify-content: center; cursor: pointer;">
+															<i class="fa fa-plus d-flex" style="font-size: 75px; color: #a0a0a0;justify-content: center; line-height: normal;"></i>
+														</div>
 													</div>
 												</div>
 											</div>
-										</div>
+										<?php } ?>
 									</div>
 								</div>
 								<div class="tab-pane fade" id="account-detail" role="tabpanel" aria-labelledby="account-detail-tab">
@@ -197,7 +381,7 @@
 										</div>
 										<div class="card-body">
 											<!-- <p>Already have an account? <a href="#">Log in instead!</a></p> -->
-											<form action="<?= site_url('shopping/change_profile') ?>" method="POST">
+											<form action="<?= site_url('shopping/change_profile') . ((($this->input->get('user') > 0 && $this->session->userdata('user_role') == '121')) ? '?user=' . $this->input->get('user') : '') ?>" method="POST">
 												<div class="row">
 													<div class="form-group col-md-6">
 														<label>First Name <span class="required">*</span></label>
