@@ -304,76 +304,49 @@ class Shopping_model extends CI_Model
 		$this->db->where('carts_product', $product);
 		$result = $this->db->get('carts');
 		if ($result->num_rows() > 0) {
-
-			$cart_id = $result->row()->carts_id;
-			$variables = $this->db->where('cart_variables_cart', $cart_id)->get('cart_variables')->result_array();
-			if ($variables) {
-				foreach ($variables as $variable) {
-					$var[$variable['cart_variables_key']] = $variable['cart_variables_value'];
-				}
-			}
-			if ($pos === $var) {
-				$qty = ($result->row(0)->carts_quantity) + $quantity;
-				$data = array(
-					'carts_user' => $user,
-					'carts_token' => $user_ses,
-					'carts_product' => $product,
-					'carts_quantity' => $qty
-				);
-				if ($user == 0) {
-					$this->db->where('carts_token', $user_ses);
-				} else {
-					$this->db->where('carts_user', $user);
-				}
-				$this->db->where('carts_product', $product);
-				$this->db->update('carts', $data);
-				$cart_id = $result->row()->carts_id;
-			} else {
-				$data = array(
-					'carts_user' => $user,
-					'carts_token' => $user_ses,
-					'carts_product' => $product,
-					'carts_quantity' => $quantity,
-					'carts_image' => $this->input->post('image'),
-					'carts_created' => now()
-				);
-				$this->db->insert('carts', $data);
-				$cart_id = $this->db->insert_id();
-				foreach ($_POST as $key => $value) {
-					if ($key != 'quantity' && $key != 'post' && $key != 'price' && $key != 'image') {
-						// echo $key . ' => ' . $value;
-						$this->db->insert('cart_variables', [
-							'cart_variables_cart' => $cart_id,
-							'cart_variables_key' => str_replace('---', ' ', $key),
-							'cart_variables_value' => $value,
-							'cart_variables_price' => $this->input->post('price'),
-							'cart_variables_image' => $this->input->post('image'),
-						]);
+			$results = $result->result_array();
+			foreach ($results as $item) {
+				$cart_id = $item['carts_id'];
+				$variables = $this->db->where('cart_variables_cart', $cart_id)->get('cart_variables')->result_array();
+				if ($variables) {
+					foreach ($variables as $variable) {
+						$var[$variable['cart_variables_key']] = $variable['cart_variables_value'];
 					}
 				}
-			}
-		} else {
-			$data = array(
-				'carts_user' => $user,
-				'carts_token' => $user_ses,
-				'carts_product' => $product,
-				'carts_quantity' => $quantity,
-				'carts_image' => $this->input->post('image'),
-				'carts_created' => now()
-			);
-			$this->db->insert('carts', $data);
-			$cart_id = $this->db->insert_id();
-			foreach ($_POST as $key => $value) {
-				if ($key != 'quantity' && $key != 'post' && $key != 'price' && $key != 'image') {
-					// echo $key . ' => ' . $value;
-					$this->db->insert('cart_variables', [
-						'cart_variables_cart' => $cart_id,
-						'cart_variables_key' => str_replace('---', ' ', $key),
-						'cart_variables_value' => $value,
-						'cart_variables_price' => $this->input->post('price'),
-						'cart_variables_image' => $this->input->post('image'),
-					]);
+				if ($pos === $var) {
+					$qty = $item['carts_quantity'] + $quantity;
+					$data = array(
+						'carts_user' => $user,
+						'carts_token' => $user_ses,
+						'carts_product' => $product,
+						'carts_quantity' => $qty
+					);
+					$this->db->where('carts_id', $item['carts_id']);
+					$this->db->update('carts', $data);
+					return 1;
 				}
+			}
+		}
+		$data = array(
+			'carts_user' => $user,
+			'carts_token' => $user_ses,
+			'carts_product' => $product,
+			'carts_quantity' => $quantity,
+			'carts_image' => $this->input->post('image'),
+			'carts_created' => now()
+		);
+		$this->db->insert('carts', $data);
+		$cart_id = $this->db->insert_id();
+		foreach ($_POST as $key => $value) {
+			if ($key != 'quantity' && $key != 'post' && $key != 'price' && $key != 'image') {
+				// echo $key . ' => ' . $value;
+				$this->db->insert('cart_variables', [
+					'cart_variables_cart' => $cart_id,
+					'cart_variables_key' => str_replace('---', ' ', $key),
+					'cart_variables_value' => $value,
+					'cart_variables_price' => $this->input->post('price'),
+					'cart_variables_image' => $this->input->post('image'),
+				]);
 			}
 		}
 		return 1;
